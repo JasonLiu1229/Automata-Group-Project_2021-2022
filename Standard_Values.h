@@ -6,9 +6,9 @@
 #define LEV3TXT                    "Level3.txt"
 #define LEV4TXT                    "Level4.txt"
 
-#define LEV1JSON                    "Level1.json"
-#define LEV2JSON                    "Level2.json"
-#define LEV3JSON                    "Level3.json"
-#define LEV4JSON                    "Level4.json"
+#define LEV1JSON                   "Level1.json"
+#define LEV2JSON                   "Level2.json"
+#define LEV3JSON                   "Level3.json"
+#define LEV4JSON                   "Level4.json"
 
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
