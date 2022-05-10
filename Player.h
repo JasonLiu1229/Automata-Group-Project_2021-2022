@@ -1,12 +1,25 @@
 
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_PLAYER_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_PLAYER_H
-#include "Path.h"
+#include <string>
 
-class Player : public Path {
+using namespace std;
+
+class Path;
+
+class Player {
+    Path* up;
+    Path* down;
+    Path* left;
+    Path* right;
+
+    Path* currentTile;
+
     string name;
 public:
     explicit Player(string name);
+
+    Player(Path *currentTile, const string &name);
 
     Player();
 

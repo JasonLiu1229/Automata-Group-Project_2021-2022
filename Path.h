@@ -6,14 +6,22 @@
 using namespace std;
 
 class Path {
+    // direction it can move to
     Path* left;
     Path* up;
     Path* down;
     Path* right;
 
+    // state is starting or final
     bool start;
+    bool accepting;
+
 public:
     Path();
+
+    bool isAccepting() const;
+
+    void setAccepting(bool accepting);
 
     Path *getLeft() const;
 
