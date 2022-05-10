@@ -13,10 +13,6 @@ set(Maze
 set(Path
         Path.h
         Path.cpp
-        Key.h
-        Key.cpp
-        Wall.h
-        Wall.cpp
         )
 
 set(Player
@@ -31,6 +27,10 @@ set(Parser
         Parser.cpp
         )
 
-add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path})
+set(Additional_Sources
+        Standard_Values.h
+        )
+
+add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources})
 
 set_target_properties("MazeRunner" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")

@@ -11,4 +11,6 @@
 #define LEV3JSON                   "Level3.json"
 #define LEV4JSON                   "Level4.json"
 
+enum tileSettings {path, key, wall};
+
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H

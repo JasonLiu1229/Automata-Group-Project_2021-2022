@@ -3,6 +3,8 @@
 #define AUTOMATA_GROUP_PROJECT_2021_2022_PATH_H
 #include <iostream>
 
+#include "Standard_Values.h"
+
 using namespace std;
 
 class Path {
@@ -11,6 +13,9 @@ class Path {
     Path* up;
     Path* down;
     Path* right;
+
+    // tile settings
+    tileSettings settings;
 
     // state is starting or final
     bool start;
@@ -42,6 +47,10 @@ public:
     bool isStart() const;
 
     void setStart(bool start);
+
+    tileSettings getSettings() const;
+
+    void setSettings(tileSettings new_settings);
 
     virtual ~Path();
 };
