@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(Maze
         Maze.h
         Maze.cpp
+        Collectable_DFA.h
+        Collectable_DFA.cpp
         )
 
 set(Path
@@ -19,10 +21,12 @@ set(Player
         Player.h
         Player.cpp
         Enemy.h
-        Enemy.cpp)
+        Enemy.cpp
+        )
 
 set(Parser
         Parser.h
-        Parser.cpp)
+        Parser.cpp
+        )
 
 add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path})
