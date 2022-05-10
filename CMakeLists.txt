@@ -6,14 +6,14 @@ set(CMAKE_CXX_STANDARD 14)
 set(Maze
         Maze.h
         Maze.cpp
-        ${Path})
+        )
 
 set(Path
         Path.h
         Path.cpp
         Coin.h
         Coin.cpp
-        ${Player})
+        )
 
 set(Player
         Player.h
@@ -25,4 +25,4 @@ set(Parser
         Parser.h
         Parser.cpp)
 
-add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze})
+add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path})
