@@ -15,7 +15,7 @@ set(Path
         Path.cpp
         Key.h
         Key.cpp
-        )
+        Wall.cpp Wall.h)
 
 set(Player
         Player.h

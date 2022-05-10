@@ -4,7 +4,7 @@
 
 
 class Key {
-
+    bool collected;
 };
 
 
