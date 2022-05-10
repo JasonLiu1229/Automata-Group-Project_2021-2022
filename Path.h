@@ -5,6 +5,8 @@
 
 class Path {
     bool start;
+public:
+    Path();
 };
 
 
