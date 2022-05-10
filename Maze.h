@@ -8,9 +8,15 @@ using namespace std;
 class Path;
 
 class Maze : vector<vector<Path*>> {
+    // Maze specs
     int width;
     int height;
+
+    // File specs
     string levelName;
+
+    // UI
+    bool customLevel;
 public:
     Maze();
 
