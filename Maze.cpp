@@ -15,3 +15,7 @@ Maze::Maze(string  fileName, int width, int height) : width(width), height(heigh
         this->push_back(wholePath);
     }
 }
+
+Maze::~Maze() {
+
+}

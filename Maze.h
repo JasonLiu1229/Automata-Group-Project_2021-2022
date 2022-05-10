@@ -24,6 +24,8 @@ public:
     Maze();
 
     Maze(string  fileName, int width, int height);
+
+    virtual ~Maze();
 };
 
 
