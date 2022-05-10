@@ -15,6 +15,9 @@ class Maze : vector<vector<Path*>> {
     // File specs
     string levelName;
 
+    // Collectables dfa
+
+
     // UI
     bool customLevel;
 public:
