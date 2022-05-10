@@ -3,3 +3,7 @@
 //
 
 #include "Parser.h"
+
+#include <utility>
+
+Parser::Parser(string fileName) : fileName(std::move(fileName)) {}
