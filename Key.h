@@ -8,6 +8,10 @@ class Key : public Path{
 public:
     Key();
 
+    bool isCollected() const;
+
+    void setCollected(bool collected);
+
     virtual ~Key();
 };
 

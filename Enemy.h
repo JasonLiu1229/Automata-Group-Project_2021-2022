@@ -4,7 +4,17 @@
 #include "Player.h"
 
 class Enemy : public Player{
+    int speed;
+public:
+    Enemy();
 
+    Enemy(const string &name);
+
+    virtual ~Enemy();
+
+    int getSpeed() const;
+
+    void setSpeed(int speed);
 };
 
 
