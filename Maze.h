@@ -14,6 +14,8 @@ class Maze : vector<vector<Path*>> {
 public:
     Maze();
 
+
+
     Maze(int width, int height);
 };
 
