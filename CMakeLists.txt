@@ -13,8 +13,8 @@ set(Maze
 set(Path
         Path.h
         Path.cpp
-        Coin.h
-        Coin.cpp
+        Key.h
+        Key.cpp
         )
 
 set(Player
