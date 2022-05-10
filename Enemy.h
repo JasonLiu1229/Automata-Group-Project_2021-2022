@@ -5,6 +5,8 @@
 
 class Enemy : public Player{
     int speed;
+
+    bool follow;
 public:
     Enemy();
 
