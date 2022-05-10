@@ -20,4 +20,8 @@ set(Player
         Enemy.h
         Enemy.cpp)
 
+set(Parser
+        Parser.h
+        Parser.cpp)
+
 add_executable(MazeRunner MazeRunner.cpp)
