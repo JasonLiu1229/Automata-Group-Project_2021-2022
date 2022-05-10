@@ -32,3 +32,5 @@ set(Parser
         )
 
 add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path})
+
+set_target_properties("MazeRunner" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")

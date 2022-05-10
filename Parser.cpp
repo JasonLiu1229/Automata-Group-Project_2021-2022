@@ -6,4 +6,6 @@
 
 #include <utility>
 
-Parser::Parser(string fileName) : fileName(std::move(fileName)) {}
+Parser::Parser(string fileName) : fileName(std::move(fileName)) {
+
+}

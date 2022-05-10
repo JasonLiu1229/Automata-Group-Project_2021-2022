@@ -2,9 +2,7 @@
 
 Key::Key() : collected(true) {}
 
-Key::~Key() {
-
-}
+Key::~Key() {}
 
 bool Key::isCollected() const {
     return collected;

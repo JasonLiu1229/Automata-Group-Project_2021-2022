@@ -3,3 +3,11 @@
 //
 
 #include "Wall.h"
+
+Wall::Wall() {}
+
+Wall::~Wall() {
+
+}
+
+Wall::Wall(bool easterEgg) : easterEgg(easterEgg){}

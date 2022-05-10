@@ -8,7 +8,13 @@
 #include "Path.h"
 
 class Wall : public Path{
+    bool easterEgg;
+public:
+    Wall();
 
+    explicit Wall(bool easterEgg);
+
+    virtual ~Wall();
 };
 
 
