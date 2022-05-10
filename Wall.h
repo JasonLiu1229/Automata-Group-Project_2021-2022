@@ -5,8 +5,9 @@
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_WALL_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_WALL_H
 
+#include "Path.h"
 
-class Wall {
+class Wall : public Path{
 
 };
 

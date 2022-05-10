@@ -1,9 +1,9 @@
 
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_ENEMY_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_ENEMY_H
+#include "Player.h"
 
-
-class Enemy {
+class Enemy : public Player{
 
 };
 

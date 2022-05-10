@@ -1,10 +1,14 @@
 
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_KEY_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_KEY_H
+#include "Path.h"
 
-
-class Key {
+class Key : public Path{
     bool collected;
+public:
+    Key();
+
+    virtual ~Key();
 };
 
 
