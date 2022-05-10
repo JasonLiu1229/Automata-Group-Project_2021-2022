@@ -4,7 +4,7 @@
 
 
 class Path {
-
+    bool start;
 };
 
 
