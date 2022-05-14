@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+#include "Standard_Values.h"
 using namespace std;
 
 class Path;
@@ -17,13 +18,28 @@ class Maze : vector<vector<Path*>> {
 
     // Collectables dfa
 
-
     // UI
     bool customLevel;
+    gameStatus status;
+
 public:
     Maze();
 
-    Maze(string  fileName, int width, int height);
+    explicit Maze(const string &fileName);
+
+    // level parsing
+    bool generateMaze(const string &filename);
+
+    // user interface
+    void playMaze();
+
+    void pauseMaze();
+
+    void generateCustom();
+
+    void saveGame();
+
+    void loadGame(const string &fileName);
 
     virtual ~Maze();
 };
