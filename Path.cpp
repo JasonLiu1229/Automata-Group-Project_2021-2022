@@ -1,6 +1,6 @@
 #include "Path.h"
 
-Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr) {}
+Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), start(false), accepting(false), settings(path) {}
 
 Path *Path::getLeft() const {
     return left;
@@ -40,6 +40,22 @@ bool Path::isStart() const {
 
 void Path::setStart(bool start) {
     Path::start = start;
+}
+
+bool Path::isAccepting() const {
+    return accepting;
+}
+
+void Path::setAccepting(bool accepting) {
+    Path::accepting = accepting;
+}
+
+tileSettings Path::getSettings() const {
+    return settings;
+}
+
+void Path::setSettings(tileSettings new_settings) {
+    Path::settings = new_settings;
 }
 
 Path::~Path() {}

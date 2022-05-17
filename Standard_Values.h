@@ -1,9 +1,17 @@
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
 
-#define LEV1                    "Level1.txt"
-#define LEV2                    "Level2.txt"
-#define LEV3                    "Level3.txt"
-#define LEV4                    "Level4.txt"
+#define LEV1TXT                    "Level1.txt"
+#define LEV2TXT                    "Level2.txt"
+#define LEV3TXT                    "Level3.txt"
+#define LEV4TXT                    "Level4.txt"
+
+#define LEV1JSON                   "Level1.json"
+#define LEV2JSON                   "Level2.json"
+#define LEV3JSON                   "Level3.json"
+#define LEV4JSON                   "Level4.json"
+
+enum tileSettings {path, key, wall};
+enum gameStatus {play, pause};
 
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
