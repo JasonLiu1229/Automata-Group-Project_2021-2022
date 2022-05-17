@@ -23,6 +23,9 @@ class Path {
     bool starting;
     bool accepting;
 
+    // key
+    bool key;
+
 public:
     Path();
 
@@ -53,6 +56,10 @@ public:
     tileSettings getSettings() const;
 
     void setSettings(tileSettings new_settings);
+
+    bool isKey() const;
+
+    void setKey(bool key);
 
     virtual ~Path();
 };

@@ -1,6 +1,6 @@
 #include "Path.h"
 
-Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), starting(false), accepting(false), settings(path) {}
+Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), starting(false), accepting(false), settings(path), key(false) {}
 
 Path *Path::getLeft() const {
     return left;
@@ -56,6 +56,14 @@ tileSettings Path::getSettings() const {
 
 void Path::setSettings(tileSettings new_settings) {
     Path::settings = new_settings;
+}
+
+bool Path::isKey() const {
+    return key;
+}
+
+void Path::setKey(bool key) {
+    Path::key = key;
 }
 
 Path::~Path() {}

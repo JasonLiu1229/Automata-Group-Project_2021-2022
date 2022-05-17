@@ -81,7 +81,6 @@ void Maze::saveGame() {
             else if (this->at(k).at(j)->getSettings() == wall){
 
             }
-            else if (this->at)
         }
     }
 }
