@@ -104,6 +104,8 @@ void Maze::loadGame(const string &fileName) {
                 }
                 else if(i == '^'){
                     road->setKey(true);
+                    key_count++;
+                    
                 }
                 weg.push_back(road);
             }
