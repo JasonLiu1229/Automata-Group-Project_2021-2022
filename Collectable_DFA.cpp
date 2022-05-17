@@ -6,7 +6,7 @@ Collectable_DFA::Collectable_DFA() {}
 
 Collectable_DFA::Collectable_DFA(int amount) {
     for (int i = 0; i < amount; ++i) {
-        miniState* newMiniState = new miniState();
+        auto* newMiniState = new miniState();
         if (states.empty()){
             newMiniState->setNext(newMiniState);
         }
