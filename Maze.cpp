@@ -130,6 +130,50 @@ void Maze::loadGame(const string &fileName) {
     height = static_cast<int>( this->size() );
     width = static_cast<int>( this->at(0).size() );
     // load status of whole game from txt file
+    Path* currentTile;
+    Path* nextTile;
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            // Get current tile
+            currentTile = this->at(i)[j];
+            // Get tile above
+            // Case: there is no tile above
+            if(i == 0){
+                currentTile->setUp(nullptr);
+            }
+            else{
+                nextTile = this->at(i-1)[j];
+                currentTile->setUp(nextTile);
+            }
+            // Get tile left
+            if(j == 0){
+                currentTile->setLeft(nullptr);
+            }
+            else{
+                nextTile = this->at(i)[j-1];
+                currentTile->setLeft(nextTile);
+            }
+            // Get tile right
+            if(j == width - 1){
+                currentTile->setRight(nullptr);
+            }
+            else{
+                nextTile = this->at(i)[j+1];
+                currentTile->setRight(nextTile);
+            }
+            // Get tile under
+            if(i == height - 1){
+                currentTile->setDown(nullptr);
+            }
+            else{
+                nextTile = this->at(i+1)[j];
+                currentTile->setDown(nextTile);
+            }
+        }
+    }
+    
 
 }
 
