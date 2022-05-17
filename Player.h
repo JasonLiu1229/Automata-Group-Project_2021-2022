@@ -16,6 +16,9 @@ class Player {
     Path* currentTile;
 
     string name;
+
+    // amount of keys
+    int amountKeys = 0;
 public:
     explicit Player(string name);
 

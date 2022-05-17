@@ -72,17 +72,31 @@ void Maze::saveGame() {
             exists = true;
         }
     }
-
+    // write in a file
     for (int k = 0; k < width; ++k) {
         for (int j = 0; j < height; ++j) {
-            if (this->at(k).at(j)->getSettings() == path){
-
+            Path* oldPath = this->at(k).at(j);
+            if (oldPath->getSettings() == path){
+                if (oldPath->isKey()){
+                    saveFile << '^';
+                }
+                else if (oldPath->isStarting()){
+                    saveFile << '$';
+                }
+                else if (oldPath->isAccepting()){
+                    saveFile << '&';
+                }
+                else {
+                    saveFile << '.';
+                }
             }
-            else if (this->at(k).at(j)->getSettings() == wall){
-
+            else if (oldPath->getSettings() == wall){
+                saveFile << '#';
             }
         }
+        saveFile << '\n';
     }
+    saveFile.close();
 }
 
 void Maze::loadGame(const string &fileName) {
