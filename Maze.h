@@ -2,6 +2,8 @@
 #define AUTOMATA_GROUP_PROJECT_2021_2022_MAZE_H
 #include <vector>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 #include "Standard_Values.h"
 using namespace std;

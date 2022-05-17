@@ -46,9 +46,9 @@ public:
 
     void setRight(Path *right);
 
-    bool isStart() const;
+    bool isStarting() const;
 
-    void setStart(bool starting);
+    void setStarting(bool starting);
 
     tileSettings getSettings() const;
 
