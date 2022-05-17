@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class Player;
+
 class Path {
     // direction it can move to
     Path* left;

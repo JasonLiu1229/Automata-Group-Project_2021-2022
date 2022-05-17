@@ -41,6 +41,9 @@ public:
 
     void loadGame(const string &fileName);
 
+    // simulate
+    void simulateStart();
+
     virtual ~Maze();
 };
 

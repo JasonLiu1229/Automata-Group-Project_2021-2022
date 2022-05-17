@@ -14,6 +14,8 @@ Maze::Maze(const string &fileName) :levelName(fileName), status(play) {
     if (failed){
         cout << "File was corrupted or not found" << endl;
     }
+
+    simulateStart();
 }
 
 Maze::Maze(){}
@@ -49,10 +51,47 @@ void Maze::generateCustom() {
 
 void Maze::saveGame() {
     // write status of whole game in a txt file
+    fstream saveFile;
+    FILE* codefile;
+
+    // create file
+    bool exists = false;
+    int i = 0;
+    string filename;
+    filename = SVG;
+    filename += ".txt";
+    while (!exists){
+        i++;
+        codefile = fopen(filename.c_str(), "r");
+        if (codefile){
+            filename = SVG;
+            filename += '(' + to_string(i) + ')' + ".txt";
+        }
+        else {
+            saveFile.open(filename.c_str(), ios::app | ios::ate);
+            exists = true;
+        }
+    }
+
+    for (int k = 0; k < width; ++k) {
+        for (int j = 0; j < height; ++j) {
+            if (this->at(k).at(j)->getSettings() == path){
+
+            }
+            else if (this->at(k).at(j)->getSettings() == wall){
+
+            }
+            else if (this->at)
+        }
+    }
 }
 
 void Maze::loadGame(const string &fileName) {
     // load status of whole game from txt file
+}
+
+void Maze::simulateStart() {
+
 }
 
 Maze::~Maze() {
