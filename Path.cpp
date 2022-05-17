@@ -34,11 +34,11 @@ void Path::setRight(Path *right) {
     Path::right = right;
 }
 
-bool Path::isStart() const {
+bool Path::isStarting() const {
     return starting;
 }
 
-void Path::setStart(bool start) {
+void Path::setStarting(bool start) {
     Path::starting = start;
 }
 

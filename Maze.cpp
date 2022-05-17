@@ -52,6 +52,19 @@ void Maze::saveGame() {
 }
 
 void Maze::loadGame(const string &fileName) {
+    string line;
+    ifstream gamefile (fileName);
+    if(gamefile.is_open()){
+        while(getline(gamefile,line)){
+            vector<Path*> weg;
+            for(auto i:line){
+                if(i == '#'){
+
+                }
+            }
+        }
+    }
+
     // load status of whole game from txt file
 }
 
