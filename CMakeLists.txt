@@ -8,26 +8,20 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(Maze
-        Maze.h
         Maze.cpp
-        Collectable_DFA.h
         Collectable_DFA.cpp
         )
 
 set(Path
-        Path.h
         Path.cpp
         )
 
 set(Player
-        Player.h
         Player.cpp
-        Enemy.h
         Enemy.cpp
         )
 
 set(Parser
-        Parser.h
         Parser.cpp
         )
 
