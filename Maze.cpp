@@ -131,8 +131,6 @@ void Maze::loadGame(const string &fileName) {
     width = static_cast<int>( this->at(0).size() );
     // load status of whole game from txt file
 
-
-
 }
 
 void Maze::simulateStart() {
