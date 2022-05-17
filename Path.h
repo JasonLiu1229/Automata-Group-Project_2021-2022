@@ -12,6 +12,7 @@ class Path {
     Path* right;
 
     bool start;
+    bool finish;
 public:
     Path();
 
