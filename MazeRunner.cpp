@@ -1,3 +1,7 @@
-int main(){
+#include <iostream>
 
+using namespace std;
+
+int main(int argc, char** argv){
+    cout << "Ha you ran this bullshit" << endl;
 }
