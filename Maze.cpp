@@ -60,6 +60,7 @@ void Maze::saveGame() {
     string filename;
     filename = SVG;
     filename += ".txt";
+
     while (!exists){
         i++;
         codefile = fopen(filename.c_str(), "r");
@@ -72,6 +73,7 @@ void Maze::saveGame() {
             exists = true;
         }
     }
+
     // write in a file
     for (int k = 0; k < width; ++k) {
         for (int j = 0; j < height; ++j) {
