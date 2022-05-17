@@ -14,6 +14,7 @@ class Maze : vector<vector<Path*>> {
     // Maze specs
     int width;
     int height;
+    int key_count;
 
     // File specs
     string levelName;

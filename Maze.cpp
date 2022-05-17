@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Maze::Maze(const string &fileName) :levelName(fileName), status(play) {
+Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0) {
     bool failed = generateMaze(fileName);
 
     if (failed){
@@ -109,8 +109,10 @@ void Maze::loadGame(const string &fileName) {
             }
             this->push_back(weg);
         }
-
     }
+    // Get width and height
+    height = this->size();
+    width = this->at(0).size();
 
     // load status of whole game from txt file
 }
