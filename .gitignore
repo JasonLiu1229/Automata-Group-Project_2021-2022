@@ -34,3 +34,6 @@
 # VS Code
 .vscode
 build
+
+# Generated files
+SavedGames
