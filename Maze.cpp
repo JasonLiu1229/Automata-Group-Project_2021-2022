@@ -113,10 +113,12 @@ void Maze::loadGame(const string &fileName) {
         }
     }
     // Get width and height
-    height = this->size();
-    width = this->at(0).size();
-
+    height = static_cast<int>( this->size() );
+    width = static_cast<int>( this->at(0).size() );
     // load status of whole game from txt file
+
+
+
 }
 
 void Maze::simulateStart() {
