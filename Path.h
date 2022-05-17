@@ -18,7 +18,7 @@ class Path {
     tileSettings settings;
 
     // state is starting or final
-    bool start;
+    bool starting;
     bool accepting;
 
 public:
