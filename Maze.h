@@ -9,6 +9,7 @@
 using namespace std;
 
 class Path;
+class Collectable_DFA;
 
 class Maze : vector<vector<Path*>> {
     // Maze specs
@@ -20,6 +21,7 @@ class Maze : vector<vector<Path*>> {
     string levelName;
 
     // Collectables dfa
+    Collectable_DFA* collectedKeys;
 
     // UI
     bool customLevel;

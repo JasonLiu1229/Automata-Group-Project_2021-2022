@@ -10,7 +10,7 @@ set(CMAKE_AUTORCC ON)
 set(Maze
         Maze.cpp
         Collectable_DFA.cpp
-        )
+        miniState.cpp miniState.h)
 
 set(Path
         Path.cpp
