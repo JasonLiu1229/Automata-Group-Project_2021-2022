@@ -14,6 +14,6 @@
 enum tileSettings {path, wall};
 enum gameStatus {play, pause};
 
-#define SVG                        "../SavedGames/savedGames"
+#define SVG                        "../SavedGames/savedGame"
 
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
