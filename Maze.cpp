@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Maze::Maze(const string &fileName) :levelName(fileName), status(play) {
+Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0) {
     bool failed = generateMaze(fileName);
 
     if (failed){
@@ -106,14 +106,33 @@ void Maze::loadGame(const string &fileName) {
         while(getline(gamefile,line)){
             vector<Path*> weg;
             for(auto i:line){
+                Path* road = new Path();
                 if(i == '#'){
-
+                    road->setSettings(wall);
                 }
+                else if(i=='$'){
+                    road->setStarting(true);
+                }
+                else if(i=='&'){
+                    road->setAccepting(true);
+                }
+                else if(i == '^'){
+                    road->setKey(true);
+                    key_count++;
+                    
+                }
+                weg.push_back(road);
             }
+            this->push_back(weg);
         }
     }
-
+    // Get width and height
+    height = static_cast<int>( this->size() );
+    width = static_cast<int>( this->at(0).size() );
     // load status of whole game from txt file
+
+
+
 }
 
 void Maze::simulateStart() {
