@@ -12,7 +12,7 @@ set(Maze
         Maze.cpp
         Collectable_DFA.h
         Collectable_DFA.cpp
-        )
+        miniState.cpp miniState.h)
 
 set(Path
         Path.h
