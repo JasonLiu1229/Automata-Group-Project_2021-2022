@@ -1,6 +1,6 @@
 #include "Path.h"
 
-Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), start(false), accepting(false), settings(path) {}
+Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), starting(false), accepting(false), settings(path) {}
 
 Path *Path::getLeft() const {
     return left;
@@ -35,11 +35,11 @@ void Path::setRight(Path *right) {
 }
 
 bool Path::isStart() const {
-    return start;
+    return starting;
 }
 
 void Path::setStart(bool start) {
-    Path::start = start;
+    Path::starting = start;
 }
 
 bool Path::isAccepting() const {

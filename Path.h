@@ -46,7 +46,7 @@ public:
 
     bool isStart() const;
 
-    void setStart(bool start);
+    void setStart(bool starting);
 
     tileSettings getSettings() const;
 
