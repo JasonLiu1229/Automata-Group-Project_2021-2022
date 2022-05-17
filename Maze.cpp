@@ -92,11 +92,24 @@ void Maze::loadGame(const string &fileName) {
         while(getline(gamefile,line)){
             vector<Path*> weg;
             for(auto i:line){
+                Path* road = new Path();
                 if(i == '#'){
-
+                    road->setSettings(wall);
                 }
+                else if(i=='$'){
+                    road->setStarting(true);
+                }
+                else if(i=='&'){
+                    road->setAccepting(true);
+                }
+                else if(i == '^'){
+                    road->setKey(true);
+                }
+                weg.push_back(road);
             }
+            this->push_back(weg);
         }
+
     }
 
     // load status of whole game from txt file
