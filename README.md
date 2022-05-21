@@ -1,7 +1,7 @@
 # Automata-Group-Project_2021-2022  
-x = not implemented   
-y = implemented  
-p = partially implemented  
+X = not implemented   
+V = implemented  
+P = partially implemented  
 
 ## Table of contents
 
@@ -9,7 +9,7 @@ p = partially implemented
 |-----|:---------------------:|:------------:|-----------------|
 | 1.1 | User interface        |     _15%_    |                 |
 | 1.2 | Extra player options  |     _10%_    |                 |
-| 2.1 | Level parsing         |     _10%_    |                 |
+| 2.1 | Level parsing         |     _10%_    |        V        |
 | 2.2 | Parse Level specifics |     _10%_    |                 |
 | 3.1 | Player movements      |     _15%_    |                 |
 | 3.2 | Enemy movements       |     _10%_    |                 |
