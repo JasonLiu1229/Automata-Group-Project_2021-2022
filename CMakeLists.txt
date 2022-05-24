@@ -3,6 +3,9 @@ project(Automata-Group-Project_2021-2022)
 
 set(CMAKE_CXX_STANDARD 14)
 #QT, afblijven!
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 set(Maze
         Maze.cpp
