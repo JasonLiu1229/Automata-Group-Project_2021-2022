@@ -28,11 +28,11 @@ set(Parser
 
 set(Additional_Sources
         Standard_Values.h
-        MazeWindow.cpp MazeWindow.h)
+        )
 
 set(QT_Utils
         QT_Utils/MazeWindow.cpp
-        QT_Utils/MazeBoard.cpp QT_Utils/MazeBoard.h)
+        QT_Utils/MazeBoard.cpp )
 
 # Tell cmake where Qt is located
 set(Qt5_DIR "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5")
