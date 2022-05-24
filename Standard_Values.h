@@ -24,6 +24,5 @@ enum gameStatus {play, pause};
 
 // Working directories
 #define LEVDIR                     "../TXT-Files/"
-#define SVG                        "../SavedGames/savedGame"
 
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
