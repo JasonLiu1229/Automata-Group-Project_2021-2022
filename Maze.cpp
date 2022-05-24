@@ -1,12 +1,15 @@
 // custom libs
 #include "Maze.h"
 #include "Path.h"
+#include "json.hpp"
 
 // c++ libs
 #include <utility>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
+using json = nlohmann::json;
 
 Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0) {
     bool failed = generateMaze(fileName);
@@ -104,24 +107,29 @@ void Maze::saveGame() {
     // Json
     fstream saveFileJson;
     exists = false;
-    filename = SVG;
-    filename += JSON;
+    string filenameJ;
+    filenameJ = SVG;
+    filenameJ += JSON;
 
+    i = 0;
     while (!exists){
         i++;
-        codefile = fopen(filename.c_str(), "r");
+        codefile = fopen(filenameJ.c_str(), "r");
         if (codefile){
-            filename = SVG;
-            filename += '(' + to_string(i) + ')' + JSON;
+            filenameJ = SVG;
+            filenameJ += '(' + to_string(i) + ')' + JSON;
         }
         else {
-            saveFile.open(filename.c_str(), ios::app | ios::ate);
+            saveFileJson.open(filenameJ.c_str(), ios::out);
             exists = true;
         }
     }
 
     // write in file
-
+    json file;
+    file["Level"] = {{"fileName", filename}, {"regex", ""}};
+    saveFileJson << std::setw(4) << file << endl;
+    saveFileJson.close();
 }
 
 void Maze::loadGame(const string &fileName) {
