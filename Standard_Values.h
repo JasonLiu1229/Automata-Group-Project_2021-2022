@@ -17,6 +17,7 @@
 
 enum tileSettings {path, wall};
 enum gameStatus {play, pause};
+enum movement {UP, DOWN, LEFT, RIGHT};
 
 #define SVG                        "../SavedGames/savedGames"
 #define TXT                        ".txt"
