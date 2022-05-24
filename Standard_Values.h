@@ -18,7 +18,7 @@
 enum tileSettings {path, wall};
 enum gameStatus {play, pause};
 
-#define SVG                        "../SavedGames/savedGames"
+//#define SVG                        "../SavedGames/savedGames"
 #define TXT                        ".txt"
 #define JSON                       ".json"
 

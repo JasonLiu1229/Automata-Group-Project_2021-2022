@@ -2,6 +2,8 @@
 #include <QApplication>
 #include <QPushButton>
 #include "Maze.h"
+#include "QMainWindow"
+#include "MazeWindow.h"
 
 using namespace std;
 
@@ -12,4 +14,5 @@ int main(int argc, char** argv){
     newMaze->loadGame(filename);
     newMaze->saveGame();
     cout << "Ha you ran this bullshit" << endl;
+    MazeWindow::loadUiFile(nullptr);
 }

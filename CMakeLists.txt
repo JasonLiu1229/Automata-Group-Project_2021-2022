@@ -27,7 +27,7 @@ set(Parser
 
 set(Additional_Sources
         Standard_Values.h
-        )
+        MazeWindow.cpp MazeWindow.h)
 
 # Tell cmake where Qt is located
 set(Qt5_DIR "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5")

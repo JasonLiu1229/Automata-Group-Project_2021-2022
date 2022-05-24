@@ -62,14 +62,14 @@ void Maze::saveGame() {
     bool exists = false;
     int i = 0;
     string filename;
-    filename = SVG;
+    filename = "../SavedGames/savedGames";
     filename += TXT;
 
     while (!exists){
         i++;
         codefile = fopen(filename.c_str(), "r");
         if (codefile){
-            filename = SVG;
+            filename = "../SavedGames/savedGames";
             filename += '(' + to_string(i) + ')' + TXT;
         }
         else {
@@ -108,7 +108,7 @@ void Maze::saveGame() {
     fstream saveFileJson;
     exists = false;
     string filenameJ;
-    filenameJ = SVG;
+    filenameJ = "../SavedGames/savedGames";
     filenameJ += JSON;
 
     i = 0;
@@ -116,7 +116,7 @@ void Maze::saveGame() {
         i++;
         codefile = fopen(filenameJ.c_str(), "r");
         if (codefile){
-            filenameJ = SVG;
+            filenameJ = "../SavedGames/savedGames";
             filenameJ += '(' + to_string(i) + ')' + JSON;
         }
         else {
