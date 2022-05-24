@@ -51,6 +51,7 @@ void Maze::generateCustom() {
 
 void Maze::saveGame() {
     // write status of whole game in a txt file
+    // TXT file
     fstream saveFile;
     FILE* codefile;
 
@@ -59,14 +60,14 @@ void Maze::saveGame() {
     int i = 0;
     string filename;
     filename = SVG;
-    filename += ".txt";
+    filename += TXT;
 
     while (!exists){
         i++;
         codefile = fopen(filename.c_str(), "r");
         if (codefile){
             filename = SVG;
-            filename += '(' + to_string(i) + ')' + ".txt";
+            filename += '(' + to_string(i) + ')' + TXT;
         }
         else {
             saveFile.open(filename.c_str(), ios::app | ios::ate);
@@ -99,6 +100,28 @@ void Maze::saveGame() {
         saveFile << '\n';
     }
     saveFile.close();
+
+    // Json
+    fstream saveFileJson;
+    exists = false;
+    filename = SVG;
+    filename += JSON;
+
+    while (!exists){
+        i++;
+        codefile = fopen(filename.c_str(), "r");
+        if (codefile){
+            filename = SVG;
+            filename += '(' + to_string(i) + ')' + JSON;
+        }
+        else {
+            saveFile.open(filename.c_str(), ios::app | ios::ate);
+            exists = true;
+        }
+    }
+
+    // write in file
+
 }
 
 void Maze::loadGame(const string &fileName) {
