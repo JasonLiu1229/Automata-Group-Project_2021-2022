@@ -35,6 +35,7 @@ private:
 //    virtual void redo()=0;
 //    virtual void visualizationChange()=0;
 
+
 private slots:
 //    void slot_clicked(int x, int y) {clicked(x,y);}
     void slot_newGame() {newGame();}

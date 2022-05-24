@@ -1,7 +1,3 @@
-//
-// Created by student on 24.05.22.
-//
-
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZELAYOUT_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_MAZELAYOUT_H
 
@@ -20,8 +16,8 @@ public:
 
     virtual ~MazeLayout();
 
-//signals:
-//    void clicked(int x,int y);
+signals:
+   void clicked(int x,int y);
 
 private:
     void drawTile(int i, int j);
@@ -31,7 +27,7 @@ private:
 
 //    quint8 rowFromPoint(int y) const { return y / nPieceWidth; }
 //    quint8 colFromPoint(int x) const { return x / nPieceWidth; }
-//
+
 //    quint32 xFromCol(int c) const { return c*nPieceWidth + 0.5*nPieceWidth; }
 //    quint32 yFromRow(int r) const { return r*nPieceWidth + 0.5*nPieceWidth; }
 
@@ -44,7 +40,7 @@ private:
     quint32 nPieceWidth;
     quint32 nBorderWidth;
 
-    qint8 focusRow, focusCol;
+    // qint8 focusRow, focusCol;
 };
 
 
