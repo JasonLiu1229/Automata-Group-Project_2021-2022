@@ -1,7 +1,3 @@
-//
-// Created by student on 24.05.22.
-//
-
 #include "MazeBoard.h"
 
 MazeBoard::MazeBoard() : MazeWindow(nullptr) {

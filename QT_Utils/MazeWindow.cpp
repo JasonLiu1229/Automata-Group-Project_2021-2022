@@ -7,8 +7,7 @@ MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
     mazeLayout = new MazeLayout;
     QGraphicsView *view = new QGraphicsView(mazeLayout);
     setCentralWidget(view);
-//
-//    connect(mazeLayout,SIGNAL(clicked(int,int)),this,SLOT(slot_clicked(int,int)));
+    connect(mazeLayout,SIGNAL(clicked(int,int)),this,SLOT(slot_clicked(int,int)));
     createActions();
     createMenus();
 
@@ -48,8 +47,8 @@ void MazeWindow::createMenus() {
 
 void MazeWindow::on_actionExit_triggered() {
     if (QMessageBox::Yes == QMessageBox::question(this,
-                                                  tr("Spel verlaten"),
-                                                  tr("Bent u zeker dat u het spel wil verlaten?\nNiet opgeslagen wijzigingen gaan verloren.")))
+                                                  tr("Exit game"),
+                                                  tr("Are you sure you want to exit the game?\nUnsaved data will be lost.")))
     {
         QApplication::quit();
     }

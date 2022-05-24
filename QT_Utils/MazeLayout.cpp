@@ -1,17 +1,14 @@
-//
-// Created by student on 24.05.22.
-//
-
 #include "MazeLayout.h"
 #include <QtWidgets>
 #include <QPixmap>
 
 const QVariant kTile=555;
-//const QVariant kPiece=777;
-//const quint32 kWidth=45;
+const QVariant kPiece=777;
+const quint32 kWidth=45;
 
 MazeLayout::MazeLayout(QObject *parent) : QGraphicsScene(parent) {
-
+    nPieceWidth = kWidth;
+    nBorderWidth = 0;
     wallColor = Qt::black;
     pathColor = Qt::gray;
     doorColor = QColor(150,75,0);
@@ -38,8 +35,6 @@ void MazeLayout::drawTile(int i, int j)
     tile->setData(0, kTile );
     addItem(tile);
 }
-
-
 
 void MazeLayout::drawBoard()
 {
