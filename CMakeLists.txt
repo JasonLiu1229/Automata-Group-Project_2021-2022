@@ -3,9 +3,6 @@ project(Automata-Group-Project_2021-2022)
 
 set(CMAKE_CXX_STANDARD 14)
 #QT, afblijven!
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 set(Maze
         Maze.cpp
@@ -32,7 +29,9 @@ set(Additional_Sources
 
 set(QT_Utils
         QT_Utils/MazeWindow.cpp
-        QT_Utils/MazeBoard.cpp )
+        QT_Utils/MazeBoard.cpp
+        QT_Utils/MazeLayout.cpp
+        )
 
 # Tell cmake where Qt is located
 set(Qt5_DIR "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5")

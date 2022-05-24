@@ -1,9 +1,17 @@
 #include <QtWidgets>
 #include "MazeWindow.h"
+#include "MazeLayout.h"
 
 MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
-//    createActions();
-//    createMenus();
+
+    mazeLayout = new MazeLayout;
+    QGraphicsView *view = new QGraphicsView(mazeLayout);
+    setCentralWidget(view);
+//
+//    connect(mazeLayout,SIGNAL(clicked(int,int)),this,SLOT(slot_clicked(int,int)));
+    createActions();
+    createMenus();
+
 }
 
 

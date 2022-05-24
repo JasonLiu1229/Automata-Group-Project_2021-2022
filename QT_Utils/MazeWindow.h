@@ -13,6 +13,8 @@
 //    class MazeWindow;
 //}
 
+class MazeLayout;
+
 class MazeWindow : public QMainWindow {
 
     Q_OBJECT
@@ -24,7 +26,8 @@ public:
 
     virtual void update()=0;
 
-private://    virtual void clicked(int x, int y)=0;
+private:
+//    virtual void clicked(int x, int y)=0;
     virtual void newGame()=0;
     virtual void open() =0;
     virtual void save()=0;
@@ -37,8 +40,6 @@ private slots:
     void slot_newGame() {newGame();}
     void slot_open() {open();}
     void slot_save() {save();}
-//    void slot_undo() {undo();}
-//    void slot_redo() {redo();}
 //    void slot_visualizationChange() {visualizationChange();}
 
 
@@ -52,9 +53,9 @@ private slots:
 private:
     void createActions();
     void createMenus();
+    MazeLayout *mazeLayout;
+
     QMenu *fileMenu;
-//    QMenu *gameMenu;
-//    QMenu *visualizeMenu;
 
     QAction *newAct;
     QAction *openAct;

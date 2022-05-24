@@ -15,7 +15,7 @@ public:
     void update();
 
 private:
-    Maze game;
+    Maze gameLayout;
 
     void newGame() override;
     void open() override;
