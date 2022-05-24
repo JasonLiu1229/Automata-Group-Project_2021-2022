@@ -15,14 +15,14 @@
 #define LEV4JSON                   "Level4.json"
 #define LEV5JSON                   "Level5.json"
 
-enum tileSettings {path, wall};
-enum gameStatus {play, pause};
-
-//#define SVG                        "../SavedGames/savedGames"
+#define SVG1                        "../SavedGames/savedGames"
 #define TXT                        ".txt"
 #define JSON                       ".json"
 
 // Working directories
 #define LEVDIR                     "../TXT-Files/"
+
+enum tileSettings {path, wall};
+enum gameStatus {play, pause};
 
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_STANDARD_VALUES_H
