@@ -28,7 +28,7 @@ set(Parser
 
 set(Additional_Sources
         Standard_Values.h
-        )
+        MazeWindow.cpp MazeWindow.h)
 
 set(QT_Utils
         QT_Utils/MazeWindow.cpp
