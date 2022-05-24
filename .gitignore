@@ -37,5 +37,6 @@ build
 
 # Generated files
 SavedGames
+/cmake-build-debug/
 /cmake-build-debug/MazeRunner_autogen/
 .cache
