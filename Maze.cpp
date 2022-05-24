@@ -36,6 +36,19 @@ bool Maze::generateMaze(const string &filename) {
     return false;
 }
 
+// Getters and setters
+int Maze::getWidth() const{
+    return width;
+}
+
+int Maze::getHeight() const{
+    return height;
+}
+
+Path* Maze::getPath(int i , int j){
+    return this->at(i).at(j);
+}
+
 // user interface functions
 void Maze::playMaze() {
     // set status on play

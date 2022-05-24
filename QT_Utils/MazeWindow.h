@@ -26,6 +26,8 @@ public:
 
     virtual void update()=0;
 
+    MazeLayout* getLayout() const;
+
 private:
 //    virtual void clicked(int x, int y)=0;
     virtual void newGame()=0;
@@ -54,7 +56,7 @@ private slots:
 private:
     void createActions();
     void createMenus();
-    MazeLayout *mazeLayout;
+    MazeLayout* mazeLayout;
 
     QMenu *fileMenu;
 

@@ -4,15 +4,18 @@
 
 MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
 
+    this->setBaseSize(1080,720);
     mazeLayout = new MazeLayout;
     QGraphicsView *view = new QGraphicsView(mazeLayout);
     setCentralWidget(view);
     connect(mazeLayout,SIGNAL(clicked(int,int)),this,SLOT(slot_clicked(int,int)));
     createActions();
     createMenus();
-
 }
 
+MazeLayout* MazeWindow::getLayout() const{
+    return mazeLayout;
+}
 
 void MazeWindow::createActions() {
     newAct = new QAction(tr("&New"), this);

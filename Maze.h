@@ -35,6 +35,10 @@ public:
     // level parsing
     bool generateMaze(const string &filename);
 
+    // Getters and setters
+    int getWidth() const;
+    int getHeight() const;
+    Path* getPath(int i , int j);
     // user interface
     void playMaze();
 

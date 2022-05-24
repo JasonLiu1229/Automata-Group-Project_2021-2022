@@ -3,10 +3,11 @@
 
 
 #include <QtWidgets/QGraphicsScene>
-
+#include <qglobal.h>
+#include "../Standard_Values.h"
 class QAction;
 class QActionGroup;
-
+class Maze;
 class MazeLayout : public QGraphicsScene {
 
 Q_OBJECT
@@ -16,13 +17,24 @@ public:
 
     virtual ~MazeLayout();
 
+    void drawBoard(Maze* &layout);
+
+    void setTileWidth(unsigned int newWidth);
+
+    void setTileHeight(unsigned int newHeight);
+
+    void setBorderWidth(unsigned int newWidth);
+
+    void setBorderHeight(unsigned int newHeight);
+
 signals:
    void clicked(int x,int y);
 
 private:
-    void drawTile(int i, int j);
+    void drawTile(int i, int j , tileSettings &tileType);
 
-    void drawBoard();
+    void drawPlayer(int x , int y);
+
 
 
 //    quint8 rowFromPoint(int y) const { return y / nPieceWidth; }
@@ -37,8 +49,10 @@ private:
     QColor playerColor;
     QColor enemyColor;
 
-    quint32 nPieceWidth;
+    quint32 nTileWidth;
+    quint32 nTileHeight;
     quint32 nBorderWidth;
+    quint32 nBorderHeight;
 
     // qint8 focusRow, focusCol;
 };

@@ -9,11 +9,12 @@
 using namespace std;
 
 int main(int argc, char** argv){
-    Maze* newMaze = new Maze("Level1.json");
-    string filename = LEVDIR;
-    filename += LEV1TXT;
-    newMaze->loadGame(filename);
-    newMaze->saveGame();
+    // Maze* newMaze = new Maze("Level1.json");
+    // string filename = LEVDIR;
+    // filename += LEV1TXT;
+    // newMaze->loadGame(filename);
+    // newMaze->saveGame();
+
     // Create QT App
     QApplication a(argc , argv);
     MazeBoard maze;
