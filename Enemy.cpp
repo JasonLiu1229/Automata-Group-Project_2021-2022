@@ -6,9 +6,19 @@
 #include <algorithm>
 #include <random>
 
-Enemy::Enemy() {}
+Enemy::Enemy() {
+    chances[UP] = 1/4;
+    chances[DOWN] = 1/4;
+    chances[LEFT] = 1/4;
+    chances[RIGHT] = 1/4;
+}
 
-Enemy::Enemy(const string &name) : Player(name) {}
+Enemy::Enemy(const string &name) : Player(name) {
+    chances[UP] = 1/4;
+    chances[DOWN] = 1/4;
+    chances[LEFT] = 1/4;
+    chances[RIGHT] = 1/4;
+}
 
 void Enemy::setSpeed(int speed) {
     Enemy::speed = speed;

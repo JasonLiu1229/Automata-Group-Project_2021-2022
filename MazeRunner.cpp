@@ -23,7 +23,7 @@ int main(int argc, char** argv){
 
     /*// test enemy training
     auto* enemy = new Enemy();
-    enemy->train("../EnemyTrainer/Trainig1.txt");
+    enemy->train("../EnemyTrainer/Training1.txt");
     for (int i = 0; i < 10; ++i) {
         movement action = enemy->move();
         if (action == UP){
