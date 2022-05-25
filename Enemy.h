@@ -27,6 +27,8 @@ public:
     void setSpeed(int speed);
 
     void train(const string &fileName);
+
+    movement move();
 };
 
 

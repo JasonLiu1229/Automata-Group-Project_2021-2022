@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <algorithm>
+#include <random>
 
 Enemy::Enemy() {}
 
@@ -18,7 +21,7 @@ int Enemy::getSpeed() const {
 void Enemy::train(const string &fileName) {
     fstream file;
 
-    int up, down, left, right;
+    double up, down, left, right;
     up = down = left = right = 0;
 
     file.open(fileName.c_str(), ios::in);
@@ -53,4 +56,41 @@ void Enemy::train(const string &fileName) {
 
 Enemy::~Enemy() {
 
+}
+
+movement Enemy::move() {
+    movement action;
+
+    vector<movement> movementChances;
+
+    int amountOfMov = 100;
+
+    // add up
+    for (int i = 0; i < amountOfMov * chances[UP]; ++i) {
+        movementChances.push_back(UP);
+    }
+
+    // add down
+    for (int i = 0; i < amountOfMov * chances[DOWN]; ++i) {
+        movementChances.push_back(DOWN);
+    }
+
+    // add left
+    for (int i = 0; i < amountOfMov * chances[LEFT]; ++i) {
+        movementChances.push_back(LEFT);
+    }
+
+    // add right
+    for (int i = 0; i < amountOfMov * chances[RIGHT]; ++i) {
+        movementChances.push_back(RIGHT);
+    }
+
+    auto rng = default_random_engine {};
+    shuffle(begin(movementChances), end(movementChances), rng);
+
+    int random = rand() % movementChances.size();
+
+    action = movementChances[random];
+
+    return action;
 }
