@@ -16,6 +16,8 @@ public:
 
     void setAction(movement action);
 
+    MovementState(movement action);
+
 private:
     movement action;
 

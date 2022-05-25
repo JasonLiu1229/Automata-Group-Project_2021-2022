@@ -14,6 +14,23 @@ class MovementChance {
     MovementState* action;
 
     vector<MovementState*> allMovements;
+
+public:
+    MovementChance();
+
+    MovementChance(MovementState *action);
+
+    MovementState *getAction() const;
+
+    void setAction(MovementState *newAction);
+
+    const vector<MovementState *> &getAllMovements() const;
+
+    void setAllMovements(const vector<MovementState *> &newAllMovements);
+
+    void addState(MovementState* state);
+
+    virtual ~MovementChance();
 };
 
 

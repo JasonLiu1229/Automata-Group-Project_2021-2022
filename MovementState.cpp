@@ -17,3 +17,5 @@ movement MovementState::getAction() const {
 void MovementState::setAction(movement action) {
     MovementState::action = action;
 }
+
+MovementState::MovementState(movement action) : action(action) {}
