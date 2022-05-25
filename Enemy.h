@@ -5,8 +5,11 @@
 #include "Standard_Values.h"
 
 #include <map>
+#include <vector>
 
 using namespace std;
+
+class MovementChance;
 
 class Enemy : public Player{
     int speed;
@@ -14,6 +17,11 @@ class Enemy : public Player{
     bool follow;
 
     map<movement, double> chances;
+
+    MovementChance* upC;
+    MovementChance* downC;
+    MovementChance* leftC;
+    MovementChance* rightC;
 
 public:
     Enemy();

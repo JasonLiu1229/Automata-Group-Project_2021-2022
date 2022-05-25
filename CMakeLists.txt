@@ -28,7 +28,7 @@ set(Parser
 
 set(Additional_Sources
         Standard_Values.h
-        )
+        MovementChance.cpp MovementChance.h MovementState.cpp MovementState.h)
 
 set(QT_Utils
         QT_Utils/MazeWindow.cpp
