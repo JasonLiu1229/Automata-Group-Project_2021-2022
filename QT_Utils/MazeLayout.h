@@ -17,15 +17,27 @@ public:
 
     virtual ~MazeLayout();
 
-    void drawBoard(Maze* &layout);
+    void drawMaze(Maze *&layout);
+
+    void refreshMaze(Maze *&layout);
 
     void setTileWidth(unsigned int newWidth);
 
+    quint32 getNTileWidth() const;
+
     void setTileHeight(unsigned int newHeight);
+
+    quint32 getNTileHeight() const;
 
     void setBorderWidth(unsigned int newWidth);
 
+    quint32 getNBorderWidth() const;
+
     void setBorderHeight(unsigned int newHeight);
+
+    quint32 getNBorderHeight() const;
+
+    void resize(int w , int h);
 
 signals:
    void clicked(int x,int y);
@@ -35,13 +47,16 @@ private:
 
     void drawPlayer(int x , int y);
 
+    void refreshTile(int i , int j , tileSettings &tileType);
+
+    void refreshPlayer(int x , int y);
 
 
-//    quint8 rowFromPoint(int y) const { return y / nPieceWidth; }
-//    quint8 colFromPoint(int x) const { return x / nPieceWidth; }
+    quint8 rowFromPoint(int y) const { return static_cast<quint8>(y / nTileWidth); }
+    quint8 colFromPoint(int x) const { return static_cast<quint8>(x / nTileHeight); }
 
-//    quint32 xFromCol(int c) const { return c*nPieceWidth + 0.5*nPieceWidth; }
-//    quint32 yFromRow(int r) const { return r*nPieceWidth + 0.5*nPieceWidth; }
+    quint32 xFromCol(int c) const { return static_cast<quint32>(c * nTileWidth + 0.5 * nTileWidth); }
+    quint32 yFromRow(int r) const { return static_cast<quint32>(r * nTileHeight + 0.5 * nTileHeight); }
 
     QColor wallColor;
     QColor pathColor;

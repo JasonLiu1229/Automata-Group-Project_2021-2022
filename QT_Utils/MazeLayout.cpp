@@ -19,7 +19,6 @@ MazeLayout::MazeLayout(QObject *parent) : QGraphicsScene(parent) {
     doorColor = QColor(150,75,0);
     playerColor = Qt::white;
     enemyColor = QColor(138,3,3);
-
 }
 
 void MazeLayout::drawTile(int i, int j , tileSettings &tileType)
@@ -47,7 +46,7 @@ void MazeLayout::drawPlayer(int x, int y){
     addItem(tile);
 }
 
-void MazeLayout::drawBoard(Maze* &layout)
+void MazeLayout::drawMaze(Maze *&layout)
 {
     Path* currentTile;
     tileSettings setting;
@@ -57,9 +56,41 @@ void MazeLayout::drawBoard(Maze* &layout)
         {
             currentTile = layout->getPath(i,j);
             setting = currentTile->getSettings();
-            drawTile(i,j,setting);
+            if(currentTile->isStarting()){
+                drawPlayer(i , j);
+            }
+            else{
+                drawTile(i,j,setting);
+            }
         }
     }
+}
+
+void MazeLayout::refreshMaze(Maze *&layout) {
+    Path* currentTile;
+    tileSettings setting;
+    qDeleteAll(items());
+    drawMaze(layout);
+}
+
+void MazeLayout::refreshTile(int i, int j, tileSettings &tileType) {
+    int x = xFromCol(j);
+    int y = yFromRow(i);
+    QGraphicsItem *currentItem = itemAt( x , y, QTransform() );
+    while (currentItem) {
+        delete currentItem;
+        currentItem = itemAt( x , y , QTransform() );
+    }
+    drawTile(i,j,tileType);
+}
+
+void MazeLayout::refreshPlayer(int x, int y) {
+    QGraphicsItem *currentItem = itemAt( xFromCol(y) , yFromRow(x), QTransform() );
+    while (currentItem) {
+        delete currentItem;
+        currentItem = itemAt( xFromCol(y) , yFromRow(x) , QTransform() );
+    }
+    drawPlayer(x,y);
 }
 
 void MazeLayout::setTileWidth(unsigned int newWidth){
@@ -76,6 +107,25 @@ void MazeLayout::setTileHeight(unsigned int newHeight){
 
 void MazeLayout::setBorderHeight(unsigned int newHeight){
     nBorderHeight = newHeight;
+}
+
+quint32 MazeLayout::getNTileWidth() const {
+    return nTileWidth;
+}
+
+quint32 MazeLayout::getNTileHeight() const {
+    return nTileHeight;
+}
+
+quint32 MazeLayout::getNBorderWidth() const {
+    return nBorderWidth;
+}
+
+quint32 MazeLayout::getNBorderHeight() const {
+    return nBorderHeight;
+}
+
+void MazeLayout::resize(int w , int h) {
 }
 
 MazeLayout::~MazeLayout() {

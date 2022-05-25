@@ -16,6 +16,7 @@ private:
     void newGame() override;
     void open() override;
     void save() override;
+    void on_actionOptions_triggered() override;
 };
 
 

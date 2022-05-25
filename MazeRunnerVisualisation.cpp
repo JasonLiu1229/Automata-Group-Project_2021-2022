@@ -17,9 +17,9 @@ int main(int argc, char** argv){
     // newMaze->saveGame();
 
     // Create QT App
-    // QApplication a(argc , argv);
-    // MazeBoard maze;
-    // maze.show();
+    QApplication a(argc , argv);
+    MazeBoard maze;
+    maze.show();
 
     /*// test enemy training
     auto* enemy = new Enemy();
@@ -41,5 +41,5 @@ int main(int argc, char** argv){
     }*/
 
     cout << "Ha you ran this bullshit" << endl;
-//    return a.exec();
+    return a.exec();
 }

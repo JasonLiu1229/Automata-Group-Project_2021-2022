@@ -12,8 +12,22 @@
 //namespace  Ui {
 //    class MazeWindow;
 //}
-
+class QGraphicsScene;
+class QLineEdit;
+class QLabel;
 class MazeLayout;
+
+class OptionsWidget : public QDialog {
+    Q_OBJECT
+public:
+    explicit OptionsWidget(QWidget *parent = nullptr);
+
+    static QStringList getStrings(QWidget *parent, bool *ok = nullptr);
+
+private:
+    QList<QLineEdit*> fields;
+};
+
 
 class MazeWindow : public QMainWindow {
 
@@ -47,6 +61,7 @@ private slots:
 
 
     void on_actionExit_triggered();
+    virtual void on_actionOptions_triggered() = 0;
     void closeEvent (QCloseEvent *event)
     {
         on_actionExit_triggered();
@@ -57,13 +72,17 @@ private:
     void createActions();
     void createMenus();
     MazeLayout* mazeLayout;
-
+    // Menus
     QMenu *fileMenu;
-
+    QMenu *optionsMenu;
+    // File menu options
     QAction *newAct;
     QAction *openAct;
     QAction *saveAct;
     QAction *exitAct;
+    // Options menu options
+    QAction *options;
+
 
 //    Ui::MazeWindow *ui;
 };
