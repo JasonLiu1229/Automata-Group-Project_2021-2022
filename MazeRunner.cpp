@@ -1,9 +1,4 @@
 #include <iostream>
-#include <QApplication>
-#include <QPushButton>
-#include <QtWidgets/QGraphicsScene>
-
-#include "QT_Utils/MazeBoard.h"
 #include "Maze.h"
 #include "Enemy.h"
 
