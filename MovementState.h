@@ -16,7 +16,7 @@ public:
 
     void setAction(movement action);
 
-    MovementState(movement action);
+    explicit MovementState(movement action);
 
 private:
     movement action;

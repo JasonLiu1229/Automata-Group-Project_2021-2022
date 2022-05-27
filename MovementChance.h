@@ -18,7 +18,7 @@ class MovementChance {
 public:
     MovementChance();
 
-    MovementChance(MovementState *action);
+    explicit MovementChance(MovementState *action);
 
     MovementState *getAction() const;
 
@@ -29,6 +29,8 @@ public:
     void setAllMovements(const vector<MovementState *> &newAllMovements);
 
     void addState(MovementState* state);
+
+    MovementState* getRandomMovement();
 
     virtual ~MovementChance();
 };

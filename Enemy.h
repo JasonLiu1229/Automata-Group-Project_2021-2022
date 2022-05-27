@@ -23,6 +23,8 @@ class Enemy : public Player{
     MovementChance* leftC;
     MovementChance* rightC;
 
+    movement previousMov;
+
 public:
     Enemy();
 
@@ -36,7 +38,9 @@ public:
 
     void train(const string &fileName);
 
-    movement move();
+    movement moveStupid();
+
+    movement moveSmart();
 };
 
 

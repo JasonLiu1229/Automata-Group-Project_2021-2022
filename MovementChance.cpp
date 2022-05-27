@@ -3,6 +3,7 @@
 //
 
 #include "MovementChance.h"
+#include <random>
 
 MovementChance::MovementChance() {}
 
@@ -30,4 +31,9 @@ void MovementChance::setAllMovements(const vector<MovementState *> &newAllMoveme
 
 void MovementChance::addState(MovementState *state) {
     allMovements.push_back(state);
+}
+
+MovementState *MovementChance::getRandomMovement() {
+    int randomN = rand() % allMovements.size();
+    return allMovements[randomN];
 }
