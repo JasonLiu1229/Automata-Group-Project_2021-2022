@@ -149,7 +149,7 @@ void Maze::saveGame() {
 
 void Maze::loadGame(const string &fileName) {
     string line;
-    ifstream gamefile (fileName);
+    ifstream gamefile(fileName);
     if(gamefile.is_open()){
         while(getline(gamefile,line)){
             vector<Path*> weg;
@@ -228,6 +228,7 @@ void Maze::loadGame(const string &fileName) {
 void Maze::simulateStart() {
     loadGame(levelName);
     Collectable_DFA keys(key_count);
+    /*
     while (!player->GetCurrentTile()->isAccepting() && !keys.getCurrentState()->getkeystate()){
         string movement;
         cin>> movement;
@@ -255,6 +256,7 @@ void Maze::simulateStart() {
             keys.setCurrentState(keys.getCurrentState()->getNext());
         }
     }
+    */
 }
 
 Maze::~Maze() {

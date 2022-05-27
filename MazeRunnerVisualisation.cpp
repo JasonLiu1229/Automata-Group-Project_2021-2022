@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char** argv){
     // Create QT App
     QApplication a(argc , argv);
-    MazeBoard maze;
+    MazeBoard maze("Level1.json");
     maze.show();
 
     cout << "Ha you ran this bullshit" << endl;

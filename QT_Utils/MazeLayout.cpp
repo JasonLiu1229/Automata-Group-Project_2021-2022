@@ -126,6 +126,7 @@ quint32 MazeLayout::getNBorderHeight() const {
 }
 
 void MazeLayout::resize(int w , int h) {
+
 }
 
 MazeLayout::~MazeLayout() {

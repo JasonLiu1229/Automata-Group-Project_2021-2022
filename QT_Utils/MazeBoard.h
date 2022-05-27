@@ -7,6 +7,7 @@
 class MazeBoard : public MazeWindow {
 public:
     MazeBoard();
+    MazeBoard(const string& filename);
 
     void update() override;
 

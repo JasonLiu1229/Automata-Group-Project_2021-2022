@@ -40,7 +40,7 @@ public:
     void resize(int w , int h);
 
 signals:
-   void clicked(int x,int y);
+   void keyPressed(int x,int y);
 
 private:
     void drawTile(int i, int j , tileSettings &tileType);

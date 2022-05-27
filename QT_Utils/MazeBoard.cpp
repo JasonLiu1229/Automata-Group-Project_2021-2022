@@ -6,17 +6,30 @@
 #include <QInputEvent>
 #include <QRadioButton>
 #include <QGridLayout>
+#include "../json.hpp"
+
+using json = nlohmann::json;
 
 MazeBoard::MazeBoard() : MazeWindow(nullptr) {
     MazeLayout* layout = this->getLayout();
     // Temp
     // Choose layout file
-    gameLayout = new Maze("Level1.json");
     string filename = LEVDIR;
     filename += LEV1TXT;
-    gameLayout->loadGame(filename);
-    gameLayout->saveGame();
+    gameLayout = new Maze(filename);
+    //niet nodig
+    //gameLayout->loadGame(filename);
+    //gameLayout->saveGame();
     update();
+}
+
+MazeBoard::MazeBoard(const string& filename) {
+    ifstream in("../JSON-Files/"+filename);
+    json j;
+    in >> j;
+    string file = LEVDIR;
+    file += j.at("Level").at("fileName");
+    gameLayout = new Maze(file);
 }
 
 void MazeBoard::update() {

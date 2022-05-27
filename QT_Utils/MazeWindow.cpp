@@ -16,7 +16,8 @@ MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
     mazeLayout = new MazeLayout;
     QGraphicsView *layoutDisplay = new QGraphicsView(mazeLayout);
     setCentralWidget(layoutDisplay);
-//    view->setBaseSize(1080,720);
+    //    view->setBaseSize(1080,720);
+    //volgende lijn moet aangepast worden in functie van ingedrukte toetsen ipv clicks
     connect(mazeLayout,SIGNAL(clicked(int,int)),this,SLOT(slot_clicked(int,int)));
     createActions();
     createMenus();
