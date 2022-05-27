@@ -17,7 +17,7 @@ public:
 
     explicit Collectable_DFA(int amount);
 
-    miniState *getCurrentState() const;
+    miniState* getCurrentState() const;
 
     void setCurrentState(miniState *currentState);
 

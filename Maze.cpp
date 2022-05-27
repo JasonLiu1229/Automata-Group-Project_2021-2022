@@ -21,7 +21,9 @@ Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_coun
     simulateStart();
 }
 
-Maze::Maze(){}
+Maze::Maze(){
+    key_count = 0;
+}
 
 // read level
 bool Maze::generateMaze(const string &filename) {
@@ -158,6 +160,7 @@ void Maze::loadGame(const string &fileName) {
                 }
                 else if(i=='$'){
                     road->setStarting(true);
+                    player = new Player(road, "Hendrick");
                 }
                 else if(i=='&'){
                     road->setAccepting(true);
@@ -165,7 +168,6 @@ void Maze::loadGame(const string &fileName) {
                 else if(i == '^'){
                     road->setKey(true);
                     key_count++;
-                    
                 }
                 weg.push_back(road);
             }
@@ -224,7 +226,35 @@ void Maze::loadGame(const string &fileName) {
 }
 
 void Maze::simulateStart() {
-
+    loadGame(levelName);
+    Collectable_DFA keys(key_count);
+    while (!player->GetCurrentTile()->isAccepting() && !keys.getCurrentState()->getkeystate()){
+        string movement;
+        cin>> movement;
+        if(movement == "w"){
+            player->GetCurrentTile()->setStarting(false);
+            player->SetCurrentTile(player->GetCurrentTile()->getUp());
+            player->GetCurrentTile()->setStarting(true);
+        }
+        else if(movement == "s"){
+            player->GetCurrentTile()->setStarting(false);
+            player->SetCurrentTile(player->GetCurrentTile()->getDown());
+            player->GetCurrentTile()->setStarting(true);
+        }
+        else if(movement == "a"){
+            player->GetCurrentTile()->setStarting(false);
+            player->SetCurrentTile(player->GetCurrentTile()->getLeft());
+            player->GetCurrentTile()->setStarting(true);
+        }
+        else if(movement == "d"){
+            player->GetCurrentTile()->setStarting(false);
+            player->SetCurrentTile(player->GetCurrentTile()->getRight());
+            player->GetCurrentTile()->setStarting(true);
+        }
+        if(player->GetCurrentTile()->isKey()){
+            keys.setCurrentState(keys.getCurrentState()->getNext());
+        }
+    }
 }
 
 Maze::~Maze() {

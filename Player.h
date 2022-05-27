@@ -26,6 +26,10 @@ public:
 
     Player();
 
+    Path* GetCurrentTile();
+
+    void SetCurrentTile(Path* temp);
+
     virtual ~Player();
 };
 

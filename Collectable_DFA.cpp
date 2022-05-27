@@ -9,6 +9,7 @@ Collectable_DFA::Collectable_DFA(int amount) {
         auto* newMiniState = new miniState();
         if (states.empty()){
             newMiniState->setNext(newMiniState);
+            newMiniState->setallcollected(true);
         }
         else {
             newMiniState->setNext(states[states.size()-1]);
@@ -18,7 +19,7 @@ Collectable_DFA::Collectable_DFA(int amount) {
     currentState = states[states.size()-1];
 }
 
-miniState *Collectable_DFA::getCurrentState() const {
+miniState* Collectable_DFA::getCurrentState() const {
     return currentState;
 }
 

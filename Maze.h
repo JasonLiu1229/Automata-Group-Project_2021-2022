@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "Player.h"
+#include "Collectable_DFA.h"
+#include "miniState.h"
 #include "Standard_Values.h"
 
 using namespace std;
@@ -26,6 +29,9 @@ class Maze : vector<vector<Path*>> {
     // UI
     bool customLevel;
     gameStatus status;
+
+    //speler
+    Player* player;
 
 public:
     Maze();

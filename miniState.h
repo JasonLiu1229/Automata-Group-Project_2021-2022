@@ -16,8 +16,13 @@ public:
 
     void setNext(miniState *next);
 
+    void setallcollected(bool done);
+
+    bool getkeystate();
+
 private:
     miniState* next;
+    bool allCollected;
 
 };
 

@@ -54,5 +54,5 @@ set_target_properties("MazeRunner" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJEC
 set_target_properties("MazeRunnerVisualisation" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
 
 # Link the library to the executable
-target_link_libraries(MazeRunner Qt5::Core Qt5::Widgets)
+target_link_libraries(MazeRunner Qt5::Widgets)
 target_link_libraries(MazeRunnerVisualisation Qt5::Core Qt5::Widgets)

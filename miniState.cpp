@@ -4,14 +4,24 @@
 
 #include "miniState.h"
 
-miniState::miniState() {}
+miniState::miniState() {
+    allCollected = false;
+}
 
-miniState *miniState::getNext() const {
-    return next;
+void miniState::setallcollected(bool done) {
+    allCollected = done;
+}
+
+bool miniState::getkeystate() {
+    return allCollected;
 }
 
 void miniState::setNext(miniState *next) {
     miniState::next = next;
+}
+
+miniState* miniState::getNext() const {
+    return next;
 }
 
 miniState::~miniState() {

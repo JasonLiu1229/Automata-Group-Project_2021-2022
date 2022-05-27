@@ -50,6 +50,7 @@ void Path::setAccepting(bool accepting) {
     Path::accepting = accepting;
 }
 
+
 tileSettings Path::getSettings() const {
     return settings;
 }
