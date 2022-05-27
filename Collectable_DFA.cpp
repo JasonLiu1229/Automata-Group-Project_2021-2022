@@ -5,18 +5,20 @@ using namespace std;
 Collectable_DFA::Collectable_DFA() {}
 
 Collectable_DFA::Collectable_DFA(int amount) {
-    for (int i = 0; i < amount; ++i) {
-        auto* newMiniState = new miniState();
-        if (states.empty()){
-            newMiniState->setNext(newMiniState);
-            newMiniState->setallcollected(true);
+    if (amount > 0) {
+        for (int i = 0; i < amount; ++i) {
+            auto* newMiniState = new miniState();
+            if (states.empty()){
+                newMiniState->setNext(newMiniState);
+                newMiniState->setallcollected(true);
+            }
+            else {
+                newMiniState->setNext(states[states.size()-1]);
+            }
+            states.push_back(newMiniState);
         }
-        else {
-            newMiniState->setNext(states[states.size()-1]);
-        }
-        states.push_back(newMiniState);
+        currentState = states[states.size()-1];
     }
-    currentState = states[states.size()-1];
 }
 
 miniState* Collectable_DFA::getCurrentState() const {
