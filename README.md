@@ -1,4 +1,4 @@
-# Automata-Group-Project_2021-2022  
+# Automata-Group-Project_2021-2022 (Maze Game) 
 X = not implemented   
 V = implemented  
 P = partially implemented  
@@ -17,4 +17,5 @@ P = partially implemented
 | 4.2 | Scoreboard            |     _5%_     |                 |
 
 ## Comments
-...  
+Markov's chain algorithm implemented as enemy movement, 
+it decides the level of difficulty of how the enemy moves    
