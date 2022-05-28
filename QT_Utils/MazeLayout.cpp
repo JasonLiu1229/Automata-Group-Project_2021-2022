@@ -1,4 +1,4 @@
-#include "MazeBoard.h"
+#include "MazeLayout.h"
 #include <QtWidgets>
 #include <QPixmap>
 #include <qnamespace.h>
@@ -9,7 +9,7 @@ const QVariant kTile=555;
 const QVariant kPiece=777;
 const quint32 kWidth=45;
 
-MazeBoard::MazeBoard(QObject *parent) : QGraphicsScene(parent) {
+MazeLayout::MazeLayout(QObject *parent) : QGraphicsScene(parent) {
     nTileWidth = kWidth;
     nTileHeight = kWidth;
     nBorderWidth = 0;
@@ -21,7 +21,7 @@ MazeBoard::MazeBoard(QObject *parent) : QGraphicsScene(parent) {
     enemyColor = QColor(138,3,3);
 }
 
-void MazeBoard::drawTile(int i, int j , tileSettings &tileType)
+void MazeLayout::drawTile(int i, int j , tileSettings &tileType)
 {
     QGraphicsRectItem *tile = new QGraphicsRectItem( j * nTileWidth , i * nTileHeight , nTileWidth , nTileHeight );
     
@@ -38,7 +38,7 @@ void MazeBoard::drawTile(int i, int j , tileSettings &tileType)
     addItem(tile);
 }
 
-void MazeBoard::drawPlayer(int x, int y){
+void MazeLayout::drawPlayer(int x, int y){
     QGraphicsRectItem *tile = new QGraphicsRectItem( x * nTileWidth , y * nTileHeight , nTileWidth , nTileHeight );
     tile->setBrush(QBrush(playerColor , Qt::SolidPattern));
     tile->setCacheMode(QGraphicsItem::NoCache);
@@ -46,7 +46,7 @@ void MazeBoard::drawPlayer(int x, int y){
     addItem(tile);
 }
 
-void MazeBoard::drawMaze(Maze *&layout)
+void MazeLayout::drawMaze(Maze *&layout)
 {
     Path* currentTile;
     tileSettings setting;
@@ -66,14 +66,14 @@ void MazeBoard::drawMaze(Maze *&layout)
     }
 }
 
-void MazeBoard::refreshMaze(Maze *&layout) {
+void MazeLayout::refreshMaze(Maze *&layout) {
     Path* currentTile;
     tileSettings setting;
     qDeleteAll(items());
     drawMaze(layout);
 }
 
-void MazeBoard::refreshTile(int i, int j, tileSettings &tileType) {
+void MazeLayout::refreshTile(int i, int j, tileSettings &tileType) {
     int x = xFromCol(j);
     int y = yFromRow(i);
     QGraphicsItem *currentItem = itemAt( x , y, QTransform() );
@@ -84,7 +84,7 @@ void MazeBoard::refreshTile(int i, int j, tileSettings &tileType) {
     drawTile(i,j,tileType);
 }
 
-void MazeBoard::refreshPlayer(int x, int y) {
+void MazeLayout::refreshPlayer(int x, int y) {
     QGraphicsItem *currentItem = itemAt( xFromCol(y) , yFromRow(x), QTransform() );
     while (currentItem) {
         delete currentItem;
@@ -93,52 +93,52 @@ void MazeBoard::refreshPlayer(int x, int y) {
     drawPlayer(x,y);
 }
 
-void MazeBoard::setTileWidth(unsigned int newWidth){
+void MazeLayout::setTileWidth(unsigned int newWidth){
     nTileWidth = newWidth;
 }
 
-void MazeBoard::setBorderWidth(unsigned int newWidth){
+void MazeLayout::setBorderWidth(unsigned int newWidth){
     nBorderWidth = newWidth;
 }
 
-void MazeBoard::setTileHeight(unsigned int newHeight){
+void MazeLayout::setTileHeight(unsigned int newHeight){
     nTileHeight = newHeight;
 }
 
-void MazeBoard::setBorderHeight(unsigned int newHeight){
+void MazeLayout::setBorderHeight(unsigned int newHeight){
     nBorderHeight = newHeight;
 }
 
-quint32 MazeBoard::getNTileWidth() const {
+quint32 MazeLayout::getNTileWidth() const {
     return nTileWidth;
 }
 
-quint32 MazeBoard::getNTileHeight() const {
+quint32 MazeLayout::getNTileHeight() const {
     return nTileHeight;
 }
 
-quint32 MazeBoard::getNBorderWidth() const {
+quint32 MazeLayout::getNBorderWidth() const {
     return nBorderWidth;
 }
 
-quint32 MazeBoard::getNBorderHeight() const {
+quint32 MazeLayout::getNBorderHeight() const {
     return nBorderHeight;
 }
 
-void MazeBoard::resize(int w , int h) {
+void MazeLayout::resize(int w , int h) {
 
 }
 
-MazeBoard::~MazeBoard() {
+MazeLayout::~MazeLayout() {
 
 }
 
-void MazeBoard::keyPressEvent(QKeyEvent *keyEvent) {
+void MazeLayout::keyPressEvent(QKeyEvent *keyEvent) {
     pressedKey = keyEvent->key();
     emit(keyPressed(pressedKey));
     QGraphicsScene::keyPressEvent(keyEvent);
 }
 
-const char &MazeBoard::getPressedKey() const {
+const char &MazeLayout::getPressedKey() const {
     return pressedKey;
 }

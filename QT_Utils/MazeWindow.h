@@ -15,7 +15,7 @@
 class QGraphicsScene;
 class QLineEdit;
 class QLabel;
-class MazeBoard;
+class MazeLayout;
 
 class OptionsWidget : public QDialog {
     Q_OBJECT
@@ -40,7 +40,7 @@ public:
 
     virtual void update()=0;
 
-    MazeBoard* getLayout() const;
+    MazeLayout* getLayout() const;
 
 private:
 //    virtual void clicked(int x, int y)=0;
@@ -71,7 +71,7 @@ private slots:
 private:
     void createActions();
     void createMenus();
-    MazeBoard* mazeLayout;
+    MazeLayout* mazeLayout;
     // Menus
     QMenu *fileMenu;
     QMenu *optionsMenu;

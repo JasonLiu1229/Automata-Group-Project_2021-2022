@@ -1,5 +1,5 @@
-#ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZEBOARD_H
-#define AUTOMATA_GROUP_PROJECT_2021_2022_MAZEBOARD_H
+#ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZELAYOUT_H
+#define AUTOMATA_GROUP_PROJECT_2021_2022_MAZELAYOUT_H
 
 
 #include <QtWidgets/QGraphicsScene>
@@ -8,14 +8,14 @@
 class QAction;
 class QActionGroup;
 class Maze;
-class MazeBoard : public QGraphicsScene {
+class MazeLayout : public QGraphicsScene {
 
 Q_OBJECT
 
 public:
-    explicit MazeBoard(QObject *parent = 0);
+    explicit MazeLayout(QObject *parent = 0);
 
-    virtual ~MazeBoard();
+    virtual ~MazeLayout();
 
     void drawMaze(Maze *&layout);
 
@@ -78,4 +78,4 @@ public:
 };
 
 
-#endif //AUTOMATA_GROUP_PROJECT_2021_2022_MAZEBOARD_H
+#endif //AUTOMATA_GROUP_PROJECT_2021_2022_MAZELAYOUT_H

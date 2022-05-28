@@ -1,5 +1,5 @@
 #include "MazeGUI.h"
-#include "MazeBoard.h"
+#include "MazeLayout.h"
 #include <qglobal.h>
 #include <QInputDialog>
 #include <QGroupBox>
@@ -11,7 +11,7 @@
 using json = nlohmann::json;
 
 MazeGUI::MazeGUI() : MazeWindow(nullptr) {
-    MazeBoard* layout = this->getLayout();
+    MazeLayout* layout = this->getLayout();
     // Temp
     // Choose layout file
     string filename = LEVDIR;
