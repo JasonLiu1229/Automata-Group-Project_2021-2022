@@ -24,7 +24,7 @@ public:
 
     void setAction(MovementState *newAction);
 
-    const vector<MovementState *> &getAllMovements() const;
+    vector<MovementState *> &getAllMovements();
 
     void setAllMovements(const vector<MovementState *> &newAllMovements);
 

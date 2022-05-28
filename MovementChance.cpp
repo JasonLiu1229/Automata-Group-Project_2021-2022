@@ -21,7 +21,7 @@ void MovementChance::setAction(MovementState *newAction) {
     MovementChance::action = newAction;
 }
 
-const vector<MovementState *> &MovementChance::getAllMovements() const {
+vector<MovementState *> &MovementChance::getAllMovements() {
     return allMovements;
 }
 

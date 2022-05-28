@@ -25,6 +25,8 @@ class Enemy : public Player{
 
     movement previousMov;
 
+    void moveAction(movement &action);
+
 public:
     Enemy();
 
@@ -41,6 +43,8 @@ public:
     movement moveStupid();
 
     movement moveSmart();
+
+    movement moveSmartV2();
 };
 
 

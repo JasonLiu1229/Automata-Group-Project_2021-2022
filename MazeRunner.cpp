@@ -16,11 +16,12 @@ int main(int argc, char** argv){
     // MazeGUI maze;
     // maze.show();
 
-    /*// test enemy training
+    // test enemy training
     auto* enemy = new Enemy();
     enemy->train("../EnemyTrainer/Training1.txt");
+    enemy->train("../EnemyTrainer/Training2.txt");
     for (int i = 0; i < 10; ++i) {
-        movement action = enemy->move();
+        movement action = enemy->moveSmart();
         if (action == UP){
             cout << "up" << endl;
         }
@@ -33,7 +34,7 @@ int main(int argc, char** argv){
         else {
             cout << "right" << endl;
         }
-    }*/
+    }
 
     cout << "Ha you ran this bullshit" << endl;
 //    return a.exec();

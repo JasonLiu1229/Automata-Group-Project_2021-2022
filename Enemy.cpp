@@ -8,18 +8,28 @@
 #include <random>
 
 
-Enemy::Enemy() {
-    upC->setAction(new MovementState(UP));
-    downC->setAction(new MovementState(DOWN));
-    leftC->setAction(new MovementState(LEFT));
-    rightC->setAction(new MovementState(RIGHT));
+Enemy::Enemy(): upC(new MovementChance()), downC(new MovementChance()), leftC(new MovementChance()), rightC(new MovementChance()), previousMov(IDLE){
+    MovementState* state;
+    state = new MovementState(UP);
+    upC->setAction(state);
+    state = new MovementState(DOWN);
+    downC->setAction(state);
+    state = new MovementState(LEFT);
+    leftC->setAction(state);
+    state = new MovementState(RIGHT);
+    rightC->setAction(state);
 }
 
-Enemy::Enemy(const string &name) : Player(name) {
-    upC->setAction(new MovementState(UP));
-    downC->setAction(new MovementState(DOWN));
-    leftC->setAction(new MovementState(LEFT));
-    rightC->setAction(new MovementState(RIGHT));
+Enemy::Enemy(const string &name) : Player(name),upC(new MovementChance()), downC(new MovementChance()), leftC(new MovementChance()), rightC(new MovementChance()), previousMov(IDLE) {
+    MovementState* state;
+    state = new MovementState(UP);
+    upC->setAction(state);
+    state = new MovementState(DOWN);
+    downC->setAction(state);
+    state = new MovementState(LEFT);
+    leftC->setAction(state);
+    state = new MovementState(RIGHT);
+    rightC->setAction(state);
 }
 
 void Enemy::setSpeed(int speed) {
@@ -191,16 +201,37 @@ movement Enemy::moveStupid() {
     return action;
 }
 
-movement Enemy::moveSmart() {
-    movement action = UP;
+void Enemy::moveAction(movement &action) {
+    auto rng = default_random_engine {};
     if (previousMov == UP){
+        shuffle(begin(upC->getAllMovements()), end(upC->getAllMovements()), rng);
         action = upC->getRandomMovement()->getAction();
     } else if (previousMov == DOWN){
+        shuffle(begin(downC->getAllMovements()), end(downC->getAllMovements()), rng);
         action = downC->getRandomMovement()->getAction();
     } else if (previousMov == LEFT){
+        shuffle(begin(leftC->getAllMovements()), end(leftC->getAllMovements()), rng);
         action = leftC->getRandomMovement()->getAction();
     } else if (previousMov == RIGHT){
+        shuffle(begin(rightC->getAllMovements()), end(rightC->getAllMovements()), rng);
         action = rightC->getRandomMovement()->getAction();
+    }
+}
+
+movement Enemy::moveSmart() {
+    movement action = UP;
+    moveAction(action);
+    previousMov = action;
+    return action;
+}
+
+movement Enemy::moveSmartV2() {
+    movement action;
+    if (previousMov == IDLE){
+        // check which path is free
+    } else {
+        moveAction(action);
+        // check if this move is to a valid tile, if not redo everything until valid
     }
     previousMov = action;
     return action;
