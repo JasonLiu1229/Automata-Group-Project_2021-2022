@@ -5,6 +5,7 @@
 #include "QT_Utils/MazeBoard.h"
 #include "Maze.h"
 #include "Enemy.h"
+#include "QKeyEvent"
 
 using namespace std;
 

@@ -39,8 +39,11 @@ public:
 
     void resize(int w , int h);
 
+protected:
+    void keyPressEvent(QKeyEvent* keyEvent);
+
 signals:
-   void keyPressed(int x,int y);
+   void keyPressed(char key);
 
 private:
     void drawTile(int i, int j , tileSettings &tileType);
@@ -69,7 +72,9 @@ private:
     quint32 nBorderWidth;
     quint32 nBorderHeight;
 
-    // qint8 focusRow, focusCol;
+    char pressedKey;
+public:
+    const char &getPressedKey() const;
 };
 
 

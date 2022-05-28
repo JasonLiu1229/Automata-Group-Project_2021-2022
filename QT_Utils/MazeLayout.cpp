@@ -132,3 +132,13 @@ void MazeLayout::resize(int w , int h) {
 MazeLayout::~MazeLayout() {
 
 }
+
+void MazeLayout::keyPressEvent(QKeyEvent *keyEvent) {
+    pressedKey = keyEvent->key();
+    emit(keyPressed(pressedKey));
+    QGraphicsScene::keyPressEvent(keyEvent);
+}
+
+const char &MazeLayout::getPressedKey() const {
+    return pressedKey;
+}

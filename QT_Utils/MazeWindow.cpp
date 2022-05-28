@@ -18,7 +18,7 @@ MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
     setCentralWidget(layoutDisplay);
     //    view->setBaseSize(1080,720);
     //volgende lijn moet aangepast worden in functie van ingedrukte toetsen ipv clicks
-    connect(mazeLayout,SIGNAL(clicked(int,int)),this,SLOT(slot_clicked(int,int)));
+    connect(mazeLayout,SIGNAL(keyPressed(char)),this,SLOT(slot_keyPressed(char)));
     createActions();
     createMenus();
 }
@@ -88,7 +88,7 @@ OptionsWidget::OptionsWidget(QWidget *parent) : QDialog(parent) {
     lytMain->addRow(w_label, w_line);
     fields << w_line;
     // Get height
-    QLabel *h_label = new QLabel(QString("Width: ").arg(1), this);
+    QLabel *h_label = new QLabel(QString("Height: ").arg(1), this);
     QLineEdit *h_line = new QLineEdit(this);
     lytMain->addRow(h_label, h_line);
     fields << h_line;

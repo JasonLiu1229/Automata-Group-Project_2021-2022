@@ -41,21 +41,38 @@ void MazeBoard::update() {
 }
 
 void MazeBoard::newGame() {
-
+    // Choose layout file (json)
+    ifstream in("../JSON-Files/Level1.json");
+    json j;
+    in >> j;
+    string file = LEVDIR;
+    file += j.at("Level").at("fileName");
+    gameLayout = new Maze(file);
+    update();
 }
 
 void MazeBoard::open() {
+    /*
     // Choose layout file
     gameLayout = new Maze("Level1.json");
     // string filename = LEVDIR;
     // filename += LEV1TXT;
     gameLayout->loadGame(LEV1TXT);
-    gameLayout->saveGame();
+    //gameLayout->saveGame();
+    */
+    // Choose layout file (json)
+    ifstream in("../JSON-Files/Level1.json");
+    json j;
+    in >> j;
+    string file = LEVDIR;
+    file += j.at("Level").at("fileName");
+    gameLayout = new Maze(file);
     update();
+    // Add corresponding save values
 }
 
 void MazeBoard::save() {
-
+    //TBD
 }
 
 void MazeBoard::on_actionOptions_triggered() {
