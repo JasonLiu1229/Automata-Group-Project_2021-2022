@@ -1,12 +1,13 @@
-#ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZEBOARD_H
-#define AUTOMATA_GROUP_PROJECT_2021_2022_MAZEBOARD_H
+#ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZEGUI_H
+#define AUTOMATA_GROUP_PROJECT_2021_2022_MAZEGUI_H
 
 #include "MazeWindow.h"
 #include "../Maze.h"
 
-class MazeBoard : public MazeWindow {
+class MazeGUI : public MazeWindow {
 public:
-    MazeBoard();
+    MazeGUI();
+    MazeGUI(const string& filename);
 
     void update() override;
 
@@ -20,4 +21,4 @@ private:
 };
 
 
-#endif //AUTOMATA_GROUP_PROJECT_2021_2022_MAZEBOARD_H
+#endif //AUTOMATA_GROUP_PROJECT_2021_2022_MAZEGUI_H

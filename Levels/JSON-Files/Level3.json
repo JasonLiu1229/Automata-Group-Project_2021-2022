@@ -1,8 +1,6 @@
 {
-  "Level": [
-    {
-      "fileName": "../TXT-Files/Level3.txt",
-      "regex": ""
-    }
-  ]
+  "Level": {
+    "fileName": "Level3.txt",
+    "regex": ""
+  }
 }

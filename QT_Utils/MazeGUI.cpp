@@ -1,4 +1,4 @@
-#include "MazeBoard.h"
+#include "MazeGUI.h"
 #include "MazeLayout.h"
 #include <qglobal.h>
 #include <QInputDialog>
@@ -6,20 +6,33 @@
 #include <QInputEvent>
 #include <QRadioButton>
 #include <QGridLayout>
+#include "../json.hpp"
 
-MazeBoard::MazeBoard() : MazeWindow(nullptr) {
+using json = nlohmann::json;
+
+MazeGUI::MazeGUI() : MazeWindow(nullptr) {
     MazeLayout* layout = this->getLayout();
     // Temp
     // Choose layout file
-    gameLayout = new Maze("Level1.json");
     string filename = LEVDIR;
     filename += LEV1TXT;
-    gameLayout->loadGame(filename);
-    gameLayout->saveGame();
+    gameLayout = new Maze(filename);
+    //niet nodig
+    //gameLayout->loadGame(filename);
+    //gameLayout->saveGame();
     update();
 }
 
-void MazeBoard::update() {
+MazeGUI::MazeGUI(const string& filename) {
+    ifstream in("../JSON-Files/"+filename);
+    json j;
+    in >> j;
+    string file = LEVDIR;
+    file += j.at("Level").at("fileName");
+    gameLayout = new Maze(file);
+}
+
+void MazeGUI::update() {
     quint32 width = static_cast<quint32>(1080 / gameLayout->getWidth());
     quint32 height = static_cast<quint32>(700 / gameLayout->getHeight());
     this->getLayout()->setTileWidth(width);
@@ -27,25 +40,42 @@ void MazeBoard::update() {
     this->getLayout()->refreshMaze(gameLayout);
 }
 
-void MazeBoard::newGame() {
-
+void MazeGUI::newGame() {
+    // Choose layout file (json)
+    ifstream in("../JSON-Files/Level1.json");
+    json j;
+    in >> j;
+    string file = LEVDIR;
+    file += j.at("Level").at("fileName");
+    gameLayout = new Maze(file);
+    update();
 }
 
-void MazeBoard::open() {
+void MazeGUI::open() {
+    /*
     // Choose layout file
     gameLayout = new Maze("Level1.json");
     // string filename = LEVDIR;
     // filename += LEV1TXT;
     gameLayout->loadGame(LEV1TXT);
-    gameLayout->saveGame();
+    //gameLayout->saveGame();
+    */
+    // Choose layout file (json)
+    ifstream in("../JSON-Files/Level1.json");
+    json j;
+    in >> j;
+    string file = LEVDIR;
+    file += j.at("Level").at("fileName");
+    gameLayout = new Maze(file);
     update();
+    // Add corresponding save values
 }
 
-void MazeBoard::save() {
-
+void MazeGUI::save() {
+    //TBD
 }
 
-void MazeBoard::on_actionOptions_triggered() {
+void MazeGUI::on_actionOptions_triggered() {
 //    // Get width
 //    int tileWidth = QInputDialog::getInt(this, tr("Options"), tr("TileWidth:"), 25, 0, 100, 1, &ok);
 //    if (ok) {
