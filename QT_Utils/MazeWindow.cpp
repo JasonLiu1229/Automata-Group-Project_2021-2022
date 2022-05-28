@@ -6,14 +6,14 @@
 #include <QLineEdit>
 #include <QFormLayout>
 #include "MazeWindow.h"
-#include "MazeLayout.h"
+#include "MazeBoard.h"
 
 MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
 
     this->resize(1280,720); // 720p HD
     this->setMinimumSize(426,240); // 240p
     this->setMaximumSize(1920,1080); // 1080p Full HD
-    mazeLayout = new MazeLayout;
+    mazeLayout = new MazeBoard;
     QGraphicsView *layoutDisplay = new QGraphicsView(mazeLayout);
     setCentralWidget(layoutDisplay);
     //    view->setBaseSize(1080,720);
@@ -23,7 +23,7 @@ MazeWindow::MazeWindow(QWidget *parent) : QMainWindow(parent) {
     createMenus();
 }
 
-MazeLayout* MazeWindow::getLayout() const{
+MazeBoard* MazeWindow::getLayout() const{
     return mazeLayout;
 }
 

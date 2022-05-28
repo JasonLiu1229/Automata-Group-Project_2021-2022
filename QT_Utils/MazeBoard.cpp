@@ -1,115 +1,144 @@
 #include "MazeBoard.h"
-#include "MazeLayout.h"
-#include <qglobal.h>
-#include <QInputDialog>
-#include <QGroupBox>
-#include <QInputEvent>
-#include <QRadioButton>
-#include <QGridLayout>
-#include "../json.hpp"
+#include <QtWidgets>
+#include <QPixmap>
+#include <qnamespace.h>
+#include "../Maze.h"
+#include "../Path.h"
 
-using json = nlohmann::json;
+const QVariant kTile=555;
+const QVariant kPiece=777;
+const quint32 kWidth=45;
 
-MazeBoard::MazeBoard() : MazeWindow(nullptr) {
-    MazeLayout* layout = this->getLayout();
-    // Temp
-    // Choose layout file
-    string filename = LEVDIR;
-    filename += LEV1TXT;
-    gameLayout = new Maze(filename);
-    //niet nodig
-    //gameLayout->loadGame(filename);
-    //gameLayout->saveGame();
-    update();
+MazeBoard::MazeBoard(QObject *parent) : QGraphicsScene(parent) {
+    nTileWidth = kWidth;
+    nTileHeight = kWidth;
+    nBorderWidth = 0;
+    nBorderHeight = 0;
+    wallColor = Qt::black;
+    pathColor = Qt::gray;
+    doorColor = QColor(150,75,0);
+    playerColor = Qt::white;
+    enemyColor = QColor(138,3,3);
 }
 
-MazeBoard::MazeBoard(const string& filename) {
-    ifstream in("../JSON-Files/"+filename);
-    json j;
-    in >> j;
-    string file = LEVDIR;
-    file += j.at("Level").at("fileName");
-    gameLayout = new Maze(file);
+void MazeBoard::drawTile(int i, int j , tileSettings &tileType)
+{
+    QGraphicsRectItem *tile = new QGraphicsRectItem( j * nTileWidth , i * nTileHeight , nTileWidth , nTileHeight );
+    
+    if( tileType == wall ) {
+        // If the cell has no focus, it also has no danger indication
+        tile->setBrush(QBrush(wallColor, Qt::SolidPattern));
+    }
+    else{
+        // If the cell has no focus, it also has no danger indication
+        tile->setBrush(QBrush(pathColor, Qt::SolidPattern));
+    }
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    addItem(tile);
 }
 
-void MazeBoard::update() {
-    quint32 width = static_cast<quint32>(1080 / gameLayout->getWidth());
-    quint32 height = static_cast<quint32>(700 / gameLayout->getHeight());
-    this->getLayout()->setTileWidth(width);
-    this->getLayout()->setTileHeight(height);
-    this->getLayout()->refreshMaze(gameLayout);
+void MazeBoard::drawPlayer(int x, int y){
+    QGraphicsRectItem *tile = new QGraphicsRectItem( x * nTileWidth , y * nTileHeight , nTileWidth , nTileHeight );
+    tile->setBrush(QBrush(playerColor , Qt::SolidPattern));
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    addItem(tile);
 }
 
-void MazeBoard::newGame() {
-    // Choose layout file (json)
-    ifstream in("../JSON-Files/Level1.json");
-    json j;
-    in >> j;
-    string file = LEVDIR;
-    file += j.at("Level").at("fileName");
-    gameLayout = new Maze(file);
-    update();
-}
-
-void MazeBoard::open() {
-    /*
-    // Choose layout file
-    gameLayout = new Maze("Level1.json");
-    // string filename = LEVDIR;
-    // filename += LEV1TXT;
-    gameLayout->loadGame(LEV1TXT);
-    //gameLayout->saveGame();
-    */
-    // Choose layout file (json)
-    ifstream in("../JSON-Files/Level1.json");
-    json j;
-    in >> j;
-    string file = LEVDIR;
-    file += j.at("Level").at("fileName");
-    gameLayout = new Maze(file);
-    update();
-    // Add corresponding save values
-}
-
-void MazeBoard::save() {
-    //TBD
-}
-
-void MazeBoard::on_actionOptions_triggered() {
-//    // Get width
-//    int tileWidth = QInputDialog::getInt(this, tr("Options"), tr("TileWidth:"), 25, 0, 100, 1, &ok);
-//    if (ok) {
-//        // Change width
-//        this->getLayout()->setTileWidth(static_cast<unsigned int>(tileWidth));
-//    }
-//    int tileHeight = QInputDialog::getInt(this, tr("Options"), tr("TileHeight:"), 25, 0, 100, 1, &ok);
-//    if (ok) {
-//        // Change height
-//        this->getLayout()->setTileHeight(static_cast<unsigned int>(tileHeight));
-//    }
-
-    bool ok;
-    QStringList list = OptionsWidget::getStrings(this, &ok);
-    // Refresh maze
-    if(ok){
-        // Change width
-        bool isWInt;
-        bool isHInt;
-        auto w = list.at(0).toInt(&isWInt);
-        auto h = list.at(1).toInt(&isHInt);
-        if((isWInt || isHInt) && (w > 0 || h > 0)){
-            if(w > 0){
-                this->getLayout()->setTileWidth(w);
+void MazeBoard::drawMaze(Maze *&layout)
+{
+    Path* currentTile;
+    tileSettings setting;
+    for(int i=0; i<layout->getWidth(); i++)
+    {
+        for(int j=0; j<layout->getHeight(); j++)
+        {
+            currentTile = layout->getPath(i,j);
+            setting = currentTile->getSettings();
+            if(currentTile->isStarting()){
+                drawPlayer(i , j);
             }
-            if(h > 0){
-                this->getLayout()->setTileHeight(h);
+            else{
+                drawTile(i,j,setting);
             }
-            this->getLayout()->refreshMaze(gameLayout);
-            // Resize window to remove white spaces
-            int newWidth = gameLayout->getWidth() * this->getLayout()->getNTileWidth() * 1.1;
-            int newHeight = gameLayout->getHeight() * this->getLayout()->getNTileHeight() * 1.1;
-            this->resize(newWidth , newHeight);
-            this->setSizeIncrement(newWidth / 10 , newHeight / 10);
         }
     }
+}
+
+void MazeBoard::refreshMaze(Maze *&layout) {
+    Path* currentTile;
+    tileSettings setting;
+    qDeleteAll(items());
+    drawMaze(layout);
+}
+
+void MazeBoard::refreshTile(int i, int j, tileSettings &tileType) {
+    int x = xFromCol(j);
+    int y = yFromRow(i);
+    QGraphicsItem *currentItem = itemAt( x , y, QTransform() );
+    while (currentItem) {
+        delete currentItem;
+        currentItem = itemAt( x , y , QTransform() );
+    }
+    drawTile(i,j,tileType);
+}
+
+void MazeBoard::refreshPlayer(int x, int y) {
+    QGraphicsItem *currentItem = itemAt( xFromCol(y) , yFromRow(x), QTransform() );
+    while (currentItem) {
+        delete currentItem;
+        currentItem = itemAt( xFromCol(y) , yFromRow(x) , QTransform() );
+    }
+    drawPlayer(x,y);
+}
+
+void MazeBoard::setTileWidth(unsigned int newWidth){
+    nTileWidth = newWidth;
+}
+
+void MazeBoard::setBorderWidth(unsigned int newWidth){
+    nBorderWidth = newWidth;
+}
+
+void MazeBoard::setTileHeight(unsigned int newHeight){
+    nTileHeight = newHeight;
+}
+
+void MazeBoard::setBorderHeight(unsigned int newHeight){
+    nBorderHeight = newHeight;
+}
+
+quint32 MazeBoard::getNTileWidth() const {
+    return nTileWidth;
+}
+
+quint32 MazeBoard::getNTileHeight() const {
+    return nTileHeight;
+}
+
+quint32 MazeBoard::getNBorderWidth() const {
+    return nBorderWidth;
+}
+
+quint32 MazeBoard::getNBorderHeight() const {
+    return nBorderHeight;
+}
+
+void MazeBoard::resize(int w , int h) {
+
+}
+
+MazeBoard::~MazeBoard() {
+
+}
+
+void MazeBoard::keyPressEvent(QKeyEvent *keyEvent) {
+    pressedKey = keyEvent->key();
+    emit(keyPressed(pressedKey));
+    QGraphicsScene::keyPressEvent(keyEvent);
+}
+
+const char &MazeBoard::getPressedKey() const {
+    return pressedKey;
 }

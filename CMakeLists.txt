@@ -33,8 +33,8 @@ set(Movement_classes
 
 set(QT_Utils
         QT_Utils/MazeWindow.cpp
+        QT_Utils/MazeGUI.cpp
         QT_Utils/MazeBoard.cpp
-        QT_Utils/MazeLayout.cpp
         )
 
 set(Additional_Sources
