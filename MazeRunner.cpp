@@ -13,7 +13,7 @@ int main(int argc, char** argv){
 
     // Create QT App
     // QApplication a(argc , argv);
-    // MazeGUI maze;
+    // MazeGUI_design maze;
     // maze.show();
 
     // test enemy training

@@ -14,8 +14,5 @@ int main(int argc, char** argv){
     QApplication a(argc , argv);
     MazeGUI maze("Level1.json");
     maze.show();
-
-    cout << "Ha you ran this bullshit" << endl;
-    
     return a.exec();
 }

@@ -1,6 +1,3 @@
-//
-// Created by student on 24.05.22.
-//
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QAction>
@@ -9,9 +6,6 @@
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZEWINDOW_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_MAZEWINDOW_H
 
-//namespace  Ui {
-//    class MazeWindow;
-//}
 class QGraphicsScene;
 class QLineEdit;
 class QLabel;
@@ -83,8 +77,6 @@ private:
     // Options menu options
     QAction *options;
 
-
-//    Ui::MazeWindow *ui;
 };
 
 #endif //AUTOMATA_GROUP_PROJECT_2021_2022_MAZEWINDOW_H
