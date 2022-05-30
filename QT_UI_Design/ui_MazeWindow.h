@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QAction>
 #include <QCloseEvent>
+#include "../Maze.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -45,6 +46,7 @@ public:
     void load();
     void save();
     void options();
+    void mainMenuReturn();
 
 private slots:
 
@@ -53,6 +55,7 @@ private slots:
     void slot_save() {save();}
     void slot_load() {load();}
     void slot_options() {options();}
+    void slot_mainMenu() {mainMenuReturn();}
     void slot_fullscreen() {
         if (isMaximized()) {
             showNormal();
@@ -71,6 +74,8 @@ private slots:
 
 private:
 
+    Maze* gameLayout;
+
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
@@ -78,6 +83,7 @@ private:
     QStackedWidget *MenuScreens;
     QWidget *MainScreen;
     QWidget *LevelSelectionScreen;
+
 
     // Level selection screen
     QGridLayout *LevelsGrid;
@@ -108,7 +114,7 @@ private:
     QAction *optionsAct;
     QAction *actionFullscreen;
     QAction *actionGame_Options;
-
+    QAction *mainMenuRet;
     QAction *actionWindow_Options;
 };
 

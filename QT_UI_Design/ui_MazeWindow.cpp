@@ -81,6 +81,10 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     actionWindow_Options = new QAction(MainWindow);
     actionWindow_Options->setObjectName(QString::fromUtf8("actionWindow_Options"));
 
+    mainMenuRet = new QAction(MainWindow);
+    mainMenuRet->setObjectName(QString::fromUtf8("mainMenuRet"));
+    connect(mainMenuRet , &QAction::triggered , this , &Ui_MazeWindow::slot_mainMenu);
+
 }
 
 void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
@@ -131,7 +135,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     ExitButton->addAction(exitAct);
     sizePolicy.setHeightForWidth(ExitButton->sizePolicy().hasHeightForWidth());
     ExitButton->setSizePolicy(sizePolicy);
-    QPushButton::connect(ExitButton, SIGNAL(clicked()), this, SLOT(on_actionExit_triggered()));
+    connect(ExitButton, SIGNAL(clicked()), this, SLOT(on_actionExit_triggered()));
 
 
     MainScreenLayout->addWidget(newGameButton);
@@ -144,6 +148,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
 
     createSelectionScreen(MainWindow);
     MenuScreens->addWidget(LevelSelectionScreen);
+
     MainWindow->setCentralWidget(MenuScreens);
 
 
@@ -187,7 +192,7 @@ void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
 
     LevelSelectionScreen = new QWidget(MainWindow);
     LevelSelectionScreen->setObjectName(QString::fromUtf8("LevelSelectionScreen"));
-    LevelSelectionScreen->setGeometry(QRect(0, 120, 1021, 551));
+    LevelSelectionScreen->setGeometry(QRect(0, 120, 1024, 720));
 
     LevelsGrid = new QGridLayout(LevelSelectionScreen);
     LevelsGrid->setSpacing(100);
@@ -222,6 +227,7 @@ void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
     MenuButton = new QPushButton(LevelSelectionScreen);
     MenuButton->setObjectName(QString::fromUtf8("MenuButton"));
     MenuButton->setGeometry(QRect(75, 25, 100, 25));
+    connect(MenuButton, SIGNAL(clicked()), this, SLOT( slot_mainMenu() ) );
 
     LevelsGrid->addWidget(Level1, 0, 0, 1, 1);
     LevelsGrid->addWidget(Level2, 0, 1, 1, 1);
@@ -234,7 +240,7 @@ void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
     Level1->setText(QApplication::translate("MainWindow", "Level 1", nullptr));
     Level2->setText(QApplication::translate("MainWindow", "Level 2", nullptr));
 
-    MenuButton->setText(QApplication::translate("SelectionMen", "Main menu", nullptr));
+    MenuButton->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
 
 }
 
@@ -260,4 +266,8 @@ void Ui_MazeWindow::load() {
 
 void Ui_MazeWindow::options() {
     cout << "Options option" << endl;
+}
+
+void Ui_MazeWindow::mainMenuReturn() {
+    MenuScreens->setCurrentWidget(MainScreen);
 }
