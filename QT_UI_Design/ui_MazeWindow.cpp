@@ -84,31 +84,41 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
 
 void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
 
-    centralwidget = new QWidget(MainWindow);
-    centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+    // Size policy
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
 
-    verticalLayoutWidget = new QWidget(centralwidget);
-    verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-    verticalLayoutWidget->setGeometry(QRect(0, 0, 1021, 671));
-
-    MainScreen = new QVBoxLayout(verticalLayoutWidget);
-    MainScreen->setSpacing(10);
+    MainScreen = new QWidget(MainWindow);
     MainScreen->setObjectName(QString::fromUtf8("MainScreen"));
-    MainScreen->setContentsMargins(400, 1, 400, 1);
+
+    verticalLayoutWidget = new QWidget(MainScreen);
+    verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+    verticalLayoutWidget->setGeometry(QRect(0, 90, 1021, 581));
+
+    MainScreenLayout = new QVBoxLayout(verticalLayoutWidget);
+    MainScreenLayout->setSpacing(100);
+    MainScreenLayout->setObjectName(QString::fromUtf8("MainScreenLayout"));
+    MainScreenLayout->setContentsMargins(400, 1, 400, 1);
 
     newGameButton = new QPushButton(verticalLayoutWidget);
     newGameButton->setObjectName(QString::fromUtf8("newGameButton"));
-    newGameButton->setAutoDefault(false);
+    sizePolicy.setHeightForWidth(newGameButton->sizePolicy().hasHeightForWidth());
+    newGameButton->setSizePolicy(sizePolicy);
     connect(newGameButton, SIGNAL(clicked()), this, SLOT(slot_new()) );
 
 
     LoadGameButton = new QPushButton(verticalLayoutWidget);
     LoadGameButton->setObjectName(QString::fromUtf8("LoadGameButton"));
+    sizePolicy.setHeightForWidth(LoadGameButton->sizePolicy().hasHeightForWidth());
+    LoadGameButton->setSizePolicy(sizePolicy);
     connect(LoadGameButton, SIGNAL(clicked()), this, SLOT(slot_load() ) );
 
 
     OptionsButton = new QPushButton(verticalLayoutWidget);
     OptionsButton->setObjectName(QString::fromUtf8("OptionsButton"));
+    sizePolicy.setHeightForWidth(OptionsButton->sizePolicy().hasHeightForWidth());
+    OptionsButton->setSizePolicy(sizePolicy);
     connect(OptionsButton, SIGNAL(clicked()), this, SLOT(slot_options() ) );
 
 
@@ -116,15 +126,17 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     ExitButton->setObjectName(QString::fromUtf8("ExitButton"));
     ExitButton->setShortcut(QKeySequence::Quit);
     ExitButton->addAction(exitAct);
+    sizePolicy.setHeightForWidth(ExitButton->sizePolicy().hasHeightForWidth());
+    ExitButton->setSizePolicy(sizePolicy);
     QPushButton::connect(ExitButton, SIGNAL(clicked()), this, SLOT(on_actionExit_triggered()));
 
 
-    MainScreen->addWidget(newGameButton);
-    MainScreen->addWidget(LoadGameButton);
-    MainScreen->addWidget(OptionsButton);
-    MainScreen->addWidget(ExitButton);
+    MainScreenLayout->addWidget(newGameButton);
+    MainScreenLayout->addWidget(LoadGameButton);
+    MainScreenLayout->addWidget(OptionsButton);
+    MainScreenLayout->addWidget(ExitButton);
 
-    MainWindow->setCentralWidget(centralwidget);
+    MainWindow->setCentralWidget(MainScreen);
 
     menubar = new QMenuBar(MainWindow);
     menubar->setObjectName(QString::fromUtf8("menubar"));

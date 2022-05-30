@@ -47,18 +47,24 @@
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>90</y>
       <width>1021</width>
-      <height>671</height>
+      <height>581</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="MainScreen">
      <property name="spacing">
-      <number>10</number>
+      <number>100</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
      </property>
      <property name="leftMargin">
       <number>400</number>
@@ -74,8 +80,17 @@
      </property>
      <item>
       <widget class="QPushButton" name="newGameButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>New Game</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+N</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -84,22 +99,49 @@
      </item>
      <item>
       <widget class="QPushButton" name="LoadGameButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Load Game</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+L</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="OptionsButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Options</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+O</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="ExitButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Exit</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Q, Esc</string>
        </property>
       </widget>
      </item>

@@ -73,7 +73,7 @@ private:
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
     // Main Widgets
-    QWidget *centralwidget;
+    QWidget *MainScreen;
 
     // Menu bar
     QMenuBar *menubar;
@@ -85,7 +85,7 @@ private:
 
     // Main screen
     QWidget *verticalLayoutWidget;
-    QVBoxLayout *MainScreen;
+    QVBoxLayout *MainScreenLayout;
     QPushButton *newGameButton;
     QPushButton *LoadGameButton;
     QPushButton *OptionsButton;
