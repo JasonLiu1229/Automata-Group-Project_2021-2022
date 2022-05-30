@@ -21,10 +21,12 @@
 #include <QStatusBar>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QStackedWidget>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QAction>
 #include <QCloseEvent>
+
 
 QT_BEGIN_NAMESPACE
 
@@ -35,8 +37,7 @@ class Ui_MazeWindow : public  QMainWindow
 
 public:
 
-    void setupUi(QMainWindow *MainWindow); // setupUi
-
+    void setupUi(QMainWindow *MainWindow);
     void retranslateUi(QMainWindow *MainWindow);
 
     void newGame();
@@ -72,9 +73,19 @@ private:
 
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
+    void createSelectionScreen(QMainWindow *MainWindow);
     // Main Widgets
+    QStackedWidget *MenuScreens;
     QWidget *MainScreen;
+    QWidget *LevelSelectionScreen;
 
+    // Level selection screen
+    QGridLayout *LevelsGrid;
+    QPushButton *Level3;
+    QPushButton *Level4;
+    QPushButton *Level1;
+    QPushButton *Level2;
+    QPushButton *MenuButton;
     // Menu bar
     QMenuBar *menubar;
     QMenu *menuFile;

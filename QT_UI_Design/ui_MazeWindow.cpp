@@ -22,6 +22,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     createActions(MainWindow);
     // Create menus
     createMenus(MainWindow);
+
     retranslateUi(MainWindow);
 
 
@@ -89,6 +90,8 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
 
+    MenuScreens = new QStackedWidget(MainWindow);
+
     MainScreen = new QWidget(MainWindow);
     MainScreen->setObjectName(QString::fromUtf8("MainScreen"));
 
@@ -136,7 +139,14 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     MainScreenLayout->addWidget(OptionsButton);
     MainScreenLayout->addWidget(ExitButton);
 
-    MainWindow->setCentralWidget(MainScreen);
+    MenuScreens->addWidget(MainScreen);
+    MenuScreens->setCurrentWidget(MainScreen);
+
+    createSelectionScreen(MainWindow);
+    MenuScreens->addWidget(LevelSelectionScreen);
+    MainWindow->setCentralWidget(MenuScreens);
+
+
 
     menubar = new QMenuBar(MainWindow);
     menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -173,12 +183,67 @@ void Ui_MazeWindow::on_actionExit_triggered() {
     }
 }
 
+void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
+
+    LevelSelectionScreen = new QWidget(MainWindow);
+    LevelSelectionScreen->setObjectName(QString::fromUtf8("LevelSelectionScreen"));
+    LevelSelectionScreen->setGeometry(QRect(0, 120, 1021, 551));
+
+    LevelsGrid = new QGridLayout(LevelSelectionScreen);
+    LevelsGrid->setSpacing(100);
+    LevelsGrid->setObjectName(QString::fromUtf8("LevelsGrid"));
+    LevelsGrid->setSizeConstraint(QLayout::SetDefaultConstraint);
+    LevelsGrid->setContentsMargins(75, 75, 75, 25);
+
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+
+    Level1 = new QPushButton(LevelSelectionScreen);
+    Level1->setObjectName(QString::fromUtf8("Level1"));
+    sizePolicy.setHeightForWidth(Level1->sizePolicy().hasHeightForWidth());
+    Level1->setSizePolicy(sizePolicy);
+
+    Level2 = new QPushButton(LevelSelectionScreen);
+    Level2->setObjectName(QString::fromUtf8("Level2"));
+    sizePolicy.setHeightForWidth(Level2->sizePolicy().hasHeightForWidth());
+    Level2->setSizePolicy(sizePolicy);
+
+    Level3 = new QPushButton(LevelSelectionScreen);
+    Level3->setObjectName(QString::fromUtf8("Level3"));
+    sizePolicy.setHeightForWidth(Level3->sizePolicy().hasHeightForWidth());
+    Level3->setSizePolicy(sizePolicy);
+
+    Level4 = new QPushButton(LevelSelectionScreen);
+    Level4->setObjectName(QString::fromUtf8("Level4"));
+    sizePolicy.setHeightForWidth(Level4->sizePolicy().hasHeightForWidth());
+    Level4->setSizePolicy(sizePolicy);
+
+    MenuButton = new QPushButton(LevelSelectionScreen);
+    MenuButton->setObjectName(QString::fromUtf8("MenuButton"));
+    MenuButton->setGeometry(QRect(75, 25, 100, 25));
+
+    LevelsGrid->addWidget(Level1, 0, 0, 1, 1);
+    LevelsGrid->addWidget(Level2, 0, 1, 1, 1);
+    LevelsGrid->addWidget(Level3, 1, 0, 1, 1);
+    LevelsGrid->addWidget(Level4, 1, 1, 1, 1);
+
+
+    Level3->setText(QApplication::translate("MainWindow", "Level 3", nullptr));
+    Level4->setText(QApplication::translate("MainWindow", "Level 4", nullptr));
+    Level1->setText(QApplication::translate("MainWindow", "Level 1", nullptr));
+    Level2->setText(QApplication::translate("MainWindow", "Level 2", nullptr));
+
+    MenuButton->setText(QApplication::translate("SelectionMen", "Main menu", nullptr));
+
+}
+
 void Ui_MazeWindow::on_actionOptions_triggered() {
 
 }
 
 void Ui_MazeWindow::newGame() {
-    cout << "New Game option" << endl;
+    MenuScreens->setCurrentWidget(LevelSelectionScreen);
 }
 
 void Ui_MazeWindow::open() {

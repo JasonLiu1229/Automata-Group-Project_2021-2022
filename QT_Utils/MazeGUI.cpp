@@ -33,6 +33,7 @@ MazeGUI::MazeGUI(const string& filename) {
 }
 
 void MazeGUI::update() {
+
     quint32 width = static_cast<quint32>(1080 / gameLayout->getWidth());
     quint32 height = static_cast<quint32>(700 / gameLayout->getHeight());
     this->getLayout()->setTileWidth(width);
