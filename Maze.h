@@ -44,7 +44,7 @@ class Maze : vector<vector<Path*>> {
     Player* player;
 
     // all Paths
-    set<Path*> allPaths;
+    vector<Path*> allPaths;
     Path* start;
 
 public:

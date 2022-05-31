@@ -68,6 +68,7 @@ bool Maze::generateMaze(const string &filename) {
                     key_count++;
                 }
                 pathRow.push_back(path);
+                allPaths.push_back(path);
             }
             this->push_back(pathRow);
         }
@@ -213,6 +214,7 @@ void Maze::loadGame(const string &fileName) {
                     key_count++;
                 }
                 weg.push_back(road);
+                allPaths.push_back(road);
             }
             this->push_back(weg);
         }
@@ -308,17 +310,34 @@ void Maze::simulateStart() {
 }
 
 // algorithms
-
+/*TFA minimize*/
 Maze *Maze::minimize() {
     auto* minimizeMaze = new Maze();
+
+    // create starting table
     map<pair<Path*, Path*>, bool> Table;
+    for (int i = 0; i < allPaths.size() - 1; ++i) {
+        pair<Path*, Path*> couple;
+        couple.first = allPaths[i];
+        for (int j = 1; j < allPaths.size(); ++j) {
+            couple.second = allPaths[j];
+            if (couple.first->isAccepting() != couple.second->isAccepting()){
+                Table[couple] = false;
+            }
+            else {
+                Table[couple] = true;
+            }
+        }
+    }
 
+    // minimize
 
-
+    // combine equivalent states
 
     return minimizeMaze;
 }
 
+/*DFA -> regex*/
 bool Maze::yeah(vector<string> alpha, Path* staat){
     bool yeah = true;
     for(auto i:alpha){
@@ -497,6 +516,7 @@ string Maze::toRgex() {
     return regex;
 }
 
+/*regex -> enfa -> mssc -> dfa*/
 void Maze::toDFA() {
 
 }
