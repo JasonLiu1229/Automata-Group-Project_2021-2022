@@ -73,7 +73,7 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     actionFullscreen = new QAction(MainWindow);
     actionFullscreen->setObjectName(QString::fromUtf8("actionFullscreen"));
     actionFullscreen->setCheckable(true);
-    connect(actionFullscreen , &QAction::triggered , this, &Ui_MazeWindow::slot_fullscreen);
+    connect(actionFullscreen , &QAction::triggered , this, &Ui_MazeWindow::slot_fullScreen);
 
     actionGame_Options = new QAction(MainWindow);
     actionGame_Options->setObjectName(QString::fromUtf8("actionGame_Options"));

@@ -56,7 +56,7 @@ private slots:
     void slot_load() {load();}
     void slot_options() {options();}
     void slot_mainMenu() {mainMenuReturn();}
-    void slot_fullscreen() {
+    void slot_fullScreen() {
         if (isMaximized()) {
             showNormal();
         } else {
