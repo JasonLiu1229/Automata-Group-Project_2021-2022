@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/untitled25.dir/main.cpp.o CMakeFiles/untitled25.dir/DFA.cpp.o CMakeFiles/untitled25.dir/NFA.cpp.o  -o untitled25 

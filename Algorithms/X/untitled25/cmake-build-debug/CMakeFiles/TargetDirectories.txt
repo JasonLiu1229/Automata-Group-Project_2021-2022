@@ -1,0 +1,3 @@
+/mnt/c/Users/nr1sl/CLionProjects/untitled25/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/nr1sl/CLionProjects/untitled25/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/nr1sl/CLionProjects/untitled25/cmake-build-debug/CMakeFiles/untitled25.dir
