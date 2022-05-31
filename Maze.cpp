@@ -12,29 +12,72 @@ using namespace std;
 using json = nlohmann::json;
 
 Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0) {
-    bool failed = generateMaze(fileName);
+    // json file parsing
+    ifstream parser;
 
-    if (failed){
-        cout << "File was corrupted or not found" << endl;
+    parser.open(fileName);
+
+    if (parser.fail()){
+        cout << "Error while openning file" << endl;
     }
 
-    simulateStart();
+    if (parser.is_open()){
+        json fileJson;
+
+        parser >> fileJson;
+
+        levelName = fileJson["fileName"];
+
+        bool failed = generateMaze(levelName);
+
+        if (!failed){
+            cout << "File was corrupted or not found" << endl;
+        }
+        /*simulateStart();*/
+    }
+
+    parser.close();
 }
 
-Maze::Maze(){
-    key_count = 0;
+Maze::Maze(): key_count(0){
 }
 
 // read level
 bool Maze::generateMaze(const string &filename) {
-    /*for (int i = 0; i < width; ++i) {
-        vector<Path*> wholePath;
-        for (int j = 0; j < height; ++j) {
-            Path* newPath = new Path();
-            wholePath.push_back(newPath);
+    ifstream txtParser;
+    txtParser.open(LEVDIR + filename);
+    // make path
+    if (txtParser.is_open()){
+        string line;
+        while (getline(txtParser, line)){
+            vector<Path*> pathRow;
+            for (int i = 0; i < line.size(); ++i) {
+                auto* path = new Path();
+                if(i == '#'){
+                    path->setSettings(wall);
+                }
+                else if(i=='$'){
+                    path->setStarting(true);
+                    player = new Player(path, "Hendrick");
+                }
+                else if(i=='&'){
+                    path->setAccepting(true);
+                }
+                else if(i == '^'){
+                    path->setKey(true);
+                    key_count++;
+                }
+                pathRow.push_back(path);
+            }
+            this->push_back(pathRow);
         }
-        this->push_back(wholePath);
-    }*/
+        height = this->size();
+        width = this[0].size();
+
+        // set transitions
+        return true;
+    }
+    txtParser.close();
     return false;
 }
 
@@ -257,6 +300,27 @@ void Maze::simulateStart() {
         }
     }
     */
+}
+
+// algorithms
+
+Maze *Maze::minimize() {
+    auto* minimizeMaze = new Maze();
+    map<pair<Path*, Path*>, bool> Table;
+
+
+
+
+    return minimizeMaze;
+}
+
+string Maze::toRgex() {
+    string regex;
+    return regex;
+}
+
+void Maze::toDFA() {
+
 }
 
 Maze::~Maze() {

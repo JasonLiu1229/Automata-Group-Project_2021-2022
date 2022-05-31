@@ -1,6 +1,7 @@
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZE_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_MAZE_H
 #include <vector>
+#include <set>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -33,7 +34,11 @@ class Maze : vector<vector<Path*>> {
     //speler
     Player* player;
 
+    // all Paths
+    set<Path*> allPaths;
+
 public:
+    // constructors
     Maze();
 
     explicit Maze(const string &fileName);
@@ -43,8 +48,11 @@ public:
 
     // Getters and setters
     int getWidth() const;
+
     int getHeight() const;
+
     Path* getPath(int i , int j);
+
     // user interface
     void playMaze();
 
@@ -59,6 +67,14 @@ public:
     // simulate
     void simulateStart();
 
+    // algorithms
+    Maze* minimize();   // TFA
+
+    string toRgex();    // DFA -> regex
+
+    void toDFA();       // regex -> enfa -> mssc -> dfa
+
+    // destructor
     virtual ~Maze();
 };
 
