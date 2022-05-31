@@ -76,10 +76,11 @@ public:
 
     // simulate
     void simulateStart();
-    //DFA -> Regex
-    bool done(Path* plaats); // to see if we are at an end state
 
+    //DFA -> Regex
     void toRegex(Path* curr, string even,vector<Path*> gonethere); // DFA to REGEX
+
+    bool done(Path* plaats); // to see if we are at an end state
 
     bool yeah(vector<string> alpha, Path* staat); //to check if we are not going to a deadend
 
