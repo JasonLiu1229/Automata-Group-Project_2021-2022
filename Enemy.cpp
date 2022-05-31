@@ -228,10 +228,19 @@ movement Enemy::moveSmart() {
 movement Enemy::moveSmartV2() {
     movement action;
     if (previousMov == IDLE){
-        // check which path is free
+        // check which path is free and choose by random with chance == 1 / [amount of valid moves]
     } else {
         moveAction(action);
         // check if this move is to a valid tile, if not redo everything until valid
+        if (action == UP){
+
+        } else if (action == DOWN){
+
+        } else if (action == LEFT){
+
+        } else if (action == RIGHT){
+
+        }
     }
     previousMov = action;
     return action;
