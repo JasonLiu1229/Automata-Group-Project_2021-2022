@@ -8,7 +8,8 @@
 #include <random>
 
 
-Enemy::Enemy(): upC(new MovementChance()), downC(new MovementChance()), leftC(new MovementChance()), rightC(new MovementChance()), previousMov(IDLE){
+Enemy::Enemy(): upC(new MovementChance()), downC(new MovementChance()), leftC(new MovementChance()), rightC(new MovementChance()), previousMov(IDLE), speed(1), follow(
+        false){
     MovementState* state;
     state = new MovementState(UP);
     upC->setAction(state);
@@ -20,7 +21,8 @@ Enemy::Enemy(): upC(new MovementChance()), downC(new MovementChance()), leftC(ne
     rightC->setAction(state);
 }
 
-Enemy::Enemy(const string &name) : Player(name),upC(new MovementChance()), downC(new MovementChance()), leftC(new MovementChance()), rightC(new MovementChance()), previousMov(IDLE) {
+Enemy::Enemy(const string &name) : Player(name),upC(new MovementChance()), downC(new MovementChance()), leftC(new MovementChance()), rightC(new MovementChance()), previousMov(IDLE), speed(1), follow(
+        false) {
     MovementState* state;
     state = new MovementState(UP);
     upC->setAction(state);
