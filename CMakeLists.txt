@@ -53,7 +53,7 @@ find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
 add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes})
 add_executable(MazeRunnerVisOld MazeRunnerVisOld.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${QT_Utils} ${Movement_classes})
-add_executable(MazeRunnerVisNew MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${QT_Utils} ${Movement_classes} ${QT_UI})
+add_executable(MazeRunnerVisNew MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI})
 
 set_target_properties("MazeRunner" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
 set_target_properties("MazeRunnerVisOld" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
