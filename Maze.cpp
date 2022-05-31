@@ -203,7 +203,7 @@ void Maze::loadGame(const string &fileName) {
                 }
                 else if(i=='$'){
                     road->setStarting(true);
-                    player = new Player(road, "Hendrick");
+                    start = road;
                 }
                 else if(i=='&'){
                     road->setAccepting(true);
@@ -237,6 +237,8 @@ void Maze::loadGame(const string &fileName) {
             else{
                 nextTile = this->at(i-1)[j];
                 currentTile->setUp(nextTile);
+                currentTile->setpath("w",nextTile);
+                currentTile->setmovement("w");
             }
             // Get tile left
             if(j == 0){
@@ -245,6 +247,8 @@ void Maze::loadGame(const string &fileName) {
             else{
                 nextTile = this->at(i)[j-1];
                 currentTile->setLeft(nextTile);
+                currentTile->setpath("a",nextTile);
+                currentTile->setmovement("a");
             }
             // Get tile right
             if(j == width - 1){
@@ -253,6 +257,8 @@ void Maze::loadGame(const string &fileName) {
             else{
                 nextTile = this->at(i)[j+1];
                 currentTile->setRight(nextTile);
+                currentTile->setpath("d",nextTile);
+                currentTile->setmovement("d");
             }
             // Get tile under
             if(i == height - 1){
@@ -261,13 +267,12 @@ void Maze::loadGame(const string &fileName) {
             else{
                 nextTile = this->at(i+1)[j];
                 currentTile->setDown(nextTile);
+                currentTile->setpath("s",nextTile);
+                currentTile->setmovement("s");
             }
         }
     }
-    
-
 }
-
 void Maze::simulateStart() {
     loadGame(levelName);
     Collectable_DFA keys(key_count);
@@ -314,8 +319,181 @@ Maze *Maze::minimize() {
     return minimizeMaze;
 }
 
+bool Maze::yeah(vector<string> alpha, Path* staat){
+    bool yeah = true;
+    for(auto i:alpha){
+        if(staat->getmap()[staat][i] != staat){
+            yeah = false;
+        }
+    }
+    return yeah;
+}
+
+bool Maze::done(Path* plaats){
+    for(auto i:allPaths){
+        if(i==plaats && i->isAccepting()){
+            return true;
+        }
+    }
+    return false;
+}
+bool Maze::doublecheck(vector<Path*> vec, Path* str){
+    for(auto i:vec){
+        if(i == str){
+            return true;
+        }
+    }
+    return false;
+}
+bool Maze::back(Path* end,string alpha,Path* vorige){
+    for(auto i:allPaths){
+        if(end == i){
+            if(vorige->getmap()[end][alpha] == vorige && i->isAccepting()){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Maze::toRegex(Path* curr, string even,vector<Path*> gonethere){
+    string zichzelf = "(";
+    if(done(curr)){
+        vector<string> alpha;
+        int size = (int) even.size();
+        int check = 0;
+        if(yeah(curr->getalphabet(),curr)){
+            even += "(";
+            for(auto i:curr->getalphabet()){
+                even+= i + "+";
+            }
+            even.pop_back();
+            even +=")*";
+        }
+        else{
+            int indexenalpha = 0;
+            for(auto i:curr->getalphabet()){
+                if(curr->getmap()[curr][i] == curr && check ==0){
+                    even += "(" + i;
+                    indexenalpha++;
+                    check++;
+                }
+                else if(indexenalpha == curr->getalphabet().size()-1 && curr->getmap()[curr][i] == curr){
+                    even += i + ")*";
+                    indexenalpha++;
+                }
+                else if(indexenalpha == curr->getalphabet().size()-1 && curr->getmap()[curr][i] != curr && even.size() !=size){
+                    even += ")*";
+                }
+                else if(check ==1 && curr->getmap()[curr][i] == curr){
+                    even += i;
+                    indexenalpha++;
+                }
+                else{
+                    alpha.push_back(i);
+                }
+            }
+        }
+        regex += even + "+";
+        if(!alpha.empty()){
+            for(auto i:alpha){
+                if(doublecheck(gonethere,curr)){
+                    string tempo;
+                    for(int k =0; k<even.size();k++){
+                        if(k == indexpositie[{curr,i}]){
+                            tempo += "(";
+                            tempo+= even[k];
+                        }
+                        else{
+                            tempo+= even[k];
+                        }
+                    }
+                    tempo += ")*";
+                    even = tempo;
+                    zijner = true;
+                    even2 = even;
+                    break;
+                }
+                if(!yeah(curr->getalphabet(),curr->getmap()[curr][i])){
+                    even += i;
+                }
+                indexpositie[{curr,i}] = indexen;
+                indexen++;
+                toRegex(curr->getmap()[curr][i],even,gonethere);
+                if(zijner  && curren != curr){
+                    return;
+                }
+                if(zijner  && curren == curr){
+                    even = even2;
+                    zijner = false;
+                    continue;
+                }
+                gonethere.pop_back();
+                even.pop_back();
+            }
+        }
+    }
+    else{
+        vector<string> over;
+        for(auto i:curr->getalphabet()){
+            if(curr->getmap()[curr][i] == curr){
+                zichzelf+=i + "+";
+            }
+            else{
+                over.push_back(i);
+            }
+        }
+        if(zichzelf.size() !=1){
+            zichzelf.pop_back();
+            zichzelf +=")*";
+            even += zichzelf;
+        }
+        for(const auto& i:over){
+            if(back(curr->getmap()[curr][i],i,curr)){
+                even += "(" + i + i + ")*";
+            }
+            if(doublecheck(gonethere,curr)){
+                string tempo;
+                for(int k =0; k<even.size();k++){
+                    if(k == indexpositie[{curr,i}]){
+                        tempo += "(";
+                        tempo+= even[k];
+                    }
+                    else{
+                        tempo+= even[k];
+                    }
+                }
+                tempo += ")*";
+                even = tempo;
+                zijner = true;
+                even2 = even;
+                curren = curr;
+                break;
+            }
+            else{
+                if(!yeah(curr->getalphabet(),curr->getmap()[curr][i]) || done(curr->getmap()[curr][i])){
+                    even += i;
+                }
+                gonethere.push_back(curr);
+                indexpositie[{curr,i}] = indexen;
+                indexen++;
+                toRegex(curr->getmap()[curr][i],even,gonethere);
+                if(zijner  && curren != curr && i == *over.end()){
+                    return;
+                }
+                if(zijner  && curren == curr){
+                    even = even2;
+                    zijner = false;
+                    continue;
+                }
+                gonethere.pop_back();
+                even.pop_back();
+            }
+        }
+    }
+}
 string Maze::toRgex() {
-    string regex;
+    toRegex(start,"",{});
     return regex;
 }
 

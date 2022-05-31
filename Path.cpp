@@ -67,4 +67,24 @@ void Path::setKey(bool key) {
     Path::key = key;
 }
 
+void Path::setpath(string input, Path* next){
+    directions[this][input] = next;
+}
+
+void Path::setmovement(string input){
+    movement.push_back(input);
+}
+
+vector<string> Path::getalphabet(){
+    return movement;
+}
+
+Path* Path::getpath(){
+    return this;
+}
+
+map<Path*,map<string,Path*>> Path::getmap(){
+    return directions;
+}
+
 Path::~Path() {}

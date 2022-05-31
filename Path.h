@@ -2,6 +2,8 @@
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_PATH_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_PATH_H
 #include <iostream>
+#include <map>
+#include <vector>
 
 #include "Standard_Values.h"
 
@@ -16,8 +18,12 @@ class Path {
     Path* down;
     Path* right;
 
+    map<Path*,map<string,Path*>> directions;
+    vector<string> movement;
+
     // tile settings
     tileSettings settings;
+
 
     // state is starting or final
     bool starting;
@@ -62,6 +68,16 @@ public:
     void setKey(bool key);
 
     virtual ~Path();
+
+    void setmovement(string input);
+
+    void setpath(string input, Path* next);
+
+    vector<string>getalphabet();
+
+    Path* getpath();
+
+    map<Path*,map<string,Path*>> getmap();
 };
 
 
