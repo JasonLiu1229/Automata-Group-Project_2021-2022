@@ -12,8 +12,12 @@ using namespace std;
 
 class Parser {
     string fileName;
+    string txt_filename;
+    string regex;
 public:
     explicit Parser(string fileName);
+
+    string getTxt_Filename();
 };
 
 

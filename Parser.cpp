@@ -4,10 +4,15 @@
 
 #include <utility>
 
-Parser::Parser(string fileName) : fileName(std::move(fileName)) {
+Parser::Parser(string fileName) : fileName(fileName) {
     ifstream input(fileName);
     json j;
     input >> j;
-    Maze* maze = new Maze(); // Give it to the QT-class
-    maze->loadGame(j["fileName"]);
+    auto level = j["Level"];
+    Parser::txt_filename = level["fileName"];
+    Parser::regex = level["regex"];
+}
+
+string Parser::getTxt_Filename(){
+    return Parser::txt_filename;
 }
