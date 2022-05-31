@@ -1,6 +1,7 @@
 #include <iostream>
+#include <qmainwindow.h>
 #include "ui_MazeWindow.h"
-
+#include "../Parser.h"
 using namespace std;
 using namespace Ui;
 
@@ -10,6 +11,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     // Setup window
     if (MainWindow->objectName().isEmpty())
         MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+
     MainWindow->resize(1024, 720);
     MainWindow->setMinimumSize(QSize(852, 450));
     MainWindow->setMaximumSize(QSize(1336, 1080));
@@ -22,20 +24,20 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     createActions(MainWindow);
     // Create menus
     createMenus(MainWindow);
-
+    // Retranslate
     retranslateUi(MainWindow);
 
 
 
-} // setupUi
+}
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Untitled Maze Game", nullptr));
 
-#ifndef QT_NO_ACCESSIBILITY
-    MainWindow->setAccessibleName(QString());
-#endif // QT_NO_ACCESSIBILITY
+    #ifndef QT_NO_ACCESSIBILITY
+        MainWindow->setAccessibleName(QString());
+    #endif // QT_NO_ACCESSIBILITY
 
     openAct->setText(QApplication::translate("MainWindow", "Open", nullptr));
     saveAct->setText(QApplication::translate("MainWindow", "Save", nullptr));
@@ -179,15 +181,6 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
 
 }
 
-void Ui_MazeWindow::on_actionExit_triggered() {
-    if (QMessageBox::Yes == QMessageBox::question(this,
-                                                  tr("Exit game"),
-                                                  tr("Are you sure you want to exit the game?\nUnsaved data will be lost.")))
-    {
-        QApplication::quit();
-    }
-}
-
 void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
 
     LevelSelectionScreen = new QWidget(MainWindow);
@@ -224,10 +217,10 @@ void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
     sizePolicy.setHeightForWidth(Level4->sizePolicy().hasHeightForWidth());
     Level4->setSizePolicy(sizePolicy);
 
+
     MenuButton = new QPushButton(LevelSelectionScreen);
     MenuButton->setObjectName(QString::fromUtf8("MenuButton"));
     MenuButton->setGeometry(QRect(75, 25, 100, 25));
-    connect(MenuButton, SIGNAL(clicked()), this, SLOT( slot_mainMenu() ) );
 
     LevelsGrid->addWidget(Level1, 0, 0, 1, 1);
     LevelsGrid->addWidget(Level2, 0, 1, 1, 1);
@@ -242,10 +235,79 @@ void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
 
     MenuButton->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
 
+    connect(MenuButton, SIGNAL(clicked()), this, SLOT( slot_mainMenu() ) );
+    connect(Level1, SIGNAL(clicked()), this, SLOT( slot_level1() ) );
+    connect(Level2, SIGNAL(clicked()), this, SLOT( slot_level2() ) );
+    connect(Level3, SIGNAL(clicked()), this, SLOT( slot_level3() ) );
+    connect(Level4, SIGNAL(clicked()), this, SLOT( slot_level4() ) );
+
+}
+
+void Ui_MazeWindow::createLevelScreen(QMainWindow *MainWindow){
+
+    // Create new widget
+    levelScreen = new QWidget(MainWindow);
+    levelScreen->setObjectName(QString::fromUtf8("levelScreen"));
+
+    // Create layouts
+    horizontalLayout_2 = new QHBoxLayout(levelScreen);
+    horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+    verticalLayout = new QVBoxLayout();
+    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+    horizontalLayout = new QHBoxLayout();
+    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+
+    // Create buttons
+    mainMenuButton = new QPushButton(levelScreen);
+    mainMenuButton->setObjectName(QString::fromUtf8("mainMenuButton"));
+
+    pauseButton = new QPushButton(levelScreen);
+    pauseButton->setObjectName(QString::fromUtf8("pauseButton"));
+
+    HTP_button = new QPushButton(levelScreen);
+    HTP_button->setObjectName(QString::fromUtf8("HTP_button"));
+
+    helpButton = new QPushButton(levelScreen);
+    helpButton->setObjectName(QString::fromUtf8("helpButton"));
+
+    // Add buttons to layouts
+    horizontalLayout->addWidget(mainMenuButton);
+    horizontalLayout->addWidget(pauseButton);
+    horizontalLayout->addWidget(HTP_button);
+    horizontalLayout->addWidget(helpButton);
+    verticalLayout->addLayout(horizontalLayout);
+
+    // Create GraphicView
+    MazeView = new QGraphicsView(levelScreen);
+    MazeView->setObjectName(QString::fromUtf8("MazeView"));
+
+    verticalLayout->addWidget(MazeView);
+    horizontalLayout_2->addLayout(verticalLayout);
+
+    // Retranslate buttons
+    mainMenuButton->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
+    pauseButton->setText(QApplication::translate("MainWindow", "Pause", nullptr));
+    HTP_button->setText(QApplication::translate("MainWindow", "How to play", nullptr));
+    helpButton->setText(QApplication::translate("MainWindow", "Help", nullptr));
+
+    // Connect buttons to slots
+    connect(pauseButton, SIGNAL(clicked()), MainWindow, SLOT(slot_pauseGame()));
+    connect(HTP_button, SIGNAL(clicked()), MainWindow, SLOT(slot_showControls()));
+    connect(helpButton, SIGNAL(clicked()), MainWindow, SLOT(slot_showHelp()));
+
 }
 
 void Ui_MazeWindow::on_actionOptions_triggered() {
 
+}
+
+void Ui_MazeWindow::on_actionExit_triggered() {
+    if (QMessageBox::Yes == QMessageBox::question(this,
+                                                  tr("Exit game"),
+                                                  tr("Are you sure you want to exit the game?\nUnsaved data will be lost.")))
+    {
+        QApplication::quit();
+    }
 }
 
 void Ui_MazeWindow::newGame() {
@@ -270,4 +332,25 @@ void Ui_MazeWindow::options() {
 
 void Ui_MazeWindow::mainMenuReturn() {
     MenuScreens->setCurrentWidget(MainScreen);
+}
+
+void Ui_MazeWindow::loadLevel(string filename){
+    // Initialize parser
+    Parser parser(filename);
+    // Create maze
+    gameLayout = new Maze();
+    // Load maze
+    gameLayout->loadGame(LEVDIR + parser.getTxt_Filename());
+
+    cout << "Loaded level " + filename << endl;
+}
+
+void Ui_MazeWindow::pauseGame() {
+    cout << "Pause Game option" << endl;
+}
+void Ui_MazeWindow::showControls() {
+    cout << "Show Controls option" << endl;
+}
+void Ui_MazeWindow::showHelp() {
+    cout << "Show Help option" << endl;
 }

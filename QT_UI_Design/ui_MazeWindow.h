@@ -9,6 +9,7 @@
 #ifndef UI_MAZEWINDOWRI4129_H
 #define UI_MAZEWINDOWRI4129_H
 
+// QT Sources
 #include <QVariant>
 #include <QAction>
 #include <QApplication>
@@ -20,12 +21,15 @@
 #include <QPushButton>
 #include <QStatusBar>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QWidget>
 #include <QStackedWidget>
-#include <QMainWindow>
 #include <QMessageBox>
-#include <QAction>
 #include <QCloseEvent>
+#include <QGraphicsView>
+#include <qmainwindow.h>
+
+// Custom sources
 #include "../Maze.h"
 
 
@@ -47,6 +51,10 @@ public:
     void save();
     void options();
     void mainMenuReturn();
+    void pauseGame();
+    void showControls();
+    void showHelp();
+    void loadLevel(string filename);
 
 private slots:
 
@@ -56,6 +64,9 @@ private slots:
     void slot_load() {load();}
     void slot_options() {options();}
     void slot_mainMenu() {mainMenuReturn();}
+    void slot_pauseGame(){pauseGame();}
+    void slot_showControls() {showControls();}
+    void slot_showHelp() {showHelp();}
     void slot_fullScreen() {
         if (isMaximized()) {
             showNormal();
@@ -63,6 +74,10 @@ private slots:
             showMaximized();
         }
     };
+    void slot_level1() {loadLevel(LEV1JSON);}
+    void slot_level2() {loadLevel(LEV2JSON);}
+    void slot_level3() {loadLevel(LEV3JSON);}
+    void slot_level4() {loadLevel(LEV4JSON);}
 
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
@@ -79,19 +94,13 @@ private:
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
+    void createLevelScreen(QMainWindow *MainWindow);
     // Main Widgets
     QStackedWidget *MenuScreens;
     QWidget *MainScreen;
     QWidget *LevelSelectionScreen;
-
-
-    // Level selection screen
-    QGridLayout *LevelsGrid;
-    QPushButton *Level3;
-    QPushButton *Level4;
-    QPushButton *Level1;
-    QPushButton *Level2;
-    QPushButton *MenuButton;
+    QWidget *levelScreen;
+    
     // Menu bar
     QMenuBar *menubar;
     QMenu *menuFile;
@@ -107,6 +116,25 @@ private:
     QPushButton *LoadGameButton;
     QPushButton *OptionsButton;
     QPushButton *ExitButton;
+
+    // Level selection screen
+    QGridLayout *LevelsGrid;
+    QPushButton *Level3;
+    QPushButton *Level4;
+    QPushButton *Level1;
+    QPushButton *Level2;
+    QPushButton *MenuButton;
+
+    // Level screen
+    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *mainMenuButton;
+    QPushButton *pauseButton;
+    QPushButton *HTP_button;
+    QPushButton *helpButton;
+    QGraphicsView *MazeView;
+
     // Actions
     QAction *openAct;
     QAction *saveAct;
@@ -114,8 +142,10 @@ private:
     QAction *optionsAct;
     QAction *actionFullscreen;
     QAction *actionGame_Options;
-    QAction *mainMenuRet;
     QAction *actionWindow_Options;
+    QAction *mainMenuRet;
+
+
 };
 
 namespace Ui {
