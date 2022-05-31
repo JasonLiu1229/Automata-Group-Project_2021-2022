@@ -336,11 +336,13 @@ void Ui_MazeWindow::mainMenuReturn() {
 
 void Ui_MazeWindow::loadLevel(string filename){
     // Initialize parser
-    Parser parser(filename);
+    Parser* parser = new Parser(filename);
     // Create maze
     gameLayout = new Maze();
     // Load maze
-    gameLayout->loadGame(LEVDIR + parser.getTxt_Filename());
+    gameLayout->loadGame(LEVDIR + parser->getTxt_Filename());
+
+    delete parser;
 
     cout << "Loaded level " + filename << endl;
 }
