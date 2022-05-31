@@ -1,6 +1,7 @@
 #ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZE_H
 #define AUTOMATA_GROUP_PROJECT_2021_2022_MAZE_H
 #include <vector>
+#include <map>
 #include <set>
 #include <string>
 #include <iostream>
@@ -21,6 +22,14 @@ class Maze : vector<vector<Path*>> {
     int height;
     int key_count;
 
+    // few variable for regex
+    map<pair<Path*,string>,int> indexpositie;
+    int indexen;
+    string regex;
+    Path* curren;
+    string even2;
+    bool zijner;
+
     // File specs
     string levelName;
 
@@ -36,6 +45,7 @@ class Maze : vector<vector<Path*>> {
 
     // all Paths
     set<Path*> allPaths;
+    Path* start;
 
 public:
     // constructors
@@ -66,6 +76,16 @@ public:
 
     // simulate
     void simulateStart();
+    //DFA -> Regex
+    bool done(Path* plaats); // to see if we are at an end state
+
+    void toRegex(Path* curr, string even,vector<Path*> gonethere); // DFA to REGEX
+
+    bool yeah(vector<string> alpha, Path* staat); //to check if we are not going to a deadend
+
+    bool doublecheck(vector<Path*> vec, Path* str); //Checking if we went there or not
+
+    bool back(Path* end,string alpha,Path* vorige); //if it loops on itself
 
     // algorithms
     Maze* minimize();   // TFA
