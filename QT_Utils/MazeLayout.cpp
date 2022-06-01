@@ -67,8 +67,6 @@ void MazeLayout::drawMaze(Maze *&layout)
 }
 
 void MazeLayout::refreshMaze(Maze *&layout) {
-    Path* currentTile;
-    tileSettings setting;
     qDeleteAll(items());
     drawMaze(layout);
 }
