@@ -378,7 +378,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     delete parser;
     inputTime = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    inputTime->start(500);
+    inputTime->start(100);
     MazeView->setFocus();
     cout << "Loaded level " + filename << endl;
 
