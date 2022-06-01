@@ -63,6 +63,10 @@ public:
 
     Path* getPath(int i , int j);
 
+    const string &getLevelName() const;
+
+    void setLevelName(const string &levelName);
+
     // user interface
     void playMaze();
 
@@ -75,7 +79,7 @@ public:
     void loadGame(const string &fileName);
 
     // simulate
-    void simulateStart(movement m);
+    void simulateMove(movement m);
 
     //DFA -> Regex
     void toRegex(Path* curr, string even,vector<Path*> gonethere); // DFA to REGEX

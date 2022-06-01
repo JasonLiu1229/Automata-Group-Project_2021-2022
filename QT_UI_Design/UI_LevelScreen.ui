@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
-    <height>488</height>
+    <width>714</width>
+    <height>623</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,14 @@
        </layout>
       </item>
       <item>
-       <widget class="QGraphicsView" name="MazeView"/>
+       <widget class="QGraphicsView" name="MazeView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -61,8 +68,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>810</width>
-     <height>21</height>
+     <width>714</width>
+     <height>24</height>
     </rect>
    </property>
   </widget>
@@ -113,7 +120,7 @@
      <y>44</y>
     </hint>
     <hint type="destinationlabel">
-     <x>726</x>
+     <x>713</x>
      <y>464</y>
     </hint>
    </hints>

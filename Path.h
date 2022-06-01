@@ -78,6 +78,8 @@ public:
     Path* getpath();
 
     map<Path*,map<string,Path*>> getmap();
+
+    bool isWall();
 };
 
 

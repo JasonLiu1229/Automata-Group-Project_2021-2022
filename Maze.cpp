@@ -230,6 +230,7 @@ void Maze::loadGame(const string &fileName) {
     string line;
     ifstream gamefile(fileName);
     if(gamefile.is_open()){
+        player = new Player();
         while(getline(gamefile,line)){
             vector<Path*> weg;
             for(auto i:line){
@@ -240,6 +241,7 @@ void Maze::loadGame(const string &fileName) {
                 else if(i=='$'){
                     road->setStarting(true);
                     start = road;
+                    player->setCurrentTile(road);
                 }
                 else if(i=='&'){
                     road->setAccepting(true);
@@ -273,9 +275,11 @@ void Maze::loadGame(const string &fileName) {
             }
             else{
                 nextTile = this->at(i-1)[j];
-                currentTile->setUp(nextTile);
-                currentTile->setpath("w",nextTile);
-                currentTile->setmovement("w");
+                if(!nextTile->isWall()){
+                    currentTile->setUp(nextTile);
+                    currentTile->setpath("w",nextTile);
+                    currentTile->setmovement("w");
+                }
             }
             // Get tile left
             if(j == 0){
@@ -283,9 +287,11 @@ void Maze::loadGame(const string &fileName) {
             }
             else{
                 nextTile = this->at(i)[j-1];
-                currentTile->setLeft(nextTile);
-                currentTile->setpath("a",nextTile);
-                currentTile->setmovement("a");
+                if(!nextTile->isWall()){
+                    currentTile->setLeft(nextTile);
+                    currentTile->setpath("a", nextTile);
+                    currentTile->setmovement("a");
+                }
             }
             // Get tile right
             if(j == width - 1){
@@ -293,9 +299,11 @@ void Maze::loadGame(const string &fileName) {
             }
             else{
                 nextTile = this->at(i)[j+1];
-                currentTile->setRight(nextTile);
-                currentTile->setpath("d",nextTile);
-                currentTile->setmovement("d");
+                if(!nextTile->isWall()) {
+                    currentTile->setRight(nextTile);
+                    currentTile->setpath("d", nextTile);
+                    currentTile->setmovement("d");
+                }
             }
             // Get tile under
             if(i == height - 1){
@@ -303,38 +311,42 @@ void Maze::loadGame(const string &fileName) {
             }
             else{
                 nextTile = this->at(i+1)[j];
-                currentTile->setDown(nextTile);
-                currentTile->setpath("s",nextTile);
-                currentTile->setmovement("s");
+                if(!nextTile->isWall()) {
+                    currentTile->setDown(nextTile);
+                    currentTile->setpath("s", nextTile);
+                    currentTile->setmovement("s");
+                }
             }
         }
     }
-    collectedKeys = new Collectable_DFA (key_count);
+    collectedKeys = new Collectable_DFA(key_count);
 }
-void Maze::simulateStart(movement m) {
-    if(m == UP && player->GetCurrentTile()->getUp()->getSettings() != wall){
+void Maze::simulateMove(movement m) {
+    if(player->getCurrentTile() == nullptr){
+        return;
+    }
+    if(m == UP && player->getCurrentTile()->getUp() != nullptr){
         player->GetCurrentTile()->setStarting(false);
         player->SetCurrentTile(player->GetCurrentTile()->getUp());
         player->GetCurrentTile()->setStarting(true);
     }
-    else if(m == DOWN && player->GetCurrentTile()->getDown()->getSettings() != wall){
+    else if(m == DOWN && player->getCurrentTile()->getDown() != nullptr){
         player->GetCurrentTile()->setStarting(false);
         player->SetCurrentTile(player->GetCurrentTile()->getDown());
         player->GetCurrentTile()->setStarting(true);
     }
-    else if(m == LEFT && player->GetCurrentTile()->getLeft()->getSettings() != wall){
+    else if(m == LEFT && player->getCurrentTile()->getLeft() != nullptr){
         player->GetCurrentTile()->setStarting(false);
         player->SetCurrentTile(player->GetCurrentTile()->getLeft());
         player->GetCurrentTile()->setStarting(true);
     }
-    else if(m == RIGHT && player->GetCurrentTile()->getRight()->getSettings() != wall){
+    else if(m == RIGHT && player->getCurrentTile()->getRight() != nullptr){
         player->GetCurrentTile()->setStarting(false);
         player->SetCurrentTile(player->GetCurrentTile()->getRight());
         player->GetCurrentTile()->setStarting(true);
     }
     if(player->GetCurrentTile()->isKey()){
         collectedKeys->setCurrentState(collectedKeys->getCurrentState()->getNext());
-
     }
 }
 

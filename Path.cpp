@@ -88,3 +88,7 @@ map<Path*,map<string,Path*>> Path::getmap(){
 }
 
 Path::~Path() {}
+
+bool Path::isWall() {
+    return settings == wall;
+}
