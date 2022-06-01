@@ -30,9 +30,9 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     createMenus(MainWindow);
     // Retranslate
     retranslateUi(MainWindow);
-
-
-
+    paused = false;
+    this->grabKeyboard();
+//    this->installEventFilter(this);
 }
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
@@ -303,6 +303,8 @@ void Ui_MazeWindow::createLevelScreen(QMainWindow *MainWindow){
     connect(HTP_button , SIGNAL(clicked()) , this , SLOT(slot_showControls()) );
     connect(helpButton , SIGNAL(clicked()) , this , SLOT(slot_showHelp()) );
 
+    levelScreen->setEnabled(true);
+
 }
 
 void Ui_MazeWindow::on_actionOptions_triggered() {
@@ -373,10 +375,12 @@ void Ui_MazeWindow::loadLevel(string filename){
     MazeView->setScene(MazeScene);
     // Change the window view
     delete parser;
-
-
-
+    inputTime = new QTimer;
+    connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
+    inputTime->start(1000);
+    MazeView->setFocus();
     cout << "Loaded level " + filename << endl;
+
 }
 
 void Ui_MazeWindow::pauseGame() {
@@ -390,7 +394,6 @@ void Ui_MazeWindow::showHelp() {
 }
 
 void Ui_MazeWindow::update() {
-
     auto width =  MazeView->width() / gameLayout->getWidth();
     auto height = MazeView->height() / gameLayout->getHeight();
     nTileWidth = static_cast<quint32>(width);
@@ -446,3 +449,59 @@ void Ui_MazeWindow::drawPlayer(int x, int y){
     tile->setData(0, kTile );
     MazeScene->addItem(tile);
 }
+
+void Ui_MazeWindow::refreshTile(int i, int j, tileSettings &tileType) {
+    int x = xFromCol(j);
+    int y = yFromRow(i);
+    QGraphicsItem *currentItem = MazeScene->itemAt( x , y, QTransform() );
+    while (currentItem) {
+        delete currentItem;
+        currentItem = MazeScene->itemAt( x , y , QTransform() );
+    }
+    drawTile(i,j,tileType);
+}
+
+void Ui_MazeWindow::refreshPlayer(int x, int y) {
+    QGraphicsItem *currentItem = MazeScene->itemAt( xFromCol(y) , yFromRow(x), QTransform() );
+    while (currentItem) {
+        delete currentItem;
+        currentItem = MazeScene->itemAt( xFromCol(y) , yFromRow(x) , QTransform() );
+    }
+    drawPlayer(x,y);
+}
+
+void Ui_MazeWindow::play() {
+
+}
+
+void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
+
+    if(k->key() == Qt::Key_W){
+        cout << "Move up!" << endl;
+    }
+    else if(k->key() == Qt::Key_A){
+        cout << "Move left!" << endl;
+    }
+    else if(k->key() == Qt::Key_S){
+        cout << "Move down!" << endl;
+    }
+    else if(k->key() == Qt::Key_D){
+        cout << "Move right!" << endl;
+    }
+    else{
+        k->ignore();
+    }
+}
+
+bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
+    if ( e->type() == QEvent::KeyPress || e->type() == QEvent::KeyRelease ) {
+        // special processing for key press
+        auto *k = (QKeyEvent *)e;
+        qDebug( "Ate key press %d", k->key() );
+        return true; // eat event
+    } else {
+        // standard event processing
+        return false;
+    }
+}
+
