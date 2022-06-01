@@ -2,6 +2,7 @@
 #include "Maze.h"
 #include "Path.h"
 #include "json.hpp"
+#include "Parser.h"
 
 // c++ libs
 #include <utility>
@@ -12,31 +13,13 @@ using namespace std;
 using json = nlohmann::json;
 
 Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0) {
-    // json file parsing
-    ifstream parser;
-
-    parser.open(fileName);
-
-    if (parser.fail()){
-        cout << "Error while openning file" << endl;
+    Parser jsonParser(fileName);
+    levelName = jsonParser.getTxt_Filename();
+    bool failed = generateMaze(levelName);
+    if (!failed){
+        cout << "File was corrupted or not found" << endl;
     }
-
-    if (parser.is_open()){
-        json fileJson;
-
-        parser >> fileJson;
-
-        levelName = fileJson["fileName"];
-
-        bool failed = generateMaze(levelName);
-
-        if (!failed){
-            cout << "File was corrupted or not found" << endl;
-        }
-        /*simulateStart();*/
-    }
-
-    parser.close();
+    /*simulateStart();*/
 }
 
 Maze::Maze(): key_count(0){
@@ -82,6 +65,9 @@ bool Maze::generateMaze(const string &filename) {
                 else if(i == '^'){
                     path->setKey(true);
                     key_count++;
+                }
+                else {
+                    return false;
                 }
                 pathRow.push_back(path);
                 allPaths.push_back(path);
