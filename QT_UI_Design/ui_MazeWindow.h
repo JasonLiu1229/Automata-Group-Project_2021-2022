@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QGraphicsView>
+#include <QGraphicsScene>
 #include <qmainwindow.h>
 
 // Custom sources
@@ -95,6 +96,12 @@ private:
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
     void createLevelScreen(QMainWindow *MainWindow);
+    void drawMaze(Maze *&layout);
+    void drawTile(int i, int j , tileSettings &tileType);
+    void drawPlayer(int x , int y);
+    void refreshTile(int i , int j , tileSettings &tileType);
+    void refreshPlayer(int x , int y);
+
     // Main Widgets
     QStackedWidget *MenuScreens;
     QWidget *MainScreen;
@@ -134,6 +141,7 @@ private:
     QPushButton *HTP_button;
     QPushButton *helpButton;
     QGraphicsView *MazeView;
+    QGraphicsScene* MazeScene;
 
     // Actions
     QAction *openAct;
@@ -145,7 +153,20 @@ private:
     QAction *actionWindow_Options;
     QAction *mainMenuRet;
 
+    QColor wallColor;
+    QColor pathColor;
+    QColor doorColor;
+    QColor playerColor;
+    QColor enemyColor;
 
+    quint32 nTileWidth;
+    quint32 nTileHeight;
+    quint32 nBorderWidth;
+    quint32 nBorderHeight;
+
+    const QVariant kTile=555;
+    const QVariant kPiece=777;
+    const quint32 kWidth=45;
 };
 
 namespace Ui {

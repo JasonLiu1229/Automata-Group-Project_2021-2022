@@ -1,7 +1,11 @@
 #include <iostream>
 #include <qmainwindow.h>
+#include <QtWidgets>
+#include <qnamespace.h>
 #include "ui_MazeWindow.h"
 #include "../Parser.h"
+#include "../Maze.h"
+#include "../Path.h"
 using namespace std;
 using namespace Ui;
 
@@ -342,6 +346,8 @@ void Ui_MazeWindow::loadLevel(string filename){
     // Load maze
     gameLayout->loadGame(LEVDIR + parser->getTxt_Filename());
 
+    drawMaze(gameLayout);
+
     delete parser;
 
     cout << "Loaded level " + filename << endl;
@@ -355,4 +361,47 @@ void Ui_MazeWindow::showControls() {
 }
 void Ui_MazeWindow::showHelp() {
     cout << "Show Help option" << endl;
+}
+
+void Ui_MazeWindow::drawMaze(Maze *&layout) {
+    Path* currentTile;
+    tileSettings setting;
+    for(int i=0; i<layout->getWidth(); i++)
+    {
+        for(int j=0; j<layout->getHeight(); j++)
+        {
+            currentTile = layout->getPath(i,j);
+            setting = currentTile->getSettings();
+            if(currentTile->isStarting()) {
+                drawPlayer(i , j);
+            }
+            else {
+                drawTile(i,j,setting);
+            }
+        }
+    }
+}
+
+void Ui_MazeWindow::drawTile(int i, int j, tileSettings &tileType) {
+    QGraphicsRectItem *tile = new QGraphicsRectItem( j * nTileWidth , i * nTileHeight , nTileWidth , nTileHeight );
+
+    if( tileType == wall ) {
+        // If the cell has no focus, it also has no danger indication
+        tile->setBrush(QBrush(wallColor, Qt::SolidPattern));
+    }
+    else{
+        // If the cell has no focus, it also has no danger indication
+        tile->setBrush(QBrush(pathColor, Qt::SolidPattern));
+    }
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    MazeScene->addItem(tile);
+}
+
+void Ui_MazeWindow::drawPlayer(int x, int y){
+    QGraphicsRectItem *tile = new QGraphicsRectItem( x * nTileWidth , y * nTileHeight , nTileWidth , nTileHeight );
+    tile->setBrush(QBrush(playerColor , Qt::SolidPattern));
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    MazeScene->addItem(tile);
 }
