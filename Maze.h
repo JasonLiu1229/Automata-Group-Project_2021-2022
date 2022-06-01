@@ -75,7 +75,7 @@ public:
     void loadGame(const string &fileName);
 
     // simulate
-    void simulateStart();
+    void simulateStart(movement m);
 
     //DFA -> Regex
     void toRegex(Path* curr, string even,vector<Path*> gonethere); // DFA to REGEX

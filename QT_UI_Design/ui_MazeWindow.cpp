@@ -475,18 +475,17 @@ void Ui_MazeWindow::play() {
 }
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
-
     if(k->key() == Qt::Key_W){
-        cout << "Move up!" << endl;
+        gameLayout->simulateStart(UP);
     }
     else if(k->key() == Qt::Key_A){
-        cout << "Move left!" << endl;
+        gameLayout->simulateStart(LEFT);
     }
     else if(k->key() == Qt::Key_S){
-        cout << "Move down!" << endl;
+        gameLayout->simulateStart(DOWN);
     }
     else if(k->key() == Qt::Key_D){
-        cout << "Move right!" << endl;
+        gameLayout->simulateStart(RIGHT);
     }
     else{
         k->ignore();

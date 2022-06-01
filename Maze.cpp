@@ -309,39 +309,33 @@ void Maze::loadGame(const string &fileName) {
             }
         }
     }
+    collectedKeys = new Collectable_DFA (key_count);
 }
-void Maze::simulateStart() {
-    loadGame(levelName);
-    Collectable_DFA keys(key_count);
-    /*
-    while (!player->GetCurrentTile()->isAccepting() && !keys.getCurrentState()->getkeystate()){
-        string movement;
-        cin>> movement;
-        if(movement == "w"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getUp());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        else if(movement == "s"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getDown());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        else if(movement == "a"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getLeft());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        else if(movement == "d"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getRight());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        if(player->GetCurrentTile()->isKey()){
-            keys.setCurrentState(keys.getCurrentState()->getNext());
-        }
+void Maze::simulateStart(movement m) {
+    if(m == UP && player->GetCurrentTile()->getUp()->getSettings() != wall){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getUp());
+        player->GetCurrentTile()->setStarting(true);
     }
-    */
+    else if(m == DOWN && player->GetCurrentTile()->getDown()->getSettings() != wall){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getDown());
+        player->GetCurrentTile()->setStarting(true);
+    }
+    else if(m == LEFT && player->GetCurrentTile()->getLeft()->getSettings() != wall){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getLeft());
+        player->GetCurrentTile()->setStarting(true);
+    }
+    else if(m == RIGHT && player->GetCurrentTile()->getRight()->getSettings() != wall){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getRight());
+        player->GetCurrentTile()->setStarting(true);
+    }
+    if(player->GetCurrentTile()->isKey()){
+        collectedKeys->setCurrentState(collectedKeys->getCurrentState()->getNext());
+
+    }
 }
 
 // algorithms
