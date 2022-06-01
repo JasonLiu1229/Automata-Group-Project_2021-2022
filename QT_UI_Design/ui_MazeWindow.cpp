@@ -153,7 +153,9 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     MenuScreens->setCurrentWidget(MainScreen);
 
     createSelectionScreen(MainWindow);
+    createLevelScreen(MainWindow);
     MenuScreens->addWidget(LevelSelectionScreen);
+    MenuScreens->addWidget(levelScreen);
 
     MainWindow->setCentralWidget(MenuScreens);
 
@@ -200,6 +202,7 @@ void Ui_MazeWindow::createSelectionScreen(QMainWindow *MainWindow) {
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
+    LevelSelectionScreen->setSizePolicy(sizePolicy);
 
     Level1 = new QPushButton(LevelSelectionScreen);
     Level1->setObjectName(QString::fromUtf8("Level1"));
@@ -295,9 +298,10 @@ void Ui_MazeWindow::createLevelScreen(QMainWindow *MainWindow){
     helpButton->setText(QApplication::translate("MainWindow", "Help", nullptr));
 
     // Connect buttons to slots
-    connect(pauseButton, SIGNAL(clicked()), MainWindow, SLOT(slot_pauseGame()));
-    connect(HTP_button, SIGNAL(clicked()), MainWindow, SLOT(slot_showControls()));
-    connect(helpButton, SIGNAL(clicked()), MainWindow, SLOT(slot_showHelp()));
+    connect(mainMenuButton , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()) );
+    connect(pauseButton , SIGNAL(clicked()) , this , SLOT(slot_pauseGame()) );
+    connect(HTP_button , SIGNAL(clicked()) , this , SLOT(slot_showControls()) );
+    connect(helpButton , SIGNAL(clicked()) , this , SLOT(slot_showHelp()) );
 
 }
 
@@ -346,9 +350,31 @@ void Ui_MazeWindow::loadLevel(string filename){
     // Load maze
     gameLayout->loadGame(LEVDIR + parser->getTxt_Filename());
 
-    drawMaze(gameLayout);
+    MenuScreens->setCurrentWidget(levelScreen);
+    // Create Graphics Scene
+    MazeScene = new QGraphicsScene(MazeView);
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    // Set parameters
+    nTileWidth = kWidth;
+    nTileHeight = kWidth;
+    nBorderWidth = 0;
+    nBorderHeight = 0;
+    wallColor = Qt::black;
+    pathColor = Qt::gray;
+    doorColor = QColor(150,75,0);
+    playerColor = Qt::white;
+    enemyColor = QColor(138,3,3);
 
+    // Draw the maze(make all the tiles)
+    update();
+    // Set the scene
+    MazeView->setScene(MazeScene);
+    // Change the window view
     delete parser;
+
+
 
     cout << "Loaded level " + filename << endl;
 }
@@ -363,9 +389,24 @@ void Ui_MazeWindow::showHelp() {
     cout << "Show Help option" << endl;
 }
 
+void Ui_MazeWindow::update() {
+
+    auto width =  MazeView->width() / gameLayout->getWidth();
+    auto height = MazeView->height() / gameLayout->getHeight();
+    nTileWidth = static_cast<quint32>(width);
+    nTileHeight = static_cast<quint32>(height);
+    refreshMaze(gameLayout);
+}
+
+void Ui_MazeWindow::refreshMaze(Maze *&layout) {
+    qDeleteAll( MazeScene->items());
+    drawMaze(layout);
+}
+
 void Ui_MazeWindow::drawMaze(Maze *&layout) {
     Path* currentTile;
     tileSettings setting;
+
     for(int i=0; i<layout->getWidth(); i++)
     {
         for(int j=0; j<layout->getHeight(); j++)

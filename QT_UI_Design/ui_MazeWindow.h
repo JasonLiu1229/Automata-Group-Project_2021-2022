@@ -65,15 +65,15 @@ private slots:
     void slot_load() {load();}
     void slot_options() {options();}
     void slot_mainMenu() {mainMenuReturn();}
-    void slot_pauseGame(){pauseGame();}
+    void slot_pauseGame() {pauseGame();}
     void slot_showControls() {showControls();}
     void slot_showHelp() {showHelp();}
     void slot_fullScreen() {
-        if (isMaximized()) {
-            showNormal();
-        } else {
-            showMaximized();
-        }
+//        if (isMaximized()) {
+//            showNormal();
+//        } else {
+//            showMaximized();
+//        }
     };
     void slot_level1() {loadLevel(LEV1JSON);}
     void slot_level2() {loadLevel(LEV2JSON);}
@@ -96,9 +96,14 @@ private:
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
     void createLevelScreen(QMainWindow *MainWindow);
+
+    // Maze visualisation
+    void update();
+    void refreshMaze(Maze *&layout);
     void drawMaze(Maze *&layout);
     void drawTile(int i, int j , tileSettings &tileType);
     void drawPlayer(int x , int y);
+
     void refreshTile(int i , int j , tileSettings &tileType);
     void refreshPlayer(int x , int y);
 
@@ -141,7 +146,7 @@ private:
     QPushButton *HTP_button;
     QPushButton *helpButton;
     QGraphicsView *MazeView;
-    QGraphicsScene* MazeScene;
+    QGraphicsScene *MazeScene;
 
     // Actions
     QAction *openAct;
