@@ -28,7 +28,8 @@
 #include <QCloseEvent>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <qmainwindow.h>
+#include <QKeyEvent>
+#include <QTimer>
 
 // Custom sources
 #include "../Maze.h"
@@ -79,7 +80,7 @@ private slots:
     void slot_level2() {loadLevel(LEV2JSON);}
     void slot_level3() {loadLevel(LEV3JSON);}
     void slot_level4() {loadLevel(LEV4JSON);}
-
+    void update();
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
 
@@ -91,14 +92,13 @@ private slots:
 private:
 
     Maze* gameLayout;
-
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
     void createLevelScreen(QMainWindow *MainWindow);
 
     // Maze visualisation
-    void update();
+
     void refreshMaze(Maze *&layout);
     void drawMaze(Maze *&layout);
     void drawTile(int i, int j , tileSettings &tileType);
@@ -107,11 +107,18 @@ private:
     void refreshTile(int i , int j , tileSettings &tileType);
     void refreshPlayer(int x , int y);
 
+    quint8 rowFromPoint(int y) const { return static_cast<quint8>(y / nTileWidth); }
+    quint8 colFromPoint(int x) const { return static_cast<quint8>(x / nTileHeight); }
+
+    quint32 xFromCol(int c) const { return static_cast<quint32>(c * nTileWidth + 0.5 * nTileWidth); }
+    quint32 yFromRow(int r) const { return static_cast<quint32>(r * nTileHeight + 0.5 * nTileHeight); }
+
     // Main Widgets
     QStackedWidget *MenuScreens;
     QWidget *MainScreen;
     QWidget *LevelSelectionScreen;
     QWidget *levelScreen;
+    QWidget *keyboard;
     
     // Menu bar
     QMenuBar *menubar;
@@ -158,6 +165,7 @@ private:
     QAction *actionWindow_Options;
     QAction *mainMenuRet;
 
+    // Visualisation parameters
     QColor wallColor;
     QColor pathColor;
     QColor doorColor;
@@ -172,6 +180,16 @@ private:
     const QVariant kTile=555;
     const QVariant kPiece=777;
     const quint32 kWidth=45;
+
+    // Event handling
+    void play();
+    bool paused;
+    QTimer* inputTime;
+protected:
+    void keyPressEvent(QKeyEvent *k) override;
+
+    bool eventFilter( QObject *o, QEvent *e ) override;
+
 };
 
 namespace Ui {
