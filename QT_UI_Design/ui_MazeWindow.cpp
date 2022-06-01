@@ -329,7 +329,9 @@ void Ui_MazeWindow::open() {
 }
 
 void Ui_MazeWindow::save() {
-    cout << "Save Game option" << endl;
+    if(gameLayout != nullptr){
+        gameLayout->saveGame();
+    }
 }
 
 void Ui_MazeWindow::load() {
@@ -378,7 +380,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     delete parser;
     inputTime = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    inputTime->start(100);
+    inputTime->start(50);
     MazeView->setFocus();
     cout << "Loaded level " + filename << endl;
 
