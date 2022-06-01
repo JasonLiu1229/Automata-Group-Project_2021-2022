@@ -97,6 +97,9 @@ public:
 
     // destructor
     virtual ~Maze();
+
+private:
+    void tileConfig(Path* &leftTile, Path* &rightTile, int i, int j);
 };
 
 
