@@ -43,6 +43,22 @@ Maze::Maze(): key_count(0){
 }
 
 // read level
+
+void Maze::tileConfig(Path* &leftTile, Path* &rightTile, int i, int j){
+    if (j == 0){
+        rightTile = nullptr;
+        leftTile = this->at(i).at(j-1);
+    }
+    else if (j == height - 1){
+        leftTile = nullptr;
+        rightTile = this->at(i).at(j-1);
+    }
+    else {
+        leftTile = this->at(i).at(j+1);
+        rightTile = this->at(i).at(j-1);
+    }
+}
+
 bool Maze::generateMaze(const string &filename) {
     ifstream txtParser;
     txtParser.open(LEVDIR + filename);
@@ -56,11 +72,11 @@ bool Maze::generateMaze(const string &filename) {
                 if(i == '#'){
                     path->setSettings(wall);
                 }
-                else if(i=='$'){
+                else if(i == '$'){
                     path->setStarting(true);
-                    player = new Player(path, "Hendrick");
+                    player = new Player(path, "Name");
                 }
-                else if(i=='&'){
+                else if(i == '&'){
                     path->setAccepting(true);
                 }
                 else if(i == '^'){
@@ -73,9 +89,42 @@ bool Maze::generateMaze(const string &filename) {
             this->push_back(pathRow);
         }
         height = this->size();
-        width = this[0].size();
+        width = this->at(0).size();
 
         // set transitions
+        Path* currentTile;
+        Path* leftTile;
+        Path* rightTile;
+        Path* topTile;
+        Path* bottomTile;
+        for (int i = 0; i < width; ++i) {
+            for (int j = 0; j < height; ++j) {
+                currentTile = this->at(i).at(j);
+                if (currentTile->getSettings() == wall){
+                    continue;
+                }
+                else{
+                    if (i == 0){
+                        topTile = nullptr;
+                        bottomTile = this->at(i + 1).at(j);
+                    }
+                    else if (i == width - 1){
+                        bottomTile = nullptr;
+                        topTile = this->at(i-1).at(j);
+                    }
+                    else {
+                        topTile = this->at(i-1).at(j);
+                        bottomTile = this->at(i+1).at(j);
+                    }
+                    tileConfig(leftTile, rightTile, i, j);
+
+                    currentTile->setLeft(leftTile);
+                    currentTile->setUp(topTile);
+                    currentTile->setDown(bottomTile);
+                    currentTile->setRight(rightTile);
+                }
+            }
+        }
         return true;
     }
     txtParser.close();

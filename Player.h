@@ -30,6 +30,26 @@ public:
 
     void SetCurrentTile(Path* temp);
 
+    Path *getUp() const;
+
+    void setUp(Path *up);
+
+    Path *getDown() const;
+
+    void setDown(Path *down);
+
+    Path *getLeft() const;
+
+    void setLeft(Path *left);
+
+    Path *getRight() const;
+
+    void setRight(Path *right);
+
+    Path *getCurrentTile() const;
+
+    void setCurrentTile(Path *currentTile);
+
     virtual ~Player();
 };
 

@@ -231,17 +231,41 @@ movement Enemy::moveSmartV2() {
     movement action;
     if (previousMov == IDLE){
         // check which path is free and choose by random with chance == 1 / [amount of valid moves]
+        vector<movement> validMov;
+        if (this->getRight() != nullptr){
+            validMov.push_back(RIGHT);
+        }
+        if (this->getLeft() != nullptr){
+            validMov.push_back(LEFT);
+        }
+        if (this->getDown() != nullptr){
+            validMov.push_back(DOWN);
+        }
+        if (this->getUp() != nullptr){
+            validMov.push_back(UP);
+        }
+        int random = rand() % validMov.size();
+        previousMov = validMov[random];
+        return previousMov;
     } else {
         moveAction(action);
         // check if this move is to a valid tile, if not redo everything until valid
         if (action == UP){
-
+            if (this->getUp() == nullptr){
+                return moveSmartV2();
+            }
         } else if (action == DOWN){
-
+            if (this->getDown() == nullptr){
+                return moveSmartV2();
+            }
         } else if (action == LEFT){
-
+            if (this->getLeft() == nullptr){
+                return moveSmartV2();
+            }
         } else if (action == RIGHT){
-
+            if (this->getRight() == nullptr){
+                return moveSmartV2();
+            }
         }
     }
     previousMov = action;
