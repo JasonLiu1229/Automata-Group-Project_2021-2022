@@ -351,6 +351,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     gameLayout = new Maze();
     // Load maze
     gameLayout->loadGame(LEVDIR + parser->getTxt_Filename());
+//    gameLayout->setLevelName(parser->getTxt_Filename());
 
     MenuScreens->setCurrentWidget(levelScreen);
     // Create Graphics Scene
@@ -377,7 +378,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     delete parser;
     inputTime = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    inputTime->start(1000);
+    inputTime->start(500);
     MazeView->setFocus();
     cout << "Loaded level " + filename << endl;
 
@@ -443,7 +444,7 @@ void Ui_MazeWindow::drawTile(int i, int j, tileSettings &tileType) {
 }
 
 void Ui_MazeWindow::drawPlayer(int x, int y){
-    QGraphicsRectItem *tile = new QGraphicsRectItem( x * nTileWidth , y * nTileHeight , nTileWidth , nTileHeight );
+    QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
     tile->setBrush(QBrush(playerColor , Qt::SolidPattern));
     tile->setCacheMode(QGraphicsItem::NoCache);
     tile->setData(0, kTile );
@@ -477,16 +478,16 @@ void Ui_MazeWindow::play() {
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
 
     if(k->key() == Qt::Key_W){
-        cout << "Move up!" << endl;
+        gameLayout->simulateMove(UP);
     }
     else if(k->key() == Qt::Key_A){
-        cout << "Move left!" << endl;
+        gameLayout->simulateMove(LEFT);
     }
     else if(k->key() == Qt::Key_S){
-        cout << "Move down!" << endl;
+        gameLayout->simulateMove(DOWN);
     }
     else if(k->key() == Qt::Key_D){
-        cout << "Move right!" << endl;
+        gameLayout->simulateMove(RIGHT);
     }
     else{
         k->ignore();

@@ -19,7 +19,6 @@ Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_coun
     if (!failed){
         cout << "File was corrupted or not found" << endl;
     }
-    /*simulateStart();*/
 }
 
 Maze::Maze(): key_count(0){
@@ -230,6 +229,7 @@ void Maze::loadGame(const string &fileName) {
     string line;
     ifstream gamefile(fileName);
     if(gamefile.is_open()){
+        player = new Player();
         while(getline(gamefile,line)){
             vector<Path*> weg;
             for(auto i:line){
@@ -240,6 +240,7 @@ void Maze::loadGame(const string &fileName) {
                 else if(i=='$'){
                     road->setStarting(true);
                     start = road;
+                    player->setCurrentTile(start);
                 }
                 else if(i=='&'){
                     road->setAccepting(true);
@@ -309,39 +310,32 @@ void Maze::loadGame(const string &fileName) {
             }
         }
     }
+    collectedKeys = new Collectable_DFA(key_count);
 }
-void Maze::simulateStart() {
-    loadGame(levelName);
-    Collectable_DFA keys(key_count);
-    /*
-    while (!player->GetCurrentTile()->isAccepting() && !keys.getCurrentState()->getkeystate()){
-        string movement;
-        cin>> movement;
-        if(movement == "w"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getUp());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        else if(movement == "s"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getDown());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        else if(movement == "a"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getLeft());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        else if(movement == "d"){
-            player->GetCurrentTile()->setStarting(false);
-            player->SetCurrentTile(player->GetCurrentTile()->getRight());
-            player->GetCurrentTile()->setStarting(true);
-        }
-        if(player->GetCurrentTile()->isKey()){
-            keys.setCurrentState(keys.getCurrentState()->getNext());
-        }
+void Maze::simulateMove(movement m) {
+    if(m == UP){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getUp());
+        player->GetCurrentTile()->setStarting(true);
     }
-    */
+    else if(m == DOWN){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getDown());
+        player->GetCurrentTile()->setStarting(true);
+    }
+    else if(m == LEFT){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getLeft());
+        player->GetCurrentTile()->setStarting(true);
+    }
+    else if(m == RIGHT){
+        player->GetCurrentTile()->setStarting(false);
+        player->SetCurrentTile(player->GetCurrentTile()->getRight());
+        player->GetCurrentTile()->setStarting(true);
+    }
+    if(player->GetCurrentTile()->isKey()){
+        collectedKeys->setCurrentState(collectedKeys->getCurrentState()->getNext());
+    }
 }
 
 // algorithms
