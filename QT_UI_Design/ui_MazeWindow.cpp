@@ -32,8 +32,11 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     // Retranslate
     retranslateUi(MainWindow);
     paused = false;
-    this->grabKeyboard();
     currentSave = "";
+    moveUp = Qt::Key_W;
+    moveLeft = Qt::Key_A;
+    moveRight = Qt::Key_D;
+    moveDown = Qt::Key_S;
 //    this->installEventFilter(this);
 }
 
@@ -330,60 +333,66 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(0, QFormLayout::LabelRole, wallColorLabel);
 
-    wallColorLineEdit = new QLineEdit(VisualisationOptionsBox);
-    wallColorLineEdit->setObjectName(QString::fromUtf8("wallColorLineEdit"));
+    wallColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    wallColorPicker->setObjectName(QString::fromUtf8("wallColorPicker"));
+    wallColorPicker->setStandardColors();
 
-    formLayout_3->setWidget(0, QFormLayout::FieldRole, wallColorLineEdit);
+    formLayout_3->setWidget(0, QFormLayout::FieldRole, wallColorPicker);
 
     pathColorLabel = new QLabel(VisualisationOptionsBox);
     pathColorLabel->setObjectName(QString::fromUtf8("pathColorLabel"));
 
     formLayout_3->setWidget(1, QFormLayout::LabelRole, pathColorLabel);
 
-    pathColorLineEdit = new QLineEdit(VisualisationOptionsBox);
-    pathColorLineEdit->setObjectName(QString::fromUtf8("pathColorLineEdit"));
+    pathColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    pathColorPicker->setObjectName(QString::fromUtf8("pathColorPicker"));
+    pathColorPicker->setStandardColors();
 
-    formLayout_3->setWidget(1, QFormLayout::FieldRole, pathColorLineEdit);
+    formLayout_3->setWidget(1, QFormLayout::FieldRole, pathColorPicker);
 
     playerColorLabel = new QLabel(VisualisationOptionsBox);
     playerColorLabel->setObjectName(QString::fromUtf8("playerColorLabel"));
 
     formLayout_3->setWidget(2, QFormLayout::LabelRole, playerColorLabel);
 
-    playerColorLineEdit = new QLineEdit(VisualisationOptionsBox);
-    playerColorLineEdit->setObjectName(QString::fromUtf8("playerColorLineEdit"));
+    playerColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    playerColorPicker->setObjectName(QString::fromUtf8("playerColorPicker"));
+    playerColorPicker->setStandardColors();
 
-    formLayout_3->setWidget(2, QFormLayout::FieldRole, playerColorLineEdit);
+    formLayout_3->setWidget(2, QFormLayout::FieldRole, playerColorPicker);
 
     enemyColorLabel = new QLabel(VisualisationOptionsBox);
     enemyColorLabel->setObjectName(QString::fromUtf8("enemyColorLabel"));
 
     formLayout_3->setWidget(3, QFormLayout::LabelRole, enemyColorLabel);
 
-    enemyColorLineEdit = new QLineEdit(VisualisationOptionsBox);
-    enemyColorLineEdit->setObjectName(QString::fromUtf8("enemyColorLineEdit"));
+    enemyColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    enemyColorPicker->setObjectName(QString::fromUtf8("enemyColorPicker"));
+    enemyColorPicker->setStandardColors();
 
-    formLayout_3->setWidget(3, QFormLayout::FieldRole, enemyColorLineEdit);
+    formLayout_3->setWidget(3, QFormLayout::FieldRole, enemyColorPicker);
 
     keyColorLabel = new QLabel(VisualisationOptionsBox);
     keyColorLabel->setObjectName(QString::fromUtf8("keyColorLabel"));
 
     formLayout_3->setWidget(4, QFormLayout::LabelRole, keyColorLabel);
 
-    keyColorLineEdit = new QLineEdit(VisualisationOptionsBox);
-    keyColorLineEdit->setObjectName(QString::fromUtf8("keyColorLineEdit"));
+    keyColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    keyColorPicker->setObjectName(QString::fromUtf8("keyColorPicker"));
+    keyColorPicker->setStandardColors();
 
-    formLayout_3->setWidget(4, QFormLayout::FieldRole, keyColorLineEdit);
+    formLayout_3->setWidget(4, QFormLayout::FieldRole, keyColorPicker);
 
     exitColorLabel = new QLabel(VisualisationOptionsBox);
     exitColorLabel->setObjectName(QString::fromUtf8("exitColorLabel"));
 
     formLayout_3->setWidget(5, QFormLayout::LabelRole, exitColorLabel);
 
-    exitColorLineEdit = new QLineEdit(VisualisationOptionsBox);
-    exitColorLineEdit->setObjectName(QString::fromUtf8("exitColorLineEdit"));
+    exitColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    exitColorPicker->setObjectName(QString::fromUtf8("exitColorPicker"));
+    exitColorPicker->setStandardColors();
 
-    formLayout_3->setWidget(5, QFormLayout::FieldRole, exitColorLineEdit);
+    formLayout_3->setWidget(5, QFormLayout::FieldRole, exitColorPicker);
 
 
     gridLayout_2->addWidget(VisualisationOptionsBox, 1, 0, 1, 1);
@@ -398,40 +407,40 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_4->setWidget(0, QFormLayout::LabelRole, moveUpLabel);
 
-    moveUpLineEdit = new QLineEdit(KeybindsBox);
-    moveUpLineEdit->setObjectName(QString::fromUtf8("moveUpLineEdit"));
+    moveUpKeybind = new QKeySequenceEdit(KeybindsBox);
+    moveUpKeybind->setObjectName(QString::fromUtf8("moveUpKeybind"));
 
-    formLayout_4->setWidget(0, QFormLayout::FieldRole, moveUpLineEdit);
+    formLayout_4->setWidget(0, QFormLayout::FieldRole, moveUpKeybind);
 
     moveDownLabel = new QLabel(KeybindsBox);
     moveDownLabel->setObjectName(QString::fromUtf8("moveDownLabel"));
 
     formLayout_4->setWidget(1, QFormLayout::LabelRole, moveDownLabel);
 
-    moveDownLineEdit = new QLineEdit(KeybindsBox);
-    moveDownLineEdit->setObjectName(QString::fromUtf8("moveDownLineEdit"));
+    moveDownKeybind = new QKeySequenceEdit(KeybindsBox);
+    moveDownKeybind->setObjectName(QString::fromUtf8("moveDownKeybind"));
 
-    formLayout_4->setWidget(1, QFormLayout::FieldRole, moveDownLineEdit);
+    formLayout_4->setWidget(1, QFormLayout::FieldRole, moveDownKeybind);
 
     moveLeftLabel = new QLabel(KeybindsBox);
     moveLeftLabel->setObjectName(QString::fromUtf8("moveLeftLabel"));
 
     formLayout_4->setWidget(2, QFormLayout::LabelRole, moveLeftLabel);
 
-    moveLeftLineEdit = new QLineEdit(KeybindsBox);
-    moveLeftLineEdit->setObjectName(QString::fromUtf8("moveLeftLineEdit"));
+    moveLeftKeybind = new QKeySequenceEdit(KeybindsBox);
+    moveLeftKeybind->setObjectName(QString::fromUtf8("moveLeftKeybind"));
 
-    formLayout_4->setWidget(2, QFormLayout::FieldRole, moveLeftLineEdit);
+    formLayout_4->setWidget(2, QFormLayout::FieldRole, moveLeftKeybind);
 
     moveRightLabel = new QLabel(KeybindsBox);
     moveRightLabel->setObjectName(QString::fromUtf8("moveRightLabel"));
 
     formLayout_4->setWidget(3, QFormLayout::LabelRole, moveRightLabel);
 
-    moveRightLineEdit = new QLineEdit(KeybindsBox);
-    moveRightLineEdit->setObjectName(QString::fromUtf8("moveRightLineEdit"));
+    moveRightKeybind = new QKeySequenceEdit(KeybindsBox);
+    moveRightKeybind->setObjectName(QString::fromUtf8("moveRightKeybind"));
 
-    formLayout_4->setWidget(3, QFormLayout::FieldRole, moveRightLineEdit);
+    formLayout_4->setWidget(3, QFormLayout::FieldRole, moveRightKeybind);
 
 
     gridLayout_2->addWidget(KeybindsBox, 1, 1, 1, 1);
@@ -461,6 +470,10 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     // Connect buttons to slots
     connect(mainMenuButton_optionsScreen , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()) );
+    connect(moveUpKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
+    connect(moveDownKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
+    connect(moveLeftKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
+    connect(moveRightKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
 
 }
 
@@ -551,7 +564,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
     inputTime->start(50);
     MazeView->setFocus();
-
+    this->grabKeyboard();
 }
 
 void Ui_MazeWindow::pauseGame() {
@@ -648,16 +661,16 @@ void Ui_MazeWindow::play() {
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
 
-    if(k->key() == Qt::Key_W || k->key() == Qt::Key_Up){
+    if(k->key() == moveUp){
         gameLayout->simulateMove(UP);
     }
-    else if(k->key() == Qt::Key_A || k->key() == Qt::Key_Left){
+    else if(k->key() == moveLeft){
         gameLayout->simulateMove(LEFT);
     }
-    else if(k->key() == Qt::Key_S || k->key() == Qt::Key_Down){
+    else if(k->key() == moveDown){
         gameLayout->simulateMove(DOWN);
     }
-    else if(k->key() == Qt::Key_D || k->key() == Qt::Key_Right){
+    else if(k->key() == moveRight){
         gameLayout->simulateMove(RIGHT);
     }
     else{
@@ -674,5 +687,17 @@ bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
         // standard event processing
         return false;
     }
+}
+
+void Ui_MazeWindow::setShortcuts() {
+//    moveUp = moveUpKeybind->keySequence()[0];
+//    moveUpKeybind->clear();
+//    moveDown = moveDownKeybind->keySequence()[0];
+//    moveDownKeybind->clear();
+//    moveLeft = moveLeftKeybind->keySequence()[0];
+//    moveLeftKeybind->clear();
+//    moveRight = moveRightKeybind->keySequence()[0];
+//    moveRightKeybind->clear();
+
 }
 
