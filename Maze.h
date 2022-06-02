@@ -32,6 +32,7 @@ class Maze : vector<vector<Path*>> {
 
     // File specs
     string levelName;
+    string savedFile;
 
     // Collectables dfa
     Collectable_DFA* collectedKeys;
@@ -74,7 +75,11 @@ public:
 
     void generateCustom();
 
-    void saveGame();
+    void saveGame(const string &fileNameInput);
+
+    void quickSave();
+
+    void Save(const string &fileName);
 
     void loadGame(const string &fileName);
 
@@ -103,7 +108,11 @@ public:
     virtual ~Maze();
 
 private:
+    // maze generator
     void tileConfig(Path* &leftTile, Path* &rightTile, int i, int j);
+
+    // TFA
+    void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
 };
 
 
