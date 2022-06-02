@@ -1,6 +1,7 @@
 #include <iostream>
 #include <qmainwindow.h>
 #include <QtWidgets>
+#include <QUrl>
 #include <qnamespace.h>
 #include "ui_MazeWindow.h"
 #include "../Parser.h"
@@ -32,6 +33,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     retranslateUi(MainWindow);
     paused = false;
     this->grabKeyboard();
+    currentSave = "";
 //    this->installEventFilter(this);
 }
 
@@ -39,9 +41,9 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Untitled Maze Game", nullptr));
 
-    #ifndef QT_NO_ACCESSIBILITY
-        MainWindow->setAccessibleName(QString());
-    #endif // QT_NO_ACCESSIBILITY
+#ifndef QT_NO_ACCESSIBILITY
+    MainWindow->setAccessibleName(QString());
+#endif // QT_NO_ACCESSIBILITY
 
     loadAct->setText(QApplication::translate("MainWindow", "Load", nullptr));
     saveAct->setText(QApplication::translate("MainWindow", "Save", nullptr));
@@ -454,6 +456,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     moveDownLabel->setText(QApplication::translate("OptionsScreen", "Move down", nullptr));
     moveLeftLabel->setText(QApplication::translate("OptionsScreen", "Move left", nullptr));
     moveRightLabel->setText(QApplication::translate("OptionsScreen", "Move right", nullptr));
+
     mainMenuButton_optionsScreen->setText(QApplication::translate("OptionsScreen", "Main Menu", nullptr));
 
     // Connect buttons to slots
@@ -480,12 +483,28 @@ void Ui_MazeWindow::newGame() {
 
 void Ui_MazeWindow::save() {
     if(gameLayout != nullptr){
-//        gameLayout->saveGame();
+        if(currentSave == ""){
+            // From official QT doc https://doc.qt.io/qt-5/qfiledialog.html#fileMode-prop
+            currentSave = QFileDialog::getSaveFileName(this , "Save game" , SVG1 , "MazeSave (*.txt)");
+            gameLayout->setSavedFile("");
+            gameLayout->Save(currentSave.toStdString());
+            // Update save file
+            currentSave = QString::fromStdString(gameLayout->getSavedFile());
+        }
+        else{
+            gameLayout->Save();
+            currentSave = QString::fromStdString(gameLayout->getSavedFile());
+        }
     }
 }
 
 void Ui_MazeWindow::load() {
-    cout << "Load Game option" << endl;
+
+    QString loadSave = QFileDialog::getOpenFileName(this , "Open save" , SVG1 , "MazeSave (*.json)");
+    if(!loadSave.toStdString().empty()){
+        Parser* parser = new Parser(loadSave.toStdString());
+        loadLevel(loadSave.toStdString());
+    }
 }
 
 void Ui_MazeWindow::options() {
@@ -502,8 +521,8 @@ void Ui_MazeWindow::loadLevel(string filename){
     // Create maze
     gameLayout = new Maze();
     // Load maze
-    gameLayout->loadGame(LEVDIR + parser->getTxt_Filename());
-//    gameLayout->setLevelName(parser->getTxt_Filename());
+    gameLayout->loadGame(parser->getTxt_Filename());
+    gameLayout->setSavedFile(parser->getTxt_Filename());
 
     MenuScreens->setCurrentWidget(levelScreen);
     // Create Graphics Scene
@@ -530,11 +549,11 @@ void Ui_MazeWindow::loadLevel(string filename){
     delete parser;
     inputTime = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    inputTime->start(0);
+    inputTime->start(50);
     MazeView->setFocus();
-    cout << "Loaded level " + filename << endl;
 
 }
+
 void Ui_MazeWindow::pauseGame() {
     cout << "Pause Game option" << endl;
 }

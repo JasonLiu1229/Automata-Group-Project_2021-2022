@@ -88,8 +88,9 @@ private slots:
 
 private:
 
-    // Maze layout
+    // Main functionality elements
     Maze* gameLayout;
+    QString currentSave;
 
     // Screen generation functions
     void createActions(QMainWindow *MainWindow);

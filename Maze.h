@@ -71,6 +71,10 @@ public:
 
     void setLevelName(const string &levelName);
 
+    const string &getSavedFile() const;
+
+    void setSavedFile(const string &savedFile);
+
     // user interface
     void playMaze();
 
@@ -82,7 +86,7 @@ public:
 
     void quickSave();
 
-    void Save(const string &fileName);
+    void Save(const string &fileName = "");
 
     void loadGame(const string &fileName);
 
