@@ -1,11 +1,3 @@
-/********************************************************************************
-** Form generated from reading UI file 'UI_MazeWindowRI4129.ui'
-**
-** Created by: Qt User Interface Compiler version 4.8.7
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
-
 #ifndef UI_MAZEWINDOWRI4129_H
 #define UI_MAZEWINDOWRI4129_H
 
@@ -30,6 +22,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QTimer>
+#include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
 #include "../Maze.h"
@@ -61,7 +54,6 @@ public:
 private slots:
 
     void slot_new() {newGame();}
-    void slot_open() {open();}
     void slot_save() {save();}
     void slot_load() {load();}
     void slot_options() {options();}
@@ -156,7 +148,7 @@ private:
     QGraphicsScene *MazeScene;
 
     // Actions
-    QAction *openAct;
+    QAction *loadAct;
     QAction *saveAct;
     QAction *exitAct;
     QAction *optionsAct;

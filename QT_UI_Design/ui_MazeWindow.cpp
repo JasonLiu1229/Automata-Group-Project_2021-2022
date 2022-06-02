@@ -43,7 +43,7 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
         MainWindow->setAccessibleName(QString());
     #endif // QT_NO_ACCESSIBILITY
 
-    openAct->setText(QApplication::translate("MainWindow", "Open", nullptr));
+    loadAct->setText(QApplication::translate("MainWindow", "Load", nullptr));
     saveAct->setText(QApplication::translate("MainWindow", "Save", nullptr));
     exitAct->setText(QApplication::translate("MainWindow", "Exit", nullptr));
     actionFullscreen->setText(QApplication::translate("MainWindow", "Fullscreen", nullptr));
@@ -61,10 +61,10 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
 
 void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
 
-    openAct = new QAction(tr("&Open"), this);
-    openAct->setShortcuts(QKeySequence::Open);
-    openAct->setStatusTip(tr("Read game from disk"));
-    connect(openAct, &QAction::triggered, this, &Ui_MazeWindow::slot_open);
+    loadAct = new QAction(tr("&Load"), this);
+    loadAct->setShortcuts(QKeySequence::Open);
+    loadAct->setStatusTip(tr("Read game from disk"));
+    connect(loadAct, &QAction::triggered, this, &Ui_MazeWindow::slot_load);
 
     saveAct = new QAction(tr("&Save"), this);
     saveAct->setShortcuts(QKeySequence::Save);
@@ -178,7 +178,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
 
     menubar->addAction(menuFile->menuAction());
     menubar->addAction(menuOptions->menuAction());
-    menuFile->addAction(openAct);
+    menuFile->addAction(loadAct);
     menuFile->addAction(saveAct);
     menuFile->addAction(exitAct);
     menuOptions->addAction(actionFullscreen);
@@ -324,13 +324,9 @@ void Ui_MazeWindow::newGame() {
     MenuScreens->setCurrentWidget(LevelSelectionScreen);
 }
 
-void Ui_MazeWindow::open() {
-    cout << "Open Game option" << endl;
-}
-
 void Ui_MazeWindow::save() {
     if(gameLayout != nullptr){
-        gameLayout->saveGame();
+//        gameLayout->saveGame();
     }
 }
 
@@ -479,16 +475,16 @@ void Ui_MazeWindow::play() {
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
 
-    if(k->key() == Qt::Key_W){
+    if(k->key() == Qt::Key_W || k->key() == Qt::Key_Up){
         gameLayout->simulateMove(UP);
     }
-    else if(k->key() == Qt::Key_A){
+    else if(k->key() == Qt::Key_A || k->key() == Qt::Key_Left){
         gameLayout->simulateMove(LEFT);
     }
-    else if(k->key() == Qt::Key_S){
+    else if(k->key() == Qt::Key_S || k->key() == Qt::Key_Down){
         gameLayout->simulateMove(DOWN);
     }
-    else if(k->key() == Qt::Key_D){
+    else if(k->key() == Qt::Key_D || k->key() == Qt::Key_Right){
         gameLayout->simulateMove(RIGHT);
     }
     else{
@@ -500,7 +496,6 @@ bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
     if ( e->type() == QEvent::KeyPress || e->type() == QEvent::KeyRelease ) {
         // special processing for key press
         auto *k = (QKeyEvent *)e;
-        qDebug( "Ate key press %d", k->key() );
         return true; // eat event
     } else {
         // standard event processing
