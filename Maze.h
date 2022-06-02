@@ -69,6 +69,10 @@ public:
 
     void setLevelName(const string &levelName);
 
+    const string &getSavedFile() const;
+
+    void setSavedFile(const string &savedFile);
+
     // user interface
     void playMaze();
 

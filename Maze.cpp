@@ -155,25 +155,25 @@ void Maze::saveGame(const string &fileNameInput) {
     bool exists = false;
     int i = 0;
     string filename;
-    filename = SVG1;
-    filename += fileNameInput;
+    filename = fileNameInput;
+//    filename += fileNameInput;
     filename += TXT;
 
     while (!exists){
         i++;
         codefile = fopen(filename.c_str(), "r");
         if (codefile){
-            filename = SVG1;
-            filename += fileNameInput;
+//            filename = SVG1;
+            filename = fileNameInput;
             filename += '(' + to_string(i) + ')' + TXT;
         }
         else {
-            saveFile.open(filename.c_str(), ios::app | ios::ate);
+            saveFile.open(filename.c_str(), ios::app | ios::out);
             savedFile = filename;
             exists = true;
         }
     }
-
+    cout << boolalpha << saveFile.is_open() << endl;
     // write in a file
     for (int k = 0; k < width; ++k) {
         for (int j = 0; j < height; ++j) {
@@ -204,9 +204,9 @@ void Maze::saveGame(const string &fileNameInput) {
     fstream saveFileJson;
     exists = false;
     string filenameJ;
-    filenameJ = SVG1;
-    filenameJ += fileNameInput;
+    filenameJ = fileNameInput;
     filenameJ += JSON;
+
 
     i = 0;
     while (!exists){
@@ -637,4 +637,20 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
 
 Maze::~Maze() {
 
+}
+
+const string &Maze::getSavedFile() const {
+    return savedFile;
+}
+
+void Maze::setSavedFile(const string &savedFile) {
+    Maze::savedFile = savedFile;
+}
+
+const string &Maze::getLevelName() const {
+    return levelName;
+}
+
+void Maze::setLevelName(const string &levelName) {
+    Maze::levelName = levelName;
 }
