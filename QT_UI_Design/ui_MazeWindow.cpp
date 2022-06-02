@@ -549,7 +549,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     delete parser;
     inputTime = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    inputTime->start(50);
+    inputTime->start(0);
     MazeView->setFocus();
 
 }
