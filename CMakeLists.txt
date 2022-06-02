@@ -32,9 +32,7 @@ set(Movement_classes
         )
 
 set(QT_Utils
-        QT_Utils/MazeWindow.cpp
-        QT_Utils/MazeGUI.cpp
-        QT_Utils/MazeLayout.cpp
+        QT_Utils/qtcolorpicker.cpp
         )
 
 set(QT_UI
@@ -52,14 +50,11 @@ set(Qt5_DIR "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5")
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
 add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes})
-add_executable(MazeRunnerVisOld MazeRunnerVisOld.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${QT_Utils} ${Movement_classes})
-add_executable(MazeRunnerVisNew MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI})
+add_executable(MazeRunnerVisNew MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI} ${QT_Utils})
 
 set_target_properties("MazeRunner" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
-set_target_properties("MazeRunnerVisOld" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
 set_target_properties("MazeRunnerVisNew" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
 
 # Link the library to the executable
 target_link_libraries(MazeRunner Qt5::Widgets)
-target_link_libraries(MazeRunnerVisOld Qt5::Core Qt5::Widgets)
 target_link_libraries(MazeRunnerVisNew Qt5::Core Qt5::Widgets)

@@ -1,11 +1,3 @@
-/********************************************************************************
-** Form generated from reading UI file 'UI_MazeWindowRI4129.ui'
-**
-** Created by: Qt User Interface Compiler version 4.8.7
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
-
 #ifndef UI_MAZEWINDOWRI4129_H
 #define UI_MAZEWINDOWRI4129_H
 
@@ -30,6 +22,12 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QFormLayout>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
 #include "../Maze.h"
@@ -61,7 +59,6 @@ public:
 private slots:
 
     void slot_new() {newGame();}
-    void slot_open() {open();}
     void slot_save() {save();}
     void slot_load() {load();}
     void slot_options() {options();}
@@ -91,11 +88,15 @@ private slots:
 
 private:
 
+    // Maze layout
     Maze* gameLayout;
+
+    // Screen generation functions
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
     void createLevelScreen(QMainWindow *MainWindow);
+    void createOptionsScreen(QMainWindow *MainWindow);
 
     // Maze visualisation
 
@@ -118,7 +119,7 @@ private:
     QWidget *MainScreen;
     QWidget *LevelSelectionScreen;
     QWidget *levelScreen;
-    QWidget *keyboard;
+    QWidget *optionsScreen;
     
     // Menu bar
     QMenuBar *menubar;
@@ -129,6 +130,7 @@ private:
     QStatusBar *statusbar;
 
     // Main screen
+
     QWidget *verticalLayoutWidget;
     QVBoxLayout *MainScreenLayout;
     QPushButton *newGameButton;
@@ -137,6 +139,7 @@ private:
     QPushButton *ExitButton;
 
     // Level selection screen
+
     QGridLayout *LevelsGrid;
     QPushButton *Level3;
     QPushButton *Level4;
@@ -145,9 +148,10 @@ private:
     QPushButton *MenuButton;
 
     // Level screen
+
+    QHBoxLayout *horizontalLayout;
     QHBoxLayout *horizontalLayout_2;
     QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
     QPushButton *mainMenuButton;
     QPushButton *pauseButton;
     QPushButton *HTP_button;
@@ -155,20 +159,50 @@ private:
     QGraphicsView *MazeView;
     QGraphicsScene *MazeScene;
 
+    // Options screen
+
+    QGridLayout *gridLayout_2;
+
+    QGroupBox *VisualisationOptionsBox;
+    QFormLayout *formLayout_3;
+    QLabel *wallColorLabel;
+    QLineEdit *wallColorLineEdit;
+    QLabel *pathColorLabel;
+    QLineEdit *pathColorLineEdit;
+    QLabel *playerColorLabel;
+    QLineEdit *playerColorLineEdit;
+    QLabel *enemyColorLabel;
+    QLineEdit *enemyColorLineEdit;
+    QLabel *keyColorLabel;
+    QLineEdit *keyColorLineEdit;
+    QLabel *exitColorLabel;
+    QLineEdit *exitColorLineEdit;
+
+    QGroupBox *KeybindsBox;
+    QFormLayout *formLayout_4;
+    QLabel *moveUpLabel;
+    QLineEdit *moveUpLineEdit;
+    QLabel *moveDownLabel;
+    QLineEdit *moveDownLineEdit;
+    QLabel *moveLeftLabel;
+    QLineEdit *moveLeftLineEdit;
+    QLabel *moveRightLabel;
+    QLineEdit *moveRightLineEdit;
+    QPushButton *mainMenuButton_optionsScreen;
+
     // Actions
-    QAction *openAct;
+    QAction *loadAct;
     QAction *saveAct;
     QAction *exitAct;
     QAction *optionsAct;
     QAction *actionFullscreen;
     QAction *actionGame_Options;
-    QAction *actionWindow_Options;
     QAction *mainMenuRet;
 
     // Visualisation parameters
     QColor wallColor;
     QColor pathColor;
-    QColor doorColor;
+    QColor exitColor;
     QColor playerColor;
     QColor enemyColor;
 
@@ -185,7 +219,9 @@ private:
     void play();
     bool paused;
     QTimer* inputTime;
+
 protected:
+
     void keyPressEvent(QKeyEvent *k) override;
 
     bool eventFilter( QObject *o, QEvent *e ) override;

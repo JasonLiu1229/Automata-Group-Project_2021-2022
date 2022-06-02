@@ -12,7 +12,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0) {
+Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0), savedFile("") {
     Parser jsonParser(fileName);
     levelName = jsonParser.getTxt_Filename();
     bool failed = generateMaze(levelName);
@@ -146,7 +146,7 @@ void Maze::generateCustom() {
     Maze::customLevel = true;
 }
 
-void Maze::saveGame() {
+void Maze::saveGame(const string &fileNameInput) {
     // write status of whole game in a txt file
     // TXT file
     fstream saveFile;
@@ -157,6 +157,7 @@ void Maze::saveGame() {
     int i = 0;
     string filename;
     filename = SVG1;
+    filename += fileNameInput;
     filename += TXT;
 
     while (!exists){
@@ -164,10 +165,12 @@ void Maze::saveGame() {
         codefile = fopen(filename.c_str(), "r");
         if (codefile){
             filename = SVG1;
+            filename += fileNameInput;
             filename += '(' + to_string(i) + ')' + TXT;
         }
         else {
             saveFile.open(filename.c_str(), ios::app | ios::ate);
+            savedFile = filename;
             exists = true;
         }
     }
@@ -203,6 +206,7 @@ void Maze::saveGame() {
     exists = false;
     string filenameJ;
     filenameJ = SVG1;
+    filenameJ += fileNameInput;
     filenameJ += JSON;
 
     i = 0;
@@ -211,6 +215,7 @@ void Maze::saveGame() {
         codefile = fopen(filenameJ.c_str(), "r");
         if (codefile){
             filenameJ = SVG1;
+            filenameJ += fileNameInput;
             filenameJ += '(' + to_string(i) + ')' + JSON;
         }
         else {
@@ -224,6 +229,46 @@ void Maze::saveGame() {
     file["Level"] = {{"fileName", filename}, {"regex", ""}};
     saveFileJson << std::setw(4) << file << endl;
     saveFileJson.close();
+}
+
+void Maze::quickSave() {
+    ofstream saveFile;
+    saveFile.open(savedFile);
+    // write in a file
+    for (int k = 0; k < width; ++k) {
+        for (int j = 0; j < height; ++j) {
+            Path* oldPath = this->at(k).at(j);
+            if (oldPath->getSettings() == path){
+                if (oldPath->isKey()){
+                    saveFile << '^';
+                }
+                else if (oldPath->isStarting()){
+                    saveFile << '$';
+                }
+                else if (oldPath->isAccepting()){
+                    saveFile << '&';
+                }
+                else {
+                    saveFile << '.';
+                }
+            }
+            else if (oldPath->getSettings() == wall){
+                saveFile << '#';
+            }
+        }
+        saveFile << '\n';
+    }
+    saveFile.close();
+}
+
+void Maze::Save(const string &fileName) {
+    if (savedFile.empty()){
+        // hard save
+        saveGame(fileName);
+    }
+    else{
+        quickSave();
+    }
 }
 
 void Maze::loadGame(const string &fileName) {
@@ -321,6 +366,7 @@ void Maze::loadGame(const string &fileName) {
     }
     collectedKeys = new Collectable_DFA(key_count);
 }
+
 void Maze::simulateMove(movement m) {
     if(player->getCurrentTile() == nullptr){
         return;
@@ -351,12 +397,20 @@ void Maze::simulateMove(movement m) {
 }
 
 // algorithms
+
 /*TFA minimize*/
+
+void Maze::recursionMinimize(Maze *&maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates) {
+
+}
+
+
 Maze *Maze::minimize() {
     auto* minimizeMaze = new Maze();
 
     // create starting table
     map<pair<Path*, Path*>, bool> Table;
+    set<pair<Path*, Path*>> markedStates;
     for (int i = 0; i < allPaths.size() - 1; ++i) {
         pair<Path*, Path*> couple;
         couple.first = allPaths[i];
@@ -367,17 +421,19 @@ Maze *Maze::minimize() {
             }
             else {
                 Table[couple] = true;
+                markedStates.insert(couple);
             }
         }
     }
 
     // minimize
+    recursionMinimize(minimizeMaze, Table, markedStates);
 
     // combine equivalent states
 
+
     return minimizeMaze;
 }
-
 /*DFA -> regex*/
 bool Maze::yeah(vector<string> alpha, Path* staat){
     bool yeah = true;
@@ -388,7 +444,6 @@ bool Maze::yeah(vector<string> alpha, Path* staat){
     }
     return yeah;
 }
-
 bool Maze::done(Path* plaats){
     for(auto i:allPaths){
         if(i==plaats && i->isAccepting()){
@@ -397,6 +452,7 @@ bool Maze::done(Path* plaats){
     }
     return false;
 }
+
 bool Maze::doublecheck(vector<Path*> vec, Path* str){
     for(auto i:vec){
         if(i == str){
@@ -552,12 +608,13 @@ void Maze::toRegex(Path* curr, string even,vector<Path*> gonethere){
         }
     }
 }
+
 string Maze::toRgex() {
     toRegex(start,"",{});
     return regex;
 }
 
-/*regex -> enfa -> mssc -> dfa*/
+/*Regex -> enfa -> mssc -> dfa*/
 void Maze::toDFA() {
 
 }
