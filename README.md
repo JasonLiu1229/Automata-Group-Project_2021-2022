@@ -21,4 +21,7 @@ Markov's chain algorithm implemented as enemy movement,
 it decides the level of difficulty of how the enemy moves 
 
 ## Resources
-...  
+- QT
+    - qtcolorpicker :
+        https://github.com/pothosware/PothosFlow/tree/master/qtcolorpicker
+          
