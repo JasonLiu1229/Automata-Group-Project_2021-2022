@@ -197,7 +197,6 @@ void Maze::saveGame(const string &fileNameInput) {
             exists = true;
         }
     }
-    cout << boolalpha << saveFile.is_open() << endl;
     // write in a file
     for (int k = 0; k < width; ++k) {
         for (int j = 0; j < height; ++j) {

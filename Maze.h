@@ -84,7 +84,7 @@ public:
 
     void quickSave();
 
-    void Save(const string &fileName);
+    void Save(const string &fileName = "");
 
     void loadGame(const string &fileName);
 

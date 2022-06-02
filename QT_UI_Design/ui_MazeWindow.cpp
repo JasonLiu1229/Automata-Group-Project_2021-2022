@@ -41,9 +41,9 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Untitled Maze Game", nullptr));
 
-    #ifndef QT_NO_ACCESSIBILITY
-        MainWindow->setAccessibleName(QString());
-    #endif // QT_NO_ACCESSIBILITY
+#ifndef QT_NO_ACCESSIBILITY
+    MainWindow->setAccessibleName(QString());
+#endif // QT_NO_ACCESSIBILITY
 
     loadAct->setText(QApplication::translate("MainWindow", "Load", nullptr));
     saveAct->setText(QApplication::translate("MainWindow", "Save", nullptr));
@@ -492,7 +492,7 @@ void Ui_MazeWindow::save() {
             currentSave = QString::fromStdString(gameLayout->getSavedFile());
         }
         else{
-            gameLayout->quickSave();
+            gameLayout->Save();
             currentSave = QString::fromStdString(gameLayout->getSavedFile());
         }
     }
@@ -549,7 +549,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     delete parser;
     inputTime = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    inputTime->start(0);
+    inputTime->start(50);
     MazeView->setFocus();
 
 }
