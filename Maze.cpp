@@ -619,6 +619,22 @@ void Maze::toDFA() {
 
 }
 
+/*Dijkstra's algorithm*/
+string Maze::findShortestRoute() {
+    return recursionShortFinder(start, IDLE).first;
+}
+
+pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove) {
+    pair<string, bool> shortestRoute;
+    if (previousMove == IDLE){
+
+    }
+    else {
+
+    }
+    return shortestRoute;
+}
+
 Maze::~Maze() {
 
 }

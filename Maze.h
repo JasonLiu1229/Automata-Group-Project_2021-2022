@@ -46,6 +46,7 @@ class Maze : vector<vector<Path*>> {
 
     // all Paths
     vector<Path*> allPaths;
+
     Path* start;
 
 public:
@@ -104,6 +105,8 @@ public:
 
     void toDFA();       // regex -> enfa -> mssc -> dfa
 
+    string findShortestRoute(); // Dijkstra's algorithm
+
     // destructor
     virtual ~Maze();
 
@@ -113,6 +116,9 @@ private:
 
     // TFA
     void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
+
+    // Dijkstra
+    pair<string, bool> recursionShortFinder(Path* current, movement previousMove);
 };
 
 
