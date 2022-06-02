@@ -645,7 +645,16 @@ void Maze::toDFA() {
 
 /*Dijkstra's algorithm*/
 string Maze::findShortestRoute() {
-    return recursionShortFinder(start, IDLE).first;
+    vector<string> allmoves;
+    string finalString;
+    recursionShortFinder(start, IDLE, finalString, allmoves);
+    finalString = allmoves[0];
+    for (const auto& move : allmoves){
+        if (finalString.size() > move.size()){
+            finalString = move;
+        }
+    }
+    return finalString;
 }
 
 int amountOfPmoves(Path* current){
@@ -665,42 +674,42 @@ int amountOfPmoves(Path* current){
     return  amountOfMovs;
 }
 
-pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove) {
+pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove, string finalString, vector<string> &allmoves) {
     pair<string, bool> shortestRoute = {"", true};
     string temp = shortestRoute.first;
-    if (previousMove == IDLE){
+    if (current->isAccepting()){
+        allmoves.push_back(finalString);
+        return shortestRoute;
+    }
+    else if (previousMove == IDLE){
         if (current->getDown() != nullptr){
             temp = "s";
-            if (recursionShortFinder(current->getDown(), DOWN).second){
-                temp += recursionShortFinder(current->getDown(), DOWN).first;
-                shortestRoute.first = temp;
+            if (recursionShortFinder(current->getDown(), UP, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), UP, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
             }
         } else if (current->getUp() != nullptr){
             temp = "w";
-            if (recursionShortFinder(current->getDown(), UP).second){
-                temp += recursionShortFinder(current->getDown(), UP).first;
-                shortestRoute.first = temp;
+            if (recursionShortFinder(current->getDown(), DOWN, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), DOWN, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
             }
         } else if (current->getLeft() != nullptr){
             temp = "a";
-            if (recursionShortFinder(current->getDown(), LEFT).second){
-                temp += recursionShortFinder(current->getDown(), LEFT).first;
-                shortestRoute.first = temp;
+            if (recursionShortFinder(current->getDown(), RIGHT, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), RIGHT, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
             }
         } else if (current->getRight() != nullptr){
             temp = "d";
-            if (recursionShortFinder(current->getDown(), RIGHT).second){
-                temp += recursionShortFinder(current->getDown(), RIGHT).first;
-                shortestRoute.first = temp;
+            if (recursionShortFinder(current->getDown(), LEFT, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), LEFT, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
@@ -713,16 +722,48 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
     else {
         int amountOfMoves = amountOfPmoves(current);
 
-        if (amountOfMoves > 1){
-            while (amountOfPmoves(current) > 1){
-
+        while(amountOfMoves > 1){
+            if (amountOfMoves == 2){
+                if (current->getDown() != nullptr and previousMove != UP){
+                    current = current->getDown();
+                    previousMove = UP;
+                    temp += "s";
+                }
+                else if (current->getUp() != nullptr and previousMove != DOWN){
+                    current = current->getDown();
+                    previousMove = DOWN;
+                    temp += "s";
+                }
+                else if (current->getLeft() != nullptr and previousMove != RIGHT){
+                    current = current->getDown();
+                    previousMove = RIGHT;
+                    temp += "s";
+                }
+                else if (current->getRight() != nullptr and previousMove != LEFT){
+                    current = current->getDown();
+                    previousMove = LEFT;
+                    temp += "s";
+                }
             }
-        }
-        else {
-            shortestRoute.second = false;
-            return shortestRoute;
+            else {
+                string temp2;
+                if (current->getDown() != nullptr and previousMove != UP){
+                    
+                }
+                if (current->getUp() != nullptr and previousMove != DOWN){
+
+                }
+                if (current->getLeft() != nullptr and previousMove != RIGHT){
+
+                }
+                if (current->getRight() != nullptr and previousMove != LEFT){
+
+                }
+            }
+            amountOfMoves = amountOfPmoves(current);
         }
     }
+    shortestRoute.first = temp;
     return shortestRoute;
 }
 

@@ -49,6 +49,8 @@ class Maze : vector<vector<Path*>> {
 
     Path* start;
 
+    string shortestMove;
+
 public:
     // constructors
     Maze();
@@ -118,7 +120,7 @@ private:
     void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
 
     // Dijkstra
-    pair<string, bool> recursionShortFinder(Path* current, movement previousMove);
+    pair<string, bool> recursionShortFinder(Path* current, movement previousMove, string finalString, vector<string> &allmoves);
 };
 
 
