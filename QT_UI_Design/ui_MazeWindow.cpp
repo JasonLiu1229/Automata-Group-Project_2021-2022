@@ -314,6 +314,8 @@ void Ui_MazeWindow::createLevelScreen(QMainWindow *MainWindow){
 
 void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
+    QString currentName;
+
     // Create new widget
     optionsScreen = new QWidget(MainWindow);
     optionsScreen->setObjectName(QString::fromUtf8("OptionsScreen"));
@@ -333,9 +335,11 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(0, QFormLayout::LabelRole, wallColorLabel);
 
-    wallColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    wallColorPicker = new QPushButton(VisualisationOptionsBox);
     wallColorPicker->setObjectName(QString::fromUtf8("wallColorPicker"));
-    wallColorPicker->setStandardColors();
+    currentName = wallColor.name();
+    wallColorPicker->setText(wallColor.name());
+//    wallColorPicker->setStandardColors();
 
     formLayout_3->setWidget(0, QFormLayout::FieldRole, wallColorPicker);
 
@@ -344,9 +348,9 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(1, QFormLayout::LabelRole, pathColorLabel);
 
-    pathColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    pathColorPicker = new QPushButton(VisualisationOptionsBox);
     pathColorPicker->setObjectName(QString::fromUtf8("pathColorPicker"));
-    pathColorPicker->setStandardColors();
+//    pathColorPicker->setStandardColors();
 
     formLayout_3->setWidget(1, QFormLayout::FieldRole, pathColorPicker);
 
@@ -355,9 +359,10 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(2, QFormLayout::LabelRole, playerColorLabel);
 
-    playerColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    playerColorPicker = new QPushButton(VisualisationOptionsBox);
     playerColorPicker->setObjectName(QString::fromUtf8("playerColorPicker"));
-    playerColorPicker->setStandardColors();
+
+//    playerColorPicker->setStandardColors();
 
     formLayout_3->setWidget(2, QFormLayout::FieldRole, playerColorPicker);
 
@@ -366,9 +371,9 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(3, QFormLayout::LabelRole, enemyColorLabel);
 
-    enemyColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    enemyColorPicker = new QPushButton(VisualisationOptionsBox);
     enemyColorPicker->setObjectName(QString::fromUtf8("enemyColorPicker"));
-    enemyColorPicker->setStandardColors();
+//    enemyColorPicker->setStandardColors();
 
     formLayout_3->setWidget(3, QFormLayout::FieldRole, enemyColorPicker);
 
@@ -377,9 +382,9 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(4, QFormLayout::LabelRole, keyColorLabel);
 
-    keyColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    keyColorPicker = new QPushButton(VisualisationOptionsBox);
     keyColorPicker->setObjectName(QString::fromUtf8("keyColorPicker"));
-    keyColorPicker->setStandardColors();
+//    keyColorPicker->setStandardColors();
 
     formLayout_3->setWidget(4, QFormLayout::FieldRole, keyColorPicker);
 
@@ -388,9 +393,9 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_3->setWidget(5, QFormLayout::LabelRole, exitColorLabel);
 
-    exitColorPicker = new QtColorPicker(VisualisationOptionsBox);
+    exitColorPicker = new QPushButton(VisualisationOptionsBox);
     exitColorPicker->setObjectName(QString::fromUtf8("exitColorPicker"));
-    exitColorPicker->setStandardColors();
+//    exitColorPicker->setStandardColors();
 
     formLayout_3->setWidget(5, QFormLayout::FieldRole, exitColorPicker);
 

@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QKeySequenceEdit>
+#include <QColorDialog>
 #include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
@@ -170,17 +171,17 @@ private:
     QGroupBox *VisualisationOptionsBox;
     QFormLayout *formLayout_3;
     QLabel *wallColorLabel;
-    QtColorPicker *wallColorPicker;
+    QPushButton *wallColorPicker;
     QLabel *pathColorLabel;
-    QtColorPicker *pathColorPicker;
+    QPushButton *pathColorPicker;
     QLabel *playerColorLabel;
-    QtColorPicker *playerColorPicker;
+    QPushButton *playerColorPicker;
     QLabel *enemyColorLabel;
-    QtColorPicker *enemyColorPicker;
+    QPushButton *enemyColorPicker;
     QLabel *keyColorLabel;
-    QtColorPicker *keyColorPicker;
+    QPushButton *keyColorPicker;
     QLabel *exitColorLabel;
-    QtColorPicker *exitColorPicker;
+    QPushButton *exitColorPicker;
 
     QGroupBox *KeybindsBox;
     QFormLayout *formLayout_4;
