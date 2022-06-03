@@ -15,11 +15,7 @@ using json = nlohmann::json;
 Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0), savedFile("") {
     Parser jsonParser(fileName);
     levelName = jsonParser.getTxt_Filename();
-    bool failed = generateMaze(levelName);
-    if (!failed){
-        cout << "File was corrupted or not found" << endl;
-    }
-    /*simulateStart();*/
+    loadGame(levelName);
 }
 
 Maze::Maze(): key_count(0){
@@ -894,10 +890,10 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
             }
         }
     }
-
     shortestRoute.first = temp;
     return shortestRoute;
 }
+
 Maze::~Maze() {
 
 }
