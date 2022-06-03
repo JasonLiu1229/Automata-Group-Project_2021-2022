@@ -66,3 +66,7 @@ void Player::setCurrentTile(Path *currentTile) {
 }
 
 Player::~Player() {}
+
+bool Player::playerRose() {
+    dead = false;
+}

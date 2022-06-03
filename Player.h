@@ -54,6 +54,8 @@ public:
 
     bool playerdead();
 
+    bool playerRose();
+
     void playerdied();
 
     virtual ~Player();

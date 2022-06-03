@@ -1,6 +1,7 @@
 #include <iostream>
 #include <qmainwindow.h>
 #include <QtWidgets>
+#include <QGraphicsDropShadowEffect>
 #include <qnamespace.h>
 #include "ui_MazeWindow.h"
 #include "../Parser.h"
@@ -24,6 +25,8 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     MainWindow->setFocusPolicy(Qt::NoFocus);
     MainWindow->setTabShape(QTabWidget::Rounded);
 
+    // Set parameters
+
     paused = false;
     currentSave = "";
     moveUp = Qt::Key_W;
@@ -31,11 +34,11 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     moveRight = Qt::Key_D;
     moveDown = Qt::Key_S;
 
-    // Set parameters
     nTileWidth = kWidth;
     nTileHeight = kWidth;
     nBorderWidth = 0;
     nBorderHeight = 0;
+
     wallColor = Qt::black;
     pathColor = Qt::gray;
     exitColor = QColor(150,75,0);
@@ -50,7 +53,8 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     // Retranslate
     retranslateUi(MainWindow);
 
-//    this->installEventFilter(this);
+
+
 }
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
@@ -81,14 +85,12 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
     for(const auto &i : QColor::colorNames()) {
         cmp.setNamedColor(i);
         if(cmp == color){
-            cout << i.toStdString();
             return i;
         }
     }
 }
 
 void Ui_MazeWindow::setColorNames() {
-    /*
 
     wallColorN = getColorName(wallColor);
     if(wallColorN == ""){
@@ -114,7 +116,28 @@ void Ui_MazeWindow::setColorNames() {
     if(exitColorN == ""){
         exitColorN = exitColor.name();
     }
-    */
+
+}
+
+QString Ui_MazeWindow::getStylesheet(QString &ref) {
+    string color;
+    QString newCol;
+    color = "QPushButton {background-color:" ;
+    color += ref.toStdString();
+    color += ";color:";
+    if (ref.toStdString() != "white") {
+        color += "white";
+    }
+    else {
+        color += "black";
+    }
+    color += ";}";
+    newCol = QString::fromStdString(color);
+    return newCol;
+}
+
+void Ui_MazeWindow::changeColor(QColor &ref , QColor &newColor) {
+
 }
 
 void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
@@ -212,10 +235,12 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     createSelectionScreen(MainWindow);
     createLevelScreen(MainWindow);
     createOptionsScreen(MainWindow);
+    createGameOverScreen(MainWindow);
 
     MenuScreens->addWidget(LevelSelectionScreen);
     MenuScreens->addWidget(levelScreen);
     MenuScreens->addWidget(optionsScreen);
+    MenuScreens->addWidget(gameOverScreen);
 
     MainWindow->setCentralWidget(MenuScreens);
 
@@ -369,6 +394,8 @@ void Ui_MazeWindow::createLevelScreen(QMainWindow *MainWindow){
 void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     setColorNames();
+    string color;
+    QString newCol;
     // Create new widget
     optionsScreen = new QWidget(MainWindow);
     optionsScreen->setObjectName(QString::fromUtf8("OptionsScreen"));
@@ -390,6 +417,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     wallColorPicker = new QPushButton(VisualisationOptionsBox);
     wallColorPicker->setObjectName(QString::fromUtf8("wallColorPicker"));
+    wallColorPicker->setStyleSheet(getStylesheet(wallColorN));
     wallColorPicker->setText(wallColorN);
 
     formLayout_3->setWidget(0, QFormLayout::FieldRole, wallColorPicker);
@@ -401,6 +429,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     pathColorPicker = new QPushButton(VisualisationOptionsBox);
     pathColorPicker->setObjectName(QString::fromUtf8("pathColorPicker"));
+    pathColorPicker->setStyleSheet(getStylesheet(pathColorN));
     pathColorPicker->setText(pathColorN);
 
     formLayout_3->setWidget(1, QFormLayout::FieldRole, pathColorPicker);
@@ -412,6 +441,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     playerColorPicker = new QPushButton(VisualisationOptionsBox);
     playerColorPicker->setObjectName(QString::fromUtf8("playerColorPicker"));
+    playerColorPicker->setStyleSheet(getStylesheet(playerColorN));
     playerColorPicker->setText(playerColorN);
 
     formLayout_3->setWidget(2, QFormLayout::FieldRole, playerColorPicker);
@@ -423,6 +453,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     enemyColorPicker = new QPushButton(VisualisationOptionsBox);
     enemyColorPicker->setObjectName(QString::fromUtf8("enemyColorPicker"));
+    enemyColorPicker->setStyleSheet(getStylesheet(enemyColorN));
     enemyColorPicker->setText(enemyColorN);
 
 
@@ -435,6 +466,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     keyColorPicker = new QPushButton(VisualisationOptionsBox);
     keyColorPicker->setObjectName(QString::fromUtf8("keyColorPicker"));
+    keyColorPicker->setStyleSheet(getStylesheet(keyColorN));
     keyColorPicker->setText(keyColorN);
 
 
@@ -447,6 +479,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     exitColorPicker = new QPushButton(VisualisationOptionsBox);
     exitColorPicker->setObjectName(QString::fromUtf8("exitColorPicker"));
+    exitColorPicker->setStyleSheet(getStylesheet(exitColorN));
     exitColorPicker->setText(exitColorN);
 
 
@@ -535,6 +568,58 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
 }
 
+void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
+    // Create new widget
+    gameOverScreen = new QWidget(MainWindow);
+    gameOverScreen->setObjectName(QString::fromUtf8("gameOverScreen"));
+    verticalLayout_3 = new QVBoxLayout(gameOverScreen);
+    verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+    horizontalLayout_4 = new QHBoxLayout();
+    horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+    mainMenuButton_3 = new QPushButton(gameOverScreen);
+    mainMenuButton_3->setObjectName(QString::fromUtf8("mainMenuButton_3"));
+
+    horizontalLayout_4->addWidget(mainMenuButton_3);
+
+    newGameButton_2 = new QPushButton(gameOverScreen);
+    newGameButton_2->setObjectName(QString::fromUtf8("newGameButton"));
+
+    horizontalLayout_4->addWidget(newGameButton_2);
+
+
+    verticalLayout_3->addLayout(horizontalLayout_4);
+
+    gameOverlabel = new QLabel(gameOverScreen);
+    gameOverlabel->setObjectName(QString::fromUtf8("gameOverlabel"));
+    QFont font;
+    font.setBold(true);
+    font.setItalic(true);
+    font.setUnderline(false);
+    font.setWeight(75);
+    gameOverlabel->setFont(font);
+    gameOverlabel->setAlignment(Qt::AlignCenter);
+
+    verticalLayout_3->addWidget(gameOverlabel);
+
+    gameOverphoto = new QLabel(gameOverScreen);
+    gameOverphoto->setObjectName(QString::fromUtf8("gameOverphoto"));
+    gameOverphoto->setPixmap(QPixmap(QString::fromUtf8("../../Photos/GameOver.png")));
+    gameOverphoto->setScaledContents(true);
+
+    verticalLayout_3->addWidget(gameOverphoto);
+
+    MenuScreens->addWidget(gameOverScreen);
+
+    gameOverlabel->setText(QApplication::translate("MainWindow", "Game Over", nullptr));
+    mainMenuButton_3->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
+    newGameButton_2->setText(QApplication::translate("MainWindow", "New Game", nullptr));
+    gameOverphoto->setText(QString());
+
+    connect(mainMenuButton_3 , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()));
+    connect(newGameButton_2 , SIGNAL(clicked()) , this , SLOT(slot_new()));
+
+}
+
 void Ui_MazeWindow::on_actionOptions_triggered() {
 
 }
@@ -613,7 +698,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
     connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
     connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
-    inputTime->start(50);
+    inputTime->start(25);
     playerdead->start(0);
     enemyTime->start(300);
 
@@ -682,6 +767,9 @@ void Ui_MazeWindow::EnemyMovement(){
 void Ui_MazeWindow::playergone(){
     if(gameLayout->getPlayer()->playerdead()){
         gameLayout->getPlayer()->getCurrentTile()->setStarting(false);
+        MenuScreens->setCurrentWidget(gameOverScreen);
+        gameLayout->getPlayer()->playerRose();
+            inputTime->stop();
     }
 }
 

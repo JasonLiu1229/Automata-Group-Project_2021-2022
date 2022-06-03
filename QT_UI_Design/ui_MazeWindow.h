@@ -102,6 +102,7 @@ private:
     void createSelectionScreen(QMainWindow *MainWindow);
     void createLevelScreen(QMainWindow *MainWindow);
     void createOptionsScreen(QMainWindow *MainWindow);
+    void createGameOverScreen(QMainWindow *MainWindow);
 
     // Maze visualisation
 
@@ -132,6 +133,7 @@ private:
     QWidget *LevelSelectionScreen;
     QWidget *levelScreen;
     QWidget *optionsScreen;
+    QWidget *gameOverScreen;
     
     // Menu bar
     QMenuBar *menubar;
@@ -202,6 +204,15 @@ private:
     QKeySequenceEdit *moveRightKeybind;
     QPushButton *mainMenuButton_optionsScreen;
 
+    // Game Over screen
+
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_4;
+    QPushButton *mainMenuButton_3;
+    QPushButton *newGameButton_2;
+    QLabel *gameOverlabel;
+    QLabel *gameOverphoto;
+
     // Actions
     QAction *loadAct;
     QAction *saveAct;
@@ -244,6 +255,7 @@ private:
     // Event handling
     void play();
     bool paused;
+    bool lost;
     QTimer* inputTime;
     QTimer* enemyTime;
     QTimer* playerdead;
@@ -251,6 +263,10 @@ private:
     void setColorNames();
 
     QString getColorName(QColor &color);
+
+    QString getStylesheet(QString &ref);
+
+    void changeColor(QColor &ref , QColor &newColor);
 
 protected:
 
