@@ -600,6 +600,7 @@ void Maze::toRegex(Path* curr, string even,vector<Path*> gonethere){
                         tempo+= even[k];
                     }
                 }
+                //this dick
                 tempo += ")*";
                 even = tempo;
                 zijner = true;

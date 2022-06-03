@@ -613,7 +613,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
     inputTime->start(50);
     playerdead->start(0);
-    enemyTime->start(300);
+    enemyTime->start(0);
 
 
     MazeView->setFocus();
