@@ -1,0 +1,41 @@
+Index: MazeWindow.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\r\n// Created by siebe on 24/05/2022.\r\n//\r\n\r\n#include \"MazeWindow.h\"\r\n#include <QtUiTools/QUiLoader>\r\n\r\n\r\nQWidget *MazeWindow::loadUiFile(QWidget *parent) {\r\n    /*\r\n    QFile file(\"../../QT_Utils/MazeWindowLayout.ui\");\r\n    file.open(QIODevice::ReadOnly);\r\n\r\n    QUiLoader loader;\r\n    return loader.load(&file, parent);\r\n    */\r\n}\r\n
+===================================================================
+diff --git a/MazeWindow.cpp b/MazeWindow.cpp
+--- a/MazeWindow.cpp	
++++ b/MazeWindow.cpp	
+@@ -3,15 +3,3 @@
+ //
+ 
+ #include "MazeWindow.h"
+-#include <QtUiTools/QUiLoader>
+-
+-
+-QWidget *MazeWindow::loadUiFile(QWidget *parent) {
+-    /*
+-    QFile file("../../QT_Utils/MazeWindowLayout.ui");
+-    file.open(QIODevice::ReadOnly);
+-
+-    QUiLoader loader;
+-    return loader.load(&file, parent);
+-    */
+-}
+Index: MazeWindow.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\r\n// Created by siebe on 24/05/2022.\r\n//\r\n\r\n#ifndef AUTOMATA_GROUP_PROJECT_2021_2022_MAZEWINDOW_H\r\n#define AUTOMATA_GROUP_PROJECT_2021_2022_MAZEWINDOW_H\r\n\r\n\r\n#include <QMainWindow>\r\n#include <QtUiTools/QtUiTools>\r\n\r\nclass MazeWindow : public QMainWindow {\r\npublic:\r\n    static QWidget *loadUiFile(QWidget *parent);\r\n};\r\n\r\n\r\n#endif //AUTOMATA_GROUP_PROJECT_2021_2022_MAZEWINDOW_H\r\n
+===================================================================
+diff --git a/MazeWindow.h b/MazeWindow.h
+--- a/MazeWindow.h	
++++ b/MazeWindow.h	
+@@ -11,7 +11,7 @@
+ 
+ class MazeWindow : public QMainWindow {
+ public:
+-    static QWidget *loadUiFile(QWidget *parent);
++
+ };
+ 
+ 
