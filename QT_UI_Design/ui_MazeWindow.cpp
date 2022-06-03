@@ -88,7 +88,7 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
 }
 
 void Ui_MazeWindow::setColorNames() {
-
+/*
     wallColorN = getColorName(wallColor);
     if(wallColorN == ""){
         wallColorN = wallColor.name();
@@ -113,6 +113,7 @@ void Ui_MazeWindow::setColorNames() {
     if(exitColorN == ""){
         exitColorN = exitColor.name();
     }
+    */
 }
 
 void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
