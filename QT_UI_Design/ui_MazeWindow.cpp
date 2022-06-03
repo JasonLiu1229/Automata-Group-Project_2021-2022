@@ -95,6 +95,7 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
             return i;
         }
     }
+    return color.name();
 }
 
 void Ui_MazeWindow::setColorNames() {
