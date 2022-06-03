@@ -14,6 +14,65 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="KeybindsBox">
+     <property name="title">
+      <string>Keybinds</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_4">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="moveUpLabel">
+        <property name="text">
+         <string>Move up</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="moveUpKeybind"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="moveDownLabel">
+        <property name="text">
+         <string>Move down</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="moveDownKeybind"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="moveLeftLabel">
+        <property name="text">
+         <string>Move left</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="moveLeftKeybind"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="moveRightLabel">
+        <property name="text">
+         <string>Move right</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="moveRightKeybind"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QPushButton" name="mainMenuButton_optionsScreen">
+     <property name="text">
+      <string>Main Menu</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="VisualisationOptionsBox">
      <property name="title">
@@ -39,18 +98,12 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="wallColorLineEdit"/>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="pathColorLabel">
         <property name="text">
          <string>Path color</string>
         </property>
        </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="pathColorLineEdit"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="playerColorLabel">
@@ -59,9 +112,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="playerColorLineEdit"/>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="enemyColorLabel">
         <property name="text">
@@ -69,18 +119,12 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="enemyColorLineEdit"/>
-      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="keyColorLabel">
         <property name="text">
          <string>Key color</string>
         </property>
        </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="keyColorLineEdit"/>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="exitColorLabel">
@@ -90,68 +134,24 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QLineEdit" name="exitColorLineEdit"/>
+       <widget class="QLineEdit" name="exitColorPicker"/>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QGroupBox" name="KeybindsBox">
-     <property name="title">
-      <string>Keybinds</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_4">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="moveUpLabel">
-        <property name="text">
-         <string>Move up</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="moveUpLineEdit"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="moveDownLabel">
-        <property name="text">
-         <string>Move down</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="moveDownLineEdit"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="moveLeftLabel">
-        <property name="text">
-         <string>Move left</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="moveLeftLineEdit"/>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="moveRightLabel">
-        <property name="text">
-         <string>Move right</string>
-        </property>
-       </widget>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="keyColorPicker"/>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="moveRightLineEdit"/>
+       <widget class="QLineEdit" name="enemyColorPicker"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="playerColorPicker"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="pathColorPicker"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="wallColorPicker"/>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QPushButton" name="mainMenuButton_optionsScreen">
-     <property name="text">
-      <string>Main Menu</string>
-     </property>
     </widget>
    </item>
   </layout>

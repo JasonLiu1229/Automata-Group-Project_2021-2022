@@ -27,6 +27,8 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QKeySequenceEdit>
+#include <QColorDialog>
 #include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
@@ -55,6 +57,7 @@ public:
     void showControls();
     void showHelp();
     void loadLevel(string filename);
+    void setShortcuts();
 
 private slots:
 
@@ -77,6 +80,7 @@ private slots:
     void slot_level2() {loadLevel(LEV2JSON);}
     void slot_level3() {loadLevel(LEV3JSON);}
     void slot_level4() {loadLevel(LEV4JSON);}
+    void slot_setShortcuts(){setShortcuts();}
     void update();
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
@@ -88,8 +92,9 @@ private slots:
 
 private:
 
-    // Maze layout
+    // Main functionality elements
     Maze* gameLayout;
+    QString currentSave;
 
     // Screen generation functions
     void createActions(QMainWindow *MainWindow);
@@ -173,28 +178,28 @@ private:
     QGroupBox *VisualisationOptionsBox;
     QFormLayout *formLayout_3;
     QLabel *wallColorLabel;
-    QLineEdit *wallColorLineEdit;
+    QPushButton *wallColorPicker;
     QLabel *pathColorLabel;
-    QLineEdit *pathColorLineEdit;
+    QPushButton *pathColorPicker;
     QLabel *playerColorLabel;
-    QLineEdit *playerColorLineEdit;
+    QPushButton *playerColorPicker;
     QLabel *enemyColorLabel;
-    QLineEdit *enemyColorLineEdit;
+    QPushButton *enemyColorPicker;
     QLabel *keyColorLabel;
-    QLineEdit *keyColorLineEdit;
+    QPushButton *keyColorPicker;
     QLabel *exitColorLabel;
-    QLineEdit *exitColorLineEdit;
+    QPushButton *exitColorPicker;
 
     QGroupBox *KeybindsBox;
     QFormLayout *formLayout_4;
     QLabel *moveUpLabel;
-    QLineEdit *moveUpLineEdit;
+    QKeySequenceEdit *moveUpKeybind;
     QLabel *moveDownLabel;
-    QLineEdit *moveDownLineEdit;
+    QKeySequenceEdit *moveDownKeybind;
     QLabel *moveLeftLabel;
-    QLineEdit *moveLeftLineEdit;
+    QKeySequenceEdit *moveLeftKeybind;
     QLabel *moveRightLabel;
-    QLineEdit *moveRightLineEdit;
+    QKeySequenceEdit *moveRightKeybind;
     QPushButton *mainMenuButton_optionsScreen;
 
     // Actions
@@ -205,6 +210,12 @@ private:
     QAction *actionFullscreen;
     QAction *actionGame_Options;
     QAction *mainMenuRet;
+
+    // Shortcuts
+    int moveUp;
+    int moveDown;
+    int moveLeft;
+    int moveRight;
 
     // Visualisation parameters
     QColor wallColor;

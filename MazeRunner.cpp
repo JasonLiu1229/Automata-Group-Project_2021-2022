@@ -17,7 +17,7 @@ int main(int argc, char** argv){
     // maze.show();
 
     // test enemy training
-    auto* enemy = new Enemy();
+    /*auto* enemy = new Enemy();
     enemy->train("../EnemyTrainer/Training1.txt");
     enemy->train("../EnemyTrainer/Training2.txt");
     for (int i = 0; i < 10; ++i) {
@@ -34,7 +34,9 @@ int main(int argc, char** argv){
         else {
             cout << "right" << endl;
         }
-    }
+    }*/
+    auto* maze = new Maze(LEV1JSON);
+//    string route = maze->findShortestRoute();
 
     cout << "Ha you ran this bullshit" << endl;
 //    return a.exec();
