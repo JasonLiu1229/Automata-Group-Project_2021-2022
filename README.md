@@ -1,3 +1,4 @@
+![test](../Automata-Group-Project_2021-2022/Algorithms/X/New%20folder/mINOSCAPE.png)
 # Automata-Group-Project_2021-2022 (Maze Game) 
 X = not implemented   
 V = implemented  
