@@ -49,6 +49,8 @@ class Maze : vector<vector<Path*>> {
 
     Path* start;
 
+    string shortestMove;
+
 public:
     // constructors
     Maze();
@@ -69,6 +71,10 @@ public:
 
     void setLevelName(const string &levelName);
 
+    const string &getSavedFile() const;
+
+    void setSavedFile(const string &savedFile);
+
     // user interface
     void playMaze();
 
@@ -80,7 +86,7 @@ public:
 
     void quickSave();
 
-    void Save(const string &fileName);
+    void Save(const string &fileName = "");
 
     void loadGame(const string &fileName);
 
@@ -118,7 +124,7 @@ private:
     void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
 
     // Dijkstra
-    pair<string, bool> recursionShortFinder(Path* current, movement previousMove);
+    pair<string, bool> recursionShortFinder(Path* current, movement previousMove, string finalString, vector<string> &allmoves);
 };
 
 

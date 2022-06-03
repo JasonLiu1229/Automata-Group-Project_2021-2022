@@ -40,7 +40,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="wallColorLineEdit"/>
+       <widget class="QLineEdit" name="wallColorPicker"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="pathColorLabel">
@@ -50,7 +50,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="pathColorLineEdit"/>
+       <widget class="QLineEdit" name="pathColorPicker"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="playerColorLabel">
@@ -60,7 +60,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="playerColorLineEdit"/>
+       <widget class="QLineEdit" name="playerColorPicker"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="enemyColorLabel">
@@ -70,7 +70,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="enemyColorLineEdit"/>
+       <widget class="QLineEdit" name="enemyColorPicker"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="keyColorLabel">
@@ -80,7 +80,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLineEdit" name="keyColorLineEdit"/>
+       <widget class="QLineEdit" name="keyColorPicker"/>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="exitColorLabel">
@@ -90,7 +90,7 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QLineEdit" name="exitColorLineEdit"/>
+       <widget class="QLineEdit" name="exitColorPicker"/>
       </item>
      </layout>
     </widget>
@@ -112,7 +112,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="moveUpLineEdit"/>
+       <widget class="QLineEdit" name="moveUpKeybind"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="moveDownLabel">
@@ -122,7 +122,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="moveDownLineEdit"/>
+       <widget class="QLineEdit" name="moveDownKeybind"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="moveLeftLabel">
@@ -132,7 +132,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="moveLeftLineEdit"/>
+       <widget class="QLineEdit" name="moveLeftKeybind"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="moveRightLabel">
@@ -142,7 +142,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="moveRightLineEdit"/>
+       <widget class="QLineEdit" name="moveRightKeybind"/>
       </item>
      </layout>
     </widget>

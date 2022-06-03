@@ -52,66 +52,90 @@ bool Maze::generateMaze(const string &filename) {
             vector<Path*> pathRow;
             for (int i = 0; i < line.size(); ++i) {
                 auto* path = new Path();
-                if(i == '#'){
+                char c = line[i];
+                if(c == '#'){
                     path->setSettings(wall);
                 }
-                else if(i == '$'){
+                else if(c == '$'){
                     path->setStarting(true);
                     player = new Player(path, "Name");
+                    start = path;
                 }
-                else if(i == '&'){
+                else if(c == '&'){
                     path->setAccepting(true);
                 }
-                else if(i == '^'){
+                else if(c == '^'){
                     path->setKey(true);
                     key_count++;
-                }
-                else {
-                    return false;
                 }
                 pathRow.push_back(path);
                 allPaths.push_back(path);
             }
             this->push_back(pathRow);
         }
-        height = this->size();
-        width = this->at(0).size();
 
-        // set transitions
+        // Get width and height
+        height = static_cast<int>( this->size() );
+        width = static_cast<int>( this->at(0).size() );
+        // load status of whole game from txt file
         Path* currentTile;
-        Path* leftTile;
-        Path* rightTile;
-        Path* topTile;
-        Path* bottomTile;
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                currentTile = this->at(i).at(j);
-                if (currentTile->getSettings() == wall){
-                    continue;
+        Path* nextTile;
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                // Get current tile
+                currentTile = this->at(i)[j];
+                // Get tile above
+                // Case: there is no tile above
+                if(i == 0){
+                    currentTile->setUp(nullptr);
                 }
                 else{
-                    if (i == 0){
-                        topTile = nullptr;
-                        bottomTile = this->at(i + 1).at(j);
+                    nextTile = this->at(i-1)[j];
+                    if(!nextTile->isWall()){
+                        currentTile->setUp(nextTile);
+                        currentTile->setpath("w",nextTile);
+                        currentTile->setmovement("w");
                     }
-                    else if (i == width - 1){
-                        bottomTile = nullptr;
-                        topTile = this->at(i-1).at(j);
+                }
+                // Get tile left
+                if(j == 0){
+                    currentTile->setLeft(nullptr);
+                }
+                else{
+                    nextTile = this->at(i)[j-1];
+                    if(!nextTile->isWall()){
+                        currentTile->setLeft(nextTile);
+                        currentTile->setpath("a", nextTile);
+                        currentTile->setmovement("a");
                     }
-                    else {
-                        topTile = this->at(i-1).at(j);
-                        bottomTile = this->at(i+1).at(j);
+                }
+                // Get tile right
+                if(j == width - 1){
+                    currentTile->setRight(nullptr);
+                }
+                else{
+                    nextTile = this->at(i)[j+1];
+                    if(!nextTile->isWall()) {
+                        currentTile->setRight(nextTile);
+                        currentTile->setpath("d", nextTile);
+                        currentTile->setmovement("d");
                     }
-                    tileConfig(leftTile, rightTile, i, j);
-
-                    currentTile->setLeft(leftTile);
-                    currentTile->setUp(topTile);
-                    currentTile->setDown(bottomTile);
-                    currentTile->setRight(rightTile);
+                }
+                // Get tile under
+                if(i == height - 1){
+                    currentTile->setDown(nullptr);
+                }
+                else{
+                    nextTile = this->at(i+1)[j];
+                    if(!nextTile->isWall()) {
+                        currentTile->setDown(nextTile);
+                        currentTile->setpath("s", nextTile);
+                        currentTile->setmovement("s");
+                    }
                 }
             }
         }
-        return true;
+        collectedKeys = new Collectable_DFA(key_count);
     }
     txtParser.close();
     return false;
@@ -156,25 +180,24 @@ void Maze::saveGame(const string &fileNameInput) {
     bool exists = false;
     int i = 0;
     string filename;
-    filename = SVG1;
-    filename += fileNameInput;
+    filename = fileNameInput;
+//    filename += fileNameInput;
     filename += TXT;
 
     while (!exists){
         i++;
         codefile = fopen(filename.c_str(), "r");
         if (codefile){
-            filename = SVG1;
-            filename += fileNameInput;
+//            filename = SVG1;
+            filename = fileNameInput;
             filename += '(' + to_string(i) + ')' + TXT;
         }
         else {
-            saveFile.open(filename.c_str(), ios::app | ios::ate);
+            saveFile.open(filename.c_str(), ios::app | ios::out);
             savedFile = filename;
             exists = true;
         }
     }
-
     // write in a file
     for (int k = 0; k < width; ++k) {
         for (int j = 0; j < height; ++j) {
@@ -205,9 +228,9 @@ void Maze::saveGame(const string &fileNameInput) {
     fstream saveFileJson;
     exists = false;
     string filenameJ;
-    filenameJ = SVG1;
-    filenameJ += fileNameInput;
+    filenameJ = fileNameInput;
     filenameJ += JSON;
+
 
     i = 0;
     while (!exists){
@@ -621,20 +644,144 @@ void Maze::toDFA() {
 
 /*Dijkstra's algorithm*/
 string Maze::findShortestRoute() {
-    return recursionShortFinder(start, IDLE).first;
+    vector<string> allmoves;
+    string finalString;
+    recursionShortFinder(start, IDLE, finalString, allmoves);
+    finalString = allmoves[0];
+    for (const auto& move : allmoves){
+        if (finalString.size() > move.size()){
+            finalString = move;
+        }
+    }
+    return finalString;
 }
 
-pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove) {
-    pair<string, bool> shortestRoute;
-    if (previousMove == IDLE){
+int amountOfPmoves(Path* current){
+    int amountOfMovs = 0;
+    if (current->getDown() != nullptr){
+        amountOfMovs++;
+    }
+    if (current->getLeft() != nullptr){
+        amountOfMovs++;
+    }
+    if (current->getRight() != nullptr){
+        amountOfMovs++;
+    }
+    if (current->getUp() != nullptr){
+        amountOfMovs++;
+    }
+    return  amountOfMovs;
+}
 
+pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove, string finalString, vector<string> &allmoves) {
+    pair<string, bool> shortestRoute = {"", true};
+    string temp = shortestRoute.first;
+    if (current->isAccepting()){
+        allmoves.push_back(finalString);
+        return shortestRoute;
+    }
+    else if (previousMove == IDLE){
+        if (current->getDown() != nullptr){
+            temp = "s";
+            if (recursionShortFinder(current->getDown(), UP, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), UP, temp, allmoves).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else if (current->getUp() != nullptr){
+            temp = "w";
+            if (recursionShortFinder(current->getDown(), DOWN, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), DOWN, temp, allmoves).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else if (current->getLeft() != nullptr){
+            temp = "a";
+            if (recursionShortFinder(current->getDown(), RIGHT, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), RIGHT, temp, allmoves).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else if (current->getRight() != nullptr){
+            temp = "d";
+            if (recursionShortFinder(current->getDown(), LEFT, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), LEFT, temp, allmoves).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else {
+            cout << "No path for start" << endl;
+            shortestRoute.second = false;
+        }
     }
     else {
+        int amountOfMoves = amountOfPmoves(current);
 
+        while(amountOfMoves > 1){
+            if (amountOfMoves == 2){
+                if (current->getDown() != nullptr and previousMove != UP){
+                    current = current->getDown();
+                    previousMove = UP;
+                    temp += "s";
+                }
+                else if (current->getUp() != nullptr and previousMove != DOWN){
+                    current = current->getDown();
+                    previousMove = DOWN;
+                    temp += "s";
+                }
+                else if (current->getLeft() != nullptr and previousMove != RIGHT){
+                    current = current->getDown();
+                    previousMove = RIGHT;
+                    temp += "s";
+                }
+                else if (current->getRight() != nullptr and previousMove != LEFT){
+                    current = current->getDown();
+                    previousMove = LEFT;
+                    temp += "s";
+                }
+            }
+            else {
+                string temp2;
+                if (current->getDown() != nullptr and previousMove != UP){
+                    
+                }
+                if (current->getUp() != nullptr and previousMove != DOWN){
+
+                }
+                if (current->getLeft() != nullptr and previousMove != RIGHT){
+
+                }
+                if (current->getRight() != nullptr and previousMove != LEFT){
+
+                }
+            }
+            amountOfMoves = amountOfPmoves(current);
+        }
     }
+    shortestRoute.first = temp;
     return shortestRoute;
 }
 
 Maze::~Maze() {
 
+}
+
+const string &Maze::getSavedFile() const {
+    return savedFile;
+}
+
+void Maze::setSavedFile(const string &savedFile) {
+    Maze::savedFile = savedFile;
+}
+
+const string &Maze::getLevelName() const {
+    return levelName;
+}
+
+void Maze::setLevelName(const string &levelName) {
+    Maze::levelName = levelName;
 }
