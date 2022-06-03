@@ -471,9 +471,10 @@ void Maze::EnemyMovement() {
 }
 
 /*TFA minimize*/
+void Maze::recursionMinimize(Maze *&maze, map<pair<Path*, Path*>, bool> &Table, vector<pair<Path*, Path*>> &markedStates) {
+    for (auto koppel : markedStates){
 
-void Maze::recursionMinimize(Maze *&maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates) {
-
+    }
 }
 
 
@@ -482,7 +483,7 @@ Maze *Maze::minimize() {
 
     // create starting table
     map<pair<Path*, Path*>, bool> Table;
-    set<pair<Path*, Path*>> markedStates;
+    vector<pair<Path*, Path*>> markedStates;
     for (int i = 0; i < allPaths.size() - 1; ++i) {
         pair<Path*, Path*> couple;
         couple.first = allPaths[i];
@@ -493,7 +494,7 @@ Maze *Maze::minimize() {
             }
             else {
                 Table[couple] = true;
-                markedStates.insert(couple);
+                markedStates.push_back(couple);
             }
         }
     }

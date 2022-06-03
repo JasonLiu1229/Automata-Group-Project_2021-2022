@@ -15,7 +15,7 @@ int main(int argc, char** argv){
     QApplication a(argc , argv);
 
 
-//    // Set up ui
+//    // Set up ui im gay
     auto w = new Ui_MazeWindow();
     auto newWindow = new QMainWindow;
     w->setupUi(newWindow);

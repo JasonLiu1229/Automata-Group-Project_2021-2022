@@ -131,7 +131,7 @@ private:
     void tileConfig(Path* &leftTile, Path* &rightTile, int i, int j);
 
     // TFA
-    void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
+    void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, vector<pair<Path*, Path*>> &markedStates);
 
     // Dijkstra
     pair<string, bool> recursionShortFinder(Path *current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath);
