@@ -54,7 +54,7 @@ public:
 
     bool playerdead();
 
-    bool playerRose();
+    void playerRose();
 
     void playerdied();
 
