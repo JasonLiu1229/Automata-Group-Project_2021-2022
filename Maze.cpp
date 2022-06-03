@@ -15,7 +15,10 @@ using json = nlohmann::json;
 Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0), savedFile("") {
     Parser jsonParser(fileName);
     levelName = jsonParser.getTxt_Filename();
-    loadGame(levelName);
+    bool failed = generateMaze(levelName);
+    if (!failed){
+        cout << "File was corrupted or not found" << endl;
+    }
 }
 
 Maze::Maze(): key_count(0){
@@ -643,8 +646,7 @@ void Maze::toDFA() {
 string Maze::findShortestRoute() {
     vector<string> allmoves;
     string finalString;
-    vector<Path*> seen = {};
-    recursionShortFinder(start, IDLE, finalString, allmoves, seen);
+    recursionShortFinder(start, IDLE, finalString, allmoves);
     finalString = allmoves[0];
     for (const auto& move : allmoves){
         if (finalString.size() > move.size()){
@@ -671,53 +673,42 @@ int amountOfPmoves(Path* current){
     return  amountOfMovs;
 }
 
-bool inIt(Path* check, vector<Path*> allPaths){
-    for (auto path:allPaths) {
-        if (path == check){
-            return true;
-        }
-    }
-    return false;
-}
-
-pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath) {
+pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove, string finalString, vector<string> &allmoves) {
     pair<string, bool> shortestRoute = {"", true};
-    string temp = finalString;
-    vector<Path*> seen = std::move(seenPath);
-    vector<bool> dubbelCheck = {true, true, true, true}; // up down left right
-    if (previousMove == IDLE){
+    string temp = shortestRoute.first;
+    if (current->isAccepting()){
+        allmoves.push_back(finalString);
+        return shortestRoute;
+    }
+    else if (previousMove == IDLE){
         if (current->getDown() != nullptr){
             temp = "s";
-            seen.push_back(current);
-            if (recursionShortFinder(current->getDown(), UP, temp, allmoves, seen).second){
-                temp = recursionShortFinder(current->getDown(), UP, temp, allmoves,seen).first;
+            if (recursionShortFinder(current->getDown(), UP, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), UP, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
             }
         } else if (current->getUp() != nullptr){
             temp = "w";
-            seen.push_back(current);
-            if (recursionShortFinder(current->getUp(), DOWN, temp, allmoves, seen).second){
-                temp = recursionShortFinder(current->getUp(), DOWN, temp, allmoves,seen).first;
+            if (recursionShortFinder(current->getDown(), DOWN, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), DOWN, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
             }
         } else if (current->getLeft() != nullptr){
             temp = "a";
-            seen.push_back(current);
-            if (recursionShortFinder(current->getLeft(), RIGHT, temp, allmoves, seen).second){
-                temp = recursionShortFinder(current->getLeft(), RIGHT, temp, allmoves,seen).first;
+            if (recursionShortFinder(current->getDown(), RIGHT, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), RIGHT, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
             }
         } else if (current->getRight() != nullptr){
             temp = "d";
-            seen.push_back(current);
-            if (recursionShortFinder(current->getRight(), LEFT, temp, allmoves,seen).second){
-                temp = recursionShortFinder(current->getRight(), LEFT, temp, allmoves,seen).first;
+            if (recursionShortFinder(current->getDown(), LEFT, temp, allmoves).second){
+                temp += recursionShortFinder(current->getDown(), LEFT, temp, allmoves).first;
             }
             else {
                 shortestRoute.second = false;
@@ -730,117 +721,45 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
     else {
         int amountOfMoves = amountOfPmoves(current);
 
-        while(amountOfMoves > 1 and shortestRoute.second){
+        while(amountOfMoves > 1){
             if (amountOfMoves == 2){
-                if (current->getDown() != nullptr and !inIt(current->getDown(), seen)){
-                    seen.push_back(current);
+                if (current->getDown() != nullptr and previousMove != UP){
                     current = current->getDown();
                     previousMove = UP;
                     temp += "s";
                 }
-                else if (current->getUp() != nullptr and !inIt(current->getUp(), seen)){
-                    seen.push_back(current);
-                    current = current->getUp();
+                else if (current->getUp() != nullptr and previousMove != DOWN){
+                    current = current->getDown();
                     previousMove = DOWN;
-                    temp += "w";
+                    temp += "s";
                 }
-                else if (current->getLeft() != nullptr and !inIt(current->getLeft(), seen)){
-                    seen.push_back(current);
-                    current = current->getLeft();
+                else if (current->getLeft() != nullptr and previousMove != RIGHT){
+                    current = current->getDown();
                     previousMove = RIGHT;
-                    temp += "a";
+                    temp += "s";
                 }
-                else if (current->getRight() != nullptr and !inIt(current->getRight(), seen)){
-                    seen.push_back(current);
-                    current = current->getRight();
+                else if (current->getRight() != nullptr and previousMove != LEFT){
+                    current = current->getDown();
                     previousMove = LEFT;
-                    temp += "d";
-                }
-                else {
-                    shortestRoute.second = false;
-                }
-                if (current->isAccepting()){
-                    allmoves.push_back(temp);
+                    temp += "s";
                 }
             }
             else {
-                if (current->getDown() != nullptr and !inIt(current->getDown(), seen) and dubbelCheck[1]){
-                    seen.push_back(current);
-                    temp += "s";
-                    if (recursionShortFinder(current->getDown(), UP, temp, allmoves, seen).second){
-                        temp = recursionShortFinder(current->getDown(), UP, temp, allmoves, seen).first;
-                        dubbelCheck[1] = false;
-                        if (current->getDown()->isAccepting()){
-                            allmoves.push_back(temp);
-                        }
-                    }
-                    else {
-                        temp.pop_back();
-                        dubbelCheck[1] = false;
-                    }
+                string temp2;
+                if (current->getDown() != nullptr and previousMove != UP){
+                    
                 }
-                else {
-                    dubbelCheck[1] = false;
+                if (current->getUp() != nullptr and previousMove != DOWN){
+
                 }
-                if (current->getUp() != nullptr and !inIt(current->getUp(), seen) and dubbelCheck[0]){
-                    seen.push_back(current);
-                    temp += "w";
-                    if (recursionShortFinder(current->getUp(), UP, temp, allmoves, seen).second){
-                        temp = recursionShortFinder(current->getUp(), UP, temp, allmoves, seen).first;
-                        dubbelCheck[0] = false;
-                        if (current->getUp()->isAccepting()){
-                            allmoves.push_back(temp);
-                        }
-                    }
-                    else {
-                        temp.pop_back();
-                        dubbelCheck[0] = false;
-                    }
+                if (current->getLeft() != nullptr and previousMove != RIGHT){
+
                 }
-                else {
-                    dubbelCheck[0] = false;
-                }
-                if (current->getLeft() != nullptr and !inIt(current->getLeft(), seen) and dubbelCheck[2]){
-                    seen.push_back(current);
-                    temp += "a";
-                    if (recursionShortFinder(current->getLeft(), UP, temp, allmoves, seen).second){
-                        temp = recursionShortFinder(current->getLeft(), UP, temp, allmoves, seen).first;
-                        dubbelCheck[2] = false;
-                        if (current->getLeft()->isAccepting()){
-                            allmoves.push_back(temp);
-                        }
-                    }
-                    else {
-                        temp.pop_back();
-                        dubbelCheck[2] = false;
-                    }
-                }
-                else {
-                    dubbelCheck[2] = false;
-                }
-                if (current->getRight() != nullptr and !inIt(current->getRight(), seen) and dubbelCheck[3]){
-                    seen.push_back(current);
-                    temp += "d";
-                    if (recursionShortFinder(current->getRight(), UP, temp, allmoves, seen).second){
-                        temp = recursionShortFinder(current->getRight(), UP, temp, allmoves, seen).first;
-                        dubbelCheck[3] = false;
-                        if (current->getRight()->isAccepting()){
-                            allmoves.push_back(temp);
-                        }
-                    }
-                    else {
-                        temp.pop_back();
-                        dubbelCheck[3] = false;
-                    }
-                }
-                else {
-                    dubbelCheck[3]= false;
+                if (current->getRight() != nullptr and previousMove != LEFT){
+
                 }
             }
             amountOfMoves = amountOfPmoves(current);
-            if (amountOfMoves <= 1 or (!dubbelCheck[0] and !dubbelCheck[1] and !dubbelCheck[2] and !dubbelCheck[3])){
-                shortestRoute.second = false;
-            }
         }
     }
     shortestRoute.first = temp;

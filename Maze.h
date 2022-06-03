@@ -124,7 +124,7 @@ private:
     void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
 
     // Dijkstra
-    pair<string, bool> recursionShortFinder(Path* current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath);
+    pair<string, bool> recursionShortFinder(Path* current, movement previousMove, string finalString, vector<string> &allmoves);
 };
 
 
