@@ -46,6 +46,13 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     enemyColor = QColor(138,3,3);
     keyColor = QColor(250,250,0);
 
+//    wallColorN = wallColor.name();
+//    pathColorN = pathColor.name();
+//    playerColorN = playerColor.name();
+//    enemyColorN = enemyColor.name();
+//    keyColorN = keyColor.name();
+//    exitColorN = exitColor.name();
+
     // Create actions
     createActions(MainWindow);
     // Create menus
@@ -93,27 +100,27 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
 void Ui_MazeWindow::setColorNames() {
 
     wallColorN = getColorName(wallColor);
-    if(wallColorN == ""){
+    if(wallColorN.toStdString() == ""){
         wallColorN = wallColor.name();
     }
     pathColorN = getColorName(pathColor);
-    if(pathColorN == ""){
+    if(pathColorN.toStdString() == ""){
         pathColorN = pathColor.name();
     }
     playerColorN = getColorName(playerColor);
-    if(playerColorN == ""){
+    if(playerColorN.toStdString() == ""){
         playerColorN = playerColor.name();
     }
     enemyColorN = getColorName(enemyColor);
-    if(enemyColorN == ""){
+    if(enemyColorN.toStdString() == ""){
         enemyColorN = enemyColor.name();
     }
     keyColorN = getColorName(keyColor);
-    if(keyColorN == ""){
+    if(keyColorN.toStdString() == ""){
         keyColorN = keyColor.name();
     }
     exitColorN = getColorName(exitColor);
-    if(exitColorN == ""){
+    if(exitColorN.toStdString() == ""){
         exitColorN = exitColor.name();
     }
 
@@ -125,7 +132,7 @@ QString Ui_MazeWindow::getStylesheet(QString &ref) {
     color = "QPushButton {background-color:" ;
     color += ref.toStdString();
     color += ";color:";
-    if (ref.toStdString() != "white") {
+    if (ref.toStdString() != "" && ref.toStdString() != "white") {
         color += "white";
     }
     else {
