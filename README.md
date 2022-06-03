@@ -32,5 +32,5 @@ it decides the level of difficulty of how the enemy moves
     
 
 ## Extra Credits
-- Rohan Gurung 
+- Rohan Gurung: Project Logo
   - Instagram: @yourfavouriteonisan
