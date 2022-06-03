@@ -62,3 +62,7 @@ set_target_properties("MazeRunnerVisNew" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${
 target_link_libraries(MazeRunner Qt5::Widgets)
 target_link_libraries(MazeRunnerNoColor Qt5::Core Qt5::Widgets)
 target_link_libraries(MazeRunnerVisNew Qt5::Core Qt5::Widgets)
+
+set(CPACK_NSIS_CREATE_ICONS_EXTRA
+        "CreateShortCut '${PROJECT_SOURCE_DIR}/MinoScape.lnk' '{PROJECT_SOURCE_DIR}/Levels/JSON-Files/MazeRunnerVisNew.exe' '-foo -bar'"
+        )
