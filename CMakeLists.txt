@@ -31,9 +31,7 @@ set(Movement_classes
         MovementState.cpp
         )
 
-set(QT_Utils
-
-        )
+set(QT_Utils)
 
 set(QT_UI
         QT_UI_Design/ui_MazeWindow.cpp

@@ -208,6 +208,9 @@ void Maze::saveGame(const string &fileNameInput) {
                 else if (oldPath->isAccepting()){
                     saveFile << '&';
                 }
+                else if (oldPath->isEnemy()){
+                    saveFile << '~';
+                }
                 else {
                     saveFile << '.';
                 }
@@ -428,6 +431,7 @@ void Maze::simulateMove(movement m) {
 Player* Maze::getPlayer() {
     return player;
 }
+
 Collectable_DFA* Maze::getDFAkeys() {
     return collectedKeys;
 }
