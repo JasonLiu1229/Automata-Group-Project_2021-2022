@@ -3,11 +3,11 @@
 
 #include <utility>
 
-Player::Player() {}
+Player::Player() : dead(false) {}
 
-Player::Player(string name) : name(std::move(name)) {}
+Player::Player(string name) : name(std::move(name)) , dead(false){}
 
-Player::Player(Path *currentTile, const string &name) : currentTile(currentTile), name(name) {}
+Player::Player(Path *currentTile, const string &name) : currentTile(currentTile), name(name) , dead(false){}
 
 Path* Player::GetCurrentTile() {
     return currentTile;
@@ -19,6 +19,14 @@ void Player::SetCurrentTile(Path *temp) {
 
 Path *Player::getUp() const {
     return up;
+}
+
+bool Player::playerdead(){
+    return dead;
+}
+
+void Player::playerdied() {
+    dead = true;
 }
 
 void Player::setUp(Path *up) {

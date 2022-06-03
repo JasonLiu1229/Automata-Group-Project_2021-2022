@@ -521,6 +521,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     exitColor = QColor(150,75,0);
     playerColor = Qt::white;
     enemyColor = QColor(138,3,3);
+    keyColor = QColor(250,250,0);
 
     // Draw the maze(make all the tiles)
     update();
@@ -529,15 +530,25 @@ void Ui_MazeWindow::loadLevel(string filename){
     // Change the window view
     delete parser;
     inputTime = new QTimer;
+    enemyTime = new QTimer;
+    playerdead = new QTimer;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
+    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
+    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
     inputTime->start(50);
+    playerdead->start(0);
+    enemyTime->start(300);
+
+
     MazeView->setFocus();
+
     cout << "Loaded level " + filename << endl;
 
 }
 void Ui_MazeWindow::pauseGame() {
     cout << "Pause Game option" << endl;
 }
+
 void Ui_MazeWindow::showControls() {
     cout << "Show Controls option" << endl;
 }
@@ -562,7 +573,6 @@ void Ui_MazeWindow::refreshMaze(Maze *&layout) {
 void Ui_MazeWindow::drawMaze(Maze *&layout) {
     Path* currentTile;
     tileSettings setting;
-
     for(int i=0; i<layout->getWidth(); i++)
     {
         for(int j=0; j<layout->getHeight(); j++)
@@ -572,12 +582,32 @@ void Ui_MazeWindow::drawMaze(Maze *&layout) {
             if(currentTile->isStarting()) {
                 drawPlayer(i , j);
             }
+            else if(currentTile->isEnemy()){
+                drawenemy(i,j);
+            }
+            else if(currentTile->isKey()){
+                drawkey(i,j);
+            }
+            else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                drawescape(i,j);
+            }
             else {
                 drawTile(i,j,setting);
             }
         }
     }
 }
+
+void Ui_MazeWindow::EnemyMovement(){
+    gameLayout->EnemyMovement();
+}
+
+void Ui_MazeWindow::playergone(){
+    if(gameLayout->getPlayer()->playerdead()){
+        gameLayout->getPlayer()->getCurrentTile()->setStarting(false);
+    }
+}
+
 
 void Ui_MazeWindow::drawTile(int i, int j, tileSettings &tileType) {
     QGraphicsRectItem *tile = new QGraphicsRectItem( j * nTileWidth , i * nTileHeight , nTileWidth , nTileHeight );
@@ -594,7 +624,29 @@ void Ui_MazeWindow::drawTile(int i, int j, tileSettings &tileType) {
     tile->setData(0, kTile );
     MazeScene->addItem(tile);
 }
+void Ui_MazeWindow::drawescape(int x,int y){
+    QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
+    tile->setBrush(QBrush( exitColor, Qt::SolidPattern));
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    MazeScene->addItem(tile);
+}
 
+void Ui_MazeWindow::drawkey(int x,int y){
+    QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
+    tile->setBrush(QBrush( keyColor, Qt::SolidPattern));
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    MazeScene->addItem(tile);
+}
+
+void Ui_MazeWindow::drawenemy(int x,int y){
+    QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
+    tile->setBrush(QBrush(enemyColor , Qt::SolidPattern));
+    tile->setCacheMode(QGraphicsItem::NoCache);
+    tile->setData(0, kTile );
+    MazeScene->addItem(tile);
+}
 void Ui_MazeWindow::drawPlayer(int x, int y){
     QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
     tile->setBrush(QBrush(playerColor , Qt::SolidPattern));
@@ -628,18 +680,21 @@ void Ui_MazeWindow::play() {
 }
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
-
     if(k->key() == Qt::Key_W || k->key() == Qt::Key_Up){
         gameLayout->simulateMove(UP);
+        cout<<"w";
     }
     else if(k->key() == Qt::Key_A || k->key() == Qt::Key_Left){
         gameLayout->simulateMove(LEFT);
+        cout<<"a";
     }
     else if(k->key() == Qt::Key_S || k->key() == Qt::Key_Down){
         gameLayout->simulateMove(DOWN);
+        cout<<"s";
     }
     else if(k->key() == Qt::Key_D || k->key() == Qt::Key_Right){
         gameLayout->simulateMove(RIGHT);
+        cout<<"d";
     }
     else{
         k->ignore();

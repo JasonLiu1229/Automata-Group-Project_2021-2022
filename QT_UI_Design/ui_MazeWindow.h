@@ -104,6 +104,9 @@ private:
     void drawMaze(Maze *&layout);
     void drawTile(int i, int j , tileSettings &tileType);
     void drawPlayer(int x , int y);
+    void drawenemy(int x,int y);
+    void drawkey(int x,int y);
+    void drawescape(int x,int y);
 
     void refreshTile(int i , int j , tileSettings &tileType);
     void refreshPlayer(int x , int y);
@@ -113,6 +116,10 @@ private:
 
     quint32 xFromCol(int c) const { return static_cast<quint32>(c * nTileWidth + 0.5 * nTileWidth); }
     quint32 yFromRow(int r) const { return static_cast<quint32>(r * nTileHeight + 0.5 * nTileHeight); }
+
+    void EnemyMovement();
+    void playergone();
+
 
     // Main Widgets
     QStackedWidget *MenuScreens;
@@ -205,6 +212,7 @@ private:
     QColor exitColor;
     QColor playerColor;
     QColor enemyColor;
+    QColor keyColor;
 
     quint32 nTileWidth;
     quint32 nTileHeight;
@@ -219,6 +227,8 @@ private:
     void play();
     bool paused;
     QTimer* inputTime;
+    QTimer* enemyTime;
+    QTimer* playerdead;
 
 protected:
 
