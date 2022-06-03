@@ -23,6 +23,14 @@ it decides the level of difficulty of how the enemy moves
 
 ## Resources
 - QT
-    - qtcolorpicker :
-        https://github.com/pothosware/PothosFlow/tree/master/qtcolorpicker
-          
+  - qtcolorpicker:
+    https://github.com/pothosware/PothosFlow/tree/master/qtcolorpicker
+- Images
+  - Game over:
+    
+  - MinoTaurus:
+    
+
+## Extra Credits
+- Rohan Gurung 
+  - Instagram: @yourfavouriteonisan
