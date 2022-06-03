@@ -15,6 +15,9 @@
 #define LEV4JSON                   "Level4.json"
 #define LEV5JSON                   "Level5.json"
 
+#define Training1                   "../EnemyTrainer/Training1.txt"
+#define Training2                   "../EnemyTrainer/Training2.txt"
+
 enum tileSettings {path, wall};
 enum gameStatus {play, pause};
 enum movement {UP, DOWN, LEFT, RIGHT, IDLE};

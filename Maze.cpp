@@ -15,10 +15,7 @@ using json = nlohmann::json;
 Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_count(0), savedFile("") {
     Parser jsonParser(fileName);
     levelName = jsonParser.getTxt_Filename();
-    bool failed = generateMaze(levelName);
-    if (!failed){
-        cout << "File was corrupted or not found" << endl;
-    }
+    loadGame(levelName);
 }
 
 Maze::Maze(): key_count(0){
@@ -51,66 +48,90 @@ bool Maze::generateMaze(const string &filename) {
             vector<Path*> pathRow;
             for (int i = 0; i < line.size(); ++i) {
                 auto* path = new Path();
-                if(i == '#'){
+                char c = line[i];
+                if(c == '#'){
                     path->setSettings(wall);
                 }
-                else if(i == '$'){
+                else if(c == '$'){
                     path->setStarting(true);
                     player = new Player(path, "Name");
+                    start = path;
                 }
-                else if(i == '&'){
+                else if(c == '&'){
                     path->setAccepting(true);
                 }
-                else if(i == '^'){
+                else if(c == '^'){
                     path->setKey(true);
                     key_count++;
-                }
-                else {
-                    return false;
                 }
                 pathRow.push_back(path);
                 allPaths.push_back(path);
             }
             this->push_back(pathRow);
         }
-        height = this->size();
-        width = this->at(0).size();
 
-        // set transitions
+        // Get width and height
+        height = static_cast<int>( this->size() );
+        width = static_cast<int>( this->at(0).size() );
+        // load status of whole game from txt file
         Path* currentTile;
-        Path* leftTile;
-        Path* rightTile;
-        Path* topTile;
-        Path* bottomTile;
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                currentTile = this->at(i).at(j);
-                if (currentTile->getSettings() == wall){
-                    continue;
+        Path* nextTile;
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                // Get current tile
+                currentTile = this->at(i)[j];
+                // Get tile above
+                // Case: there is no tile above
+                if(i == 0){
+                    currentTile->setUp(nullptr);
                 }
                 else{
-                    if (i == 0){
-                        topTile = nullptr;
-                        bottomTile = this->at(i + 1).at(j);
+                    nextTile = this->at(i-1)[j];
+                    if(!nextTile->isWall()){
+                        currentTile->setUp(nextTile);
+                        currentTile->setpath("w",nextTile);
+                        currentTile->setmovement("w");
                     }
-                    else if (i == width - 1){
-                        bottomTile = nullptr;
-                        topTile = this->at(i-1).at(j);
+                }
+                // Get tile left
+                if(j == 0){
+                    currentTile->setLeft(nullptr);
+                }
+                else{
+                    nextTile = this->at(i)[j-1];
+                    if(!nextTile->isWall()){
+                        currentTile->setLeft(nextTile);
+                        currentTile->setpath("a", nextTile);
+                        currentTile->setmovement("a");
                     }
-                    else {
-                        topTile = this->at(i-1).at(j);
-                        bottomTile = this->at(i+1).at(j);
+                }
+                // Get tile right
+                if(j == width - 1){
+                    currentTile->setRight(nullptr);
+                }
+                else{
+                    nextTile = this->at(i)[j+1];
+                    if(!nextTile->isWall()) {
+                        currentTile->setRight(nextTile);
+                        currentTile->setpath("d", nextTile);
+                        currentTile->setmovement("d");
                     }
-                    tileConfig(leftTile, rightTile, i, j);
-
-                    currentTile->setLeft(leftTile);
-                    currentTile->setUp(topTile);
-                    currentTile->setDown(bottomTile);
-                    currentTile->setRight(rightTile);
+                }
+                // Get tile under
+                if(i == height - 1){
+                    currentTile->setDown(nullptr);
+                }
+                else{
+                    nextTile = this->at(i+1)[j];
+                    if(!nextTile->isWall()) {
+                        currentTile->setDown(nextTile);
+                        currentTile->setpath("s", nextTile);
+                        currentTile->setmovement("s");
+                    }
                 }
             }
         }
-        return true;
+        collectedKeys = new Collectable_DFA(key_count);
     }
     txtParser.close();
     return false;
@@ -155,25 +176,24 @@ void Maze::saveGame(const string &fileNameInput) {
     bool exists = false;
     int i = 0;
     string filename;
-    filename = SVG1;
-    filename += fileNameInput;
+    filename = fileNameInput;
+//    filename += fileNameInput;
     filename += TXT;
 
     while (!exists){
         i++;
         codefile = fopen(filename.c_str(), "r");
         if (codefile){
-            filename = SVG1;
-            filename += fileNameInput;
+//            filename = SVG1;
+            filename = fileNameInput;
             filename += '(' + to_string(i) + ')' + TXT;
         }
         else {
-            saveFile.open(filename.c_str(), ios::app | ios::ate);
+            saveFile.open(filename.c_str(), ios::app | ios::out);
             savedFile = filename;
             exists = true;
         }
     }
-
     // write in a file
     for (int k = 0; k < width; ++k) {
         for (int j = 0; j < height; ++j) {
@@ -187,6 +207,9 @@ void Maze::saveGame(const string &fileNameInput) {
                 }
                 else if (oldPath->isAccepting()){
                     saveFile << '&';
+                }
+                else if (oldPath->isEnemy()){
+                    saveFile << '~';
                 }
                 else {
                     saveFile << '.';
@@ -204,9 +227,9 @@ void Maze::saveGame(const string &fileNameInput) {
     fstream saveFileJson;
     exists = false;
     string filenameJ;
-    filenameJ = SVG1;
-    filenameJ += fileNameInput;
+    filenameJ = fileNameInput;
     filenameJ += JSON;
+
 
     i = 0;
     while (!exists){
@@ -289,6 +312,14 @@ void Maze::loadGame(const string &fileName) {
                 }
                 else if(i=='&'){
                     road->setAccepting(true);
+                }
+                else if(i == '~'){
+                    Enemy* enemy = new Enemy();
+                    road->setEnemy(true);
+                    enemy->setCurrentTile(road);
+                    enemy->train(Training2);
+                    enemy->train(Training1);
+                    enemies.push_back(enemy);
                 }
                 else if(i == '^'){
                     road->setKey(true);
@@ -392,16 +423,58 @@ void Maze::simulateMove(movement m) {
     }
     if(player->GetCurrentTile()->isKey()){
         collectedKeys->setCurrentState(collectedKeys->getCurrentState()->getNext());
+        collectedKeys->done();
+        player->GetCurrentTile()->setKey(false);
     }
-
 }
 
+Player* Maze::getPlayer() {
+    return player;
+}
+
+Collectable_DFA* Maze::getDFAkeys() {
+    return collectedKeys;
+}
+
+bool Maze::checkmaze(Path* richting){
+    if(richting->isEnemy()){
+        return true;
+    }
+    return false;
+}
 // algorithms
 
+void Maze::EnemyMovement() {
+    for (auto enemy: enemies) {
+        movement move = enemy->moveSmartV2();
+        if (move == UP and !enemy->GetCurrentTile()->getUp()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getUp());
+            enemy->getCurrentTile()->setEnemy(true);
+        }else if (move == DOWN and !enemy->GetCurrentTile()->getDown()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getDown());
+            enemy->getCurrentTile()->setEnemy(true);
+        } else if (move == RIGHT and !enemy->GetCurrentTile()->getRight()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getRight());
+            enemy->getCurrentTile()->setEnemy(true);
+        } else if (move == LEFT and !enemy->GetCurrentTile()->getLeft()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getLeft());
+            enemy->getCurrentTile()->setEnemy(true);
+        }
+        if(enemy->getCurrentTile() == player->GetCurrentTile()){
+            player->playerdied();
+        }
+    }
+}
+
 /*TFA minimize*/
+void Maze::recursionMinimize(Maze *&maze, map<pair<Path*, Path*>, bool> &Table, vector<pair<Path*, Path*>> &markedStates) {
+    for (auto koppel : markedStates){
 
-void Maze::recursionMinimize(Maze *&maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates) {
-
+    }
 }
 
 
@@ -410,7 +483,7 @@ Maze *Maze::minimize() {
 
     // create starting table
     map<pair<Path*, Path*>, bool> Table;
-    set<pair<Path*, Path*>> markedStates;
+    vector<pair<Path*, Path*>> markedStates;
     for (int i = 0; i < allPaths.size() - 1; ++i) {
         pair<Path*, Path*> couple;
         couple.first = allPaths[i];
@@ -421,7 +494,7 @@ Maze *Maze::minimize() {
             }
             else {
                 Table[couple] = true;
-                markedStates.insert(couple);
+                markedStates.push_back(couple);
             }
         }
     }
@@ -619,6 +692,229 @@ void Maze::toDFA() {
 
 }
 
+/*Dijkstra's algorithm*/
+string Maze::findShortestRoute() {
+    vector<string> allmoves;
+    string finalString;
+    recursionShortFinder(start, IDLE, finalString, allmoves,{});
+    finalString = allmoves[0];
+    for (const auto& move : allmoves){
+        if (finalString.size() > move.size()){
+            finalString = move;
+        }
+    }
+    return finalString;
+}
+
+int amountOfPmoves(Path* current){
+    int amountOfMovs = 0;
+    if (current->getDown() != nullptr){
+        amountOfMovs++;
+    }
+    if (current->getLeft() != nullptr){
+        amountOfMovs++;
+    }
+    if (current->getRight() != nullptr){
+        amountOfMovs++;
+    }
+    if (current->getUp() != nullptr){
+        amountOfMovs++;
+    }
+    return  amountOfMovs;
+}
+
+bool inIt(Path* check, vector<Path*> allPaths){
+    for (auto path:allPaths) {
+        if (path == check){
+            return true;
+        }
+    }
+    return false;
+}
+
+pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath) {
+    pair<string, bool> shortestRoute = {"", true};
+    string temp = finalString;
+    vector<Path*> seen = std::move(seenPath);
+    vector<bool> dubbelCheck = {true, true, true, true}; // up down left right
+    if (previousMove == IDLE){
+        if (current->getDown() != nullptr){
+            temp = "s";
+            seen.push_back(current);
+            if (recursionShortFinder(current->getDown(), UP, temp, allmoves, seen).second){
+                temp = recursionShortFinder(current->getDown(), UP, temp, allmoves,seen).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else if (current->getUp() != nullptr){
+            temp = "w";
+            seen.push_back(current);
+            if (recursionShortFinder(current->getUp(), DOWN, temp, allmoves, seen).second){
+                temp = recursionShortFinder(current->getUp(), DOWN, temp, allmoves,seen).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else if (current->getLeft() != nullptr){
+            temp = "a";
+            seen.push_back(current);
+            if (recursionShortFinder(current->getLeft(), RIGHT, temp, allmoves, seen).second){
+                temp = recursionShortFinder(current->getLeft(), RIGHT, temp, allmoves,seen).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else if (current->getRight() != nullptr){
+            temp = "d";
+            seen.push_back(current);
+            if (recursionShortFinder(current->getRight(), LEFT, temp, allmoves,seen).second){
+                temp = recursionShortFinder(current->getRight(), LEFT, temp, allmoves,seen).first;
+            }
+            else {
+                shortestRoute.second = false;
+            }
+        } else {
+            cout << "No path for start" << endl;
+            shortestRoute.second = false;
+        }
+    }
+    else {
+        int amountOfMoves = amountOfPmoves(current);
+
+        while(amountOfMoves > 1 and shortestRoute.second){
+            if (amountOfMoves == 2){
+                if (current->getDown() != nullptr and !inIt(current->getDown(), seen)){
+                    seen.push_back(current);
+                    current = current->getDown();
+                    previousMove = UP;
+                    temp += "s";
+                }
+                else if (current->getUp() != nullptr and !inIt(current->getUp(), seen)){
+                    seen.push_back(current);
+                    current = current->getUp();
+                    previousMove = DOWN;
+                    temp += "w";
+                }
+                else if (current->getLeft() != nullptr and !inIt(current->getLeft(), seen)){
+                    seen.push_back(current);
+                    current = current->getLeft();
+                    previousMove = RIGHT;
+                    temp += "a";
+                }
+                else if (current->getRight() != nullptr and !inIt(current->getRight(), seen)){
+                    seen.push_back(current);
+                    current = current->getRight();
+                    previousMove = LEFT;
+                    temp += "d";
+                }
+                else {
+                    shortestRoute.second = false;
+                }
+                if (current->isAccepting()){
+                    allmoves.push_back(temp);
+                }
+            }
+            else {
+                if (current->getDown() != nullptr and !inIt(current->getDown(), seen) and dubbelCheck[1]){
+                    seen.push_back(current);
+                    temp += "s";
+                    if (recursionShortFinder(current->getDown(), UP, temp, allmoves, seen).second){
+                        temp = recursionShortFinder(current->getDown(), UP, temp, allmoves, seen).first;
+                        dubbelCheck[1] = false;
+                        if (current->getDown()->isAccepting()){
+                            allmoves.push_back(temp);
+                        }
+                    }
+                    else {
+                        temp.pop_back();
+                        dubbelCheck[1] = false;
+                    }
+                }
+                else {
+                    dubbelCheck[1] = false;
+                }
+                if (current->getUp() != nullptr and !inIt(current->getUp(), seen) and dubbelCheck[0]){
+                    seen.push_back(current);
+                    temp += "w";
+                    if (recursionShortFinder(current->getUp(), UP, temp, allmoves, seen).second){
+                        temp = recursionShortFinder(current->getUp(), UP, temp, allmoves, seen).first;
+                        dubbelCheck[0] = false;
+                        if (current->getUp()->isAccepting()){
+                            allmoves.push_back(temp);
+                        }
+                    }
+                    else {
+                        temp.pop_back();
+                        dubbelCheck[0] = false;
+                    }
+                }
+                else {
+                    dubbelCheck[0] = false;
+                }
+                if (current->getLeft() != nullptr and !inIt(current->getLeft(), seen) and dubbelCheck[2]){
+                    seen.push_back(current);
+                    temp += "a";
+                    if (recursionShortFinder(current->getLeft(), UP, temp, allmoves, seen).second){
+                        temp = recursionShortFinder(current->getLeft(), UP, temp, allmoves, seen).first;
+                        dubbelCheck[2] = false;
+                        if (current->getLeft()->isAccepting()){
+                            allmoves.push_back(temp);
+                        }
+                    }
+                    else {
+                        temp.pop_back();
+                        dubbelCheck[2] = false;
+                    }
+                }
+                else {
+                    dubbelCheck[2] = false;
+                }
+                if (current->getRight() != nullptr and !inIt(current->getRight(), seen) and dubbelCheck[3]){
+                    seen.push_back(current);
+                    temp += "d";
+                    if (recursionShortFinder(current->getRight(), UP, temp, allmoves, seen).second){
+                        temp = recursionShortFinder(current->getRight(), UP, temp, allmoves, seen).first;
+                        dubbelCheck[3] = false;
+                        if (current->getRight()->isAccepting()){
+                            allmoves.push_back(temp);
+                        }
+                    }
+                    else {
+                        temp.pop_back();
+                        dubbelCheck[3] = false;
+                    }
+                }
+                else {
+                    dubbelCheck[3]= false;
+                }
+            }
+            amountOfMoves = amountOfPmoves(current);
+            if (amountOfMoves <= 1 or (!dubbelCheck[0] and !dubbelCheck[1] and !dubbelCheck[2] and !dubbelCheck[3])){
+                shortestRoute.second = false;
+            }
+        }
+    }
+    shortestRoute.first = temp;
+    return shortestRoute;
+}
+
 Maze::~Maze() {
 
+}
+
+const string &Maze::getSavedFile() const {
+    return savedFile;
+}
+
+void Maze::setSavedFile(const string &savedFile) {
+    Maze::savedFile = savedFile;
+}
+
+const string &Maze::getLevelName() const {
+    return levelName;
+}
+
+void Maze::setLevelName(const string &levelName) {
+    Maze::levelName = levelName;
 }

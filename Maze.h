@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include "Player.h"
+#include "Enemy.h"
 #include "Collectable_DFA.h"
 #include "miniState.h"
 #include "Standard_Values.h"
@@ -43,10 +44,14 @@ class Maze : vector<vector<Path*>> {
 
     //speler
     Player* player;
+    vector<Enemy*> enemies;
 
     // all Paths
     vector<Path*> allPaths;
+
     Path* start;
+
+    string shortestMove;
 
 public:
     // constructors
@@ -68,6 +73,14 @@ public:
 
     void setLevelName(const string &levelName);
 
+    const string &getSavedFile() const;
+
+    void setSavedFile(const string &savedFile);
+
+    Player* getPlayer();
+
+    Collectable_DFA* getDFAkeys();
+
     // user interface
     void playMaze();
 
@@ -79,12 +92,16 @@ public:
 
     void quickSave();
 
-    void Save(const string &fileName);
+    void Save(const string &fileName = "");
 
     void loadGame(const string &fileName);
 
     // simulate
     void simulateMove(movement m);
+
+    void EnemyMovement();
+
+    bool checkmaze(Path* richting);
 
     //DFA -> Regex
     void toRegex(Path* curr, string even,vector<Path*> gonethere); // DFA to REGEX
@@ -104,6 +121,8 @@ public:
 
     void toDFA();       // regex -> enfa -> mssc -> dfa
 
+    string findShortestRoute(); // Dijkstra's algorithm
+
     // destructor
     virtual ~Maze();
 
@@ -112,7 +131,10 @@ private:
     void tileConfig(Path* &leftTile, Path* &rightTile, int i, int j);
 
     // TFA
-    void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, set<pair<Path*, Path*>> &markedStates);
+    void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, vector<pair<Path*, Path*>> &markedStates);
+
+    // Dijkstra
+    pair<string, bool> recursionShortFinder(Path *current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath);
 };
 
 

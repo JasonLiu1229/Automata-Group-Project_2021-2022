@@ -28,6 +28,7 @@ class Path {
     // state is starting or final
     bool starting;
     bool accepting;
+    bool enemy;
 
     // key
     bool key;
@@ -80,6 +81,10 @@ public:
     map<Path*,map<string,Path*>> getmap();
 
     bool isWall();
+
+    bool isEnemy();
+
+    void setEnemy(bool enem);
 };
 
 

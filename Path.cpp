@@ -1,6 +1,6 @@
 #include "Path.h"
 
-Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), starting(false), accepting(false), settings(path), key(false) {}
+Path::Path() : up(nullptr), down(nullptr), left(nullptr), right(nullptr), starting(false), accepting(false), settings(path), key(false) , enemy(false){}
 
 Path *Path::getLeft() const {
     return left;
@@ -91,4 +91,12 @@ Path::~Path() {}
 
 bool Path::isWall() {
     return settings == wall;
+}
+
+bool Path::isEnemy(){
+    return enemy;
+}
+
+void Path::setEnemy(bool enem) {
+    enemy = enem;
 }

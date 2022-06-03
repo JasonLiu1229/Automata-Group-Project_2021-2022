@@ -21,6 +21,8 @@ public:
 
     void setCurrentState(miniState *currentState);
 
+    void done();
+
     virtual ~Collectable_DFA();
 };
 

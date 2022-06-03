@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>New folder/mINOSCAPE.png</file>
+  </qresource>
+</RCC>

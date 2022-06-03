@@ -22,6 +22,13 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QFormLayout>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QKeySequenceEdit>
+#include <QColorDialog>
 #include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
@@ -50,6 +57,7 @@ public:
     void showControls();
     void showHelp();
     void loadLevel(string filename);
+    void setShortcuts();
 
 private slots:
 
@@ -72,6 +80,7 @@ private slots:
     void slot_level2() {loadLevel(LEV2JSON);}
     void slot_level3() {loadLevel(LEV3JSON);}
     void slot_level4() {loadLevel(LEV4JSON);}
+    void slot_setShortcuts(){setShortcuts();}
     void update();
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
@@ -83,11 +92,17 @@ private slots:
 
 private:
 
+    // Main functionality elements
     Maze* gameLayout;
+    QString currentSave;
+
+    // Screen generation functions
     void createActions(QMainWindow *MainWindow);
     void createMenus(QMainWindow *MainWindow);
     void createSelectionScreen(QMainWindow *MainWindow);
     void createLevelScreen(QMainWindow *MainWindow);
+    void createOptionsScreen(QMainWindow *MainWindow);
+    void createGameOverScreen(QMainWindow *MainWindow);
 
     // Maze visualisation
 
@@ -95,6 +110,9 @@ private:
     void drawMaze(Maze *&layout);
     void drawTile(int i, int j , tileSettings &tileType);
     void drawPlayer(int x , int y);
+    void drawenemy(int x,int y);
+    void drawkey(int x,int y);
+    void drawescape(int x,int y);
 
     void refreshTile(int i , int j , tileSettings &tileType);
     void refreshPlayer(int x , int y);
@@ -105,12 +123,17 @@ private:
     quint32 xFromCol(int c) const { return static_cast<quint32>(c * nTileWidth + 0.5 * nTileWidth); }
     quint32 yFromRow(int r) const { return static_cast<quint32>(r * nTileHeight + 0.5 * nTileHeight); }
 
+    void EnemyMovement();
+    void playergone();
+
+
     // Main Widgets
     QStackedWidget *MenuScreens;
     QWidget *MainScreen;
     QWidget *LevelSelectionScreen;
     QWidget *levelScreen;
-    QWidget *keyboard;
+    QWidget *optionsScreen;
+    QWidget *gameOverScreen;
     
     // Menu bar
     QMenuBar *menubar;
@@ -121,6 +144,7 @@ private:
     QStatusBar *statusbar;
 
     // Main screen
+
     QWidget *verticalLayoutWidget;
     QVBoxLayout *MainScreenLayout;
     QPushButton *newGameButton;
@@ -129,6 +153,7 @@ private:
     QPushButton *ExitButton;
 
     // Level selection screen
+
     QGridLayout *LevelsGrid;
     QPushButton *Level3;
     QPushButton *Level4;
@@ -137,15 +162,56 @@ private:
     QPushButton *MenuButton;
 
     // Level screen
+
+    QHBoxLayout *horizontalLayout;
     QHBoxLayout *horizontalLayout_2;
     QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
     QPushButton *mainMenuButton;
     QPushButton *pauseButton;
     QPushButton *HTP_button;
     QPushButton *helpButton;
     QGraphicsView *MazeView;
     QGraphicsScene *MazeScene;
+
+    // Options screen
+
+    QGridLayout *gridLayout_2;
+
+    QGroupBox *VisualisationOptionsBox;
+    QFormLayout *formLayout_3;
+    QLabel *wallColorLabel;
+    QPushButton *wallColorPicker;
+    QLabel *pathColorLabel;
+    QPushButton *pathColorPicker;
+    QLabel *playerColorLabel;
+    QPushButton *playerColorPicker;
+    QLabel *enemyColorLabel;
+    QPushButton *enemyColorPicker;
+    QLabel *keyColorLabel;
+    QPushButton *keyColorPicker;
+    QLabel *exitColorLabel;
+    QPushButton *exitColorPicker;
+
+    QGroupBox *KeybindsBox;
+    QFormLayout *formLayout_4;
+    QLabel *moveUpLabel;
+    QKeySequenceEdit *moveUpKeybind;
+    QLabel *moveDownLabel;
+    QKeySequenceEdit *moveDownKeybind;
+    QLabel *moveLeftLabel;
+    QKeySequenceEdit *moveLeftKeybind;
+    QLabel *moveRightLabel;
+    QKeySequenceEdit *moveRightKeybind;
+    QPushButton *mainMenuButton_optionsScreen;
+
+    // Game Over screen
+
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_4;
+    QPushButton *mainMenuButton_3;
+    QPushButton *newGameButton_2;
+    QLabel *gameOverlabel;
+    QLabel *gameOverphoto;
 
     // Actions
     QAction *loadAct;
@@ -154,15 +220,28 @@ private:
     QAction *optionsAct;
     QAction *actionFullscreen;
     QAction *actionGame_Options;
-    QAction *actionWindow_Options;
     QAction *mainMenuRet;
+
+    // Shortcuts
+    int moveUp;
+    int moveDown;
+    int moveLeft;
+    int moveRight;
 
     // Visualisation parameters
     QColor wallColor;
     QColor pathColor;
-    QColor doorColor;
+    QColor exitColor;
     QColor playerColor;
     QColor enemyColor;
+    QColor keyColor;
+
+    QString wallColorN;
+    QString pathColorN;
+    QString exitColorN;
+    QString playerColorN;
+    QString enemyColorN;
+    QString keyColorN;
 
     quint32 nTileWidth;
     quint32 nTileHeight;
@@ -176,8 +255,21 @@ private:
     // Event handling
     void play();
     bool paused;
+    bool lost;
     QTimer* inputTime;
+    QTimer* enemyTime;
+    QTimer* playerdead;
+
+    void setColorNames();
+
+    QString getColorName(QColor &color);
+
+    QString getStylesheet(QString &ref);
+
+    void changeColor(QColor &ref , QColor &newColor);
+
 protected:
+
     void keyPressEvent(QKeyEvent *k) override;
 
     bool eventFilter( QObject *o, QEvent *e ) override;
