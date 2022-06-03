@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerVisNew_autogen" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunner" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerNoColor_autogen" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunner_autogen" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerNoColor" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerVisNew" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="18def5a1-4dcb-4eff-99d0-77d7448db16b" name="Changes" comment="raar? verwijder desnoods">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Contract/TA_Tog_project_idea.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Contract/TA_Tog_project_idea.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="29I3g3pgHTdPkiLw0wDHhR9xzTX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="sortByType" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ChangesTree.GroupingKeys" value="directory" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="cmake.loaded.for.project" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\siebe\CLionProjects\Automata-Group-Project_2021-2022" />
+      <recent name="C:\Users\siebe\CLionProjects\Automata-Group-Project_2021-2022\Algorithms\Siebe" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.MazeRunnerVisNew">
+    <configuration name="MazeRunner" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunner" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Automata-Group-Project_2021-2022" RUN_TARGET_NAME="MazeRunner">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunnerNoColor" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunnerNoColor" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Automata-Group-Project_2021-2022" RUN_TARGET_NAME="MazeRunnerNoColor">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunnerNoColor_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunnerNoColor_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunnerVisNew" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunnerVisNew" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Automata-Group-Project_2021-2022" RUN_TARGET_NAME="MazeRunnerVisNew">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunnerVisNew_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunnerVisNew_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunner_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunner_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.MazeRunner" />
+      <item itemvalue="CMake Application.MazeRunner_autogen" />
+      <item itemvalue="CMake Application.MazeRunnerNoColor" />
+      <item itemvalue="CMake Application.MazeRunnerNoColor_autogen" />
+      <item itemvalue="CMake Application.MazeRunnerVisNew" />
+      <item itemvalue="CMake Application.MazeRunnerVisNew_autogen" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="18def5a1-4dcb-4eff-99d0-77d7448db16b" name="Changes" comment="" />
+      <created>1652786880314</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652786880314</updated>
+      <workItem from="1652786881839" duration="7342000" />
+      <workItem from="1653395491933" duration="3746000" />
+      <workItem from="1653399505831" duration="513000" />
+      <workItem from="1653420797946" duration="1625000" />
+      <workItem from="1653428124788" duration="582000" />
+      <workItem from="1653646043944" duration="1799000" />
+      <workItem from="1653654991465" duration="8471000" />
+      <workItem from="1653671471029" duration="1068000" />
+      <workItem from="1653723253938" duration="4275000" />
+      <workItem from="1653996552494" duration="642000" />
+      <workItem from="1654083577101" duration="2307000" />
+      <workItem from="1654085921194" duration="25000" />
+      <workItem from="1654092304184" duration="844000" />
+      <workItem from="1654178996949" duration="198000" />
+      <workItem from="1654277721408" duration="135000" />
+      <workItem from="1654278138340" duration="272000" />
+      <workItem from="1654278423111" duration="429000" />
+      <workItem from="1654279015523" duration="1681000" />
+    </task>
+    <task id="LOCAL-00001" summary="window try">
+      <created>1653399756269</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1653399756269</updated>
+    </task>
+    <task id="LOCAL-00002" summary="window try">
+      <created>1653399792746</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1653399792746</updated>
+    </task>
+    <task id="LOCAL-00003" summary="window try">
+      <created>1653400015745</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1653400015745</updated>
+    </task>
+    <task id="LOCAL-00004" summary="vtable error fix">
+      <created>1653422381043</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1653422381049</updated>
+    </task>
+    <task id="LOCAL-00005" summary="gitignore fix">
+      <created>1653428255815</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1653428255815</updated>
+    </task>
+    <task id="LOCAL-00006" summary="gitignore fix">
+      <created>1653428323579</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1653428323579</updated>
+    </task>
+    <task id="LOCAL-00007" summary="correctie bij 0 sleutels">
+      <created>1653658262658</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653658262658</updated>
+    </task>
+    <task id="LOCAL-00008" summary="DFA structuur toegevoegd">
+      <created>1653658381554</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1653658381554</updated>
+    </task>
+    <task id="LOCAL-00009" summary="jsonfiles: geimplementeerd in maze generation en structuur aangepast">
+      <created>1653663629183</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1653663629183</updated>
+    </task>
+    <task id="LOCAL-00010" summary="begin keyPressEvent">
+      <created>1653727044048</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1653727044048</updated>
+    </task>
+    <task id="LOCAL-00011" summary="renamed classes">
+      <created>1653727390419</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1653727390419</updated>
+    </task>
+    <task id="LOCAL-00012" summary="renamed classes (again)">
+      <created>1653727444590</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1653727444590</updated>
+    </task>
+    <task id="LOCAL-00013" summary="added to ui functionality">
+      <created>1654085357762</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1654085357762</updated>
+    </task>
+    <task id="LOCAL-00014" summary="raar? verwijder desnoods">
+      <created>1654278520386</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1654278520386</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="window try" />
+    <MESSAGE value="vtable error fix" />
+    <MESSAGE value="gitignore fix" />
+    <MESSAGE value="correctie bij 0 sleutels" />
+    <MESSAGE value="DFA structuur toegevoegd" />
+    <MESSAGE value="jsonfiles: geimplementeerd in maze generation en structuur aangepast" />
+    <MESSAGE value="begin keyPressEvent" />
+    <MESSAGE value="renamed classes" />
+    <MESSAGE value="renamed classes (again)" />
+    <MESSAGE value="added to ui functionality" />
+    <MESSAGE value="raar? verwijder desnoods" />
+    <option name="LAST_COMMIT_MESSAGE" value="raar? verwijder desnoods" />
+  </component>
+</project>

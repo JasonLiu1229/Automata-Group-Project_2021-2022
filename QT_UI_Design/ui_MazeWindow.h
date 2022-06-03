@@ -53,6 +53,7 @@ public:
     void save();
     void options();
     void mainMenuReturn();
+    void showScoreboard();
     void pauseGame();
     void showControls();
     void showHelp();
@@ -66,6 +67,7 @@ private slots:
     void slot_load() {load();}
     void slot_options() {options();}
     void slot_mainMenu() {mainMenuReturn();}
+    void slot_scoreBoard() {showScoreboard();}
     void slot_pauseGame() {pauseGame();}
     void slot_showControls() {showControls();}
     void slot_showHelp() {showHelp();}
@@ -134,6 +136,7 @@ private:
     QWidget *levelScreen;
     QWidget *optionsScreen;
     QWidget *gameOverScreen;
+    QWidget *scoreboardScreen;
     
     // Menu bar
     QMenuBar *menubar;
@@ -221,6 +224,7 @@ private:
     QAction *actionFullscreen;
     QAction *actionGame_Options;
     QAction *mainMenuRet;
+    QAction* showScoresAct;
 
     // Shortcuts
     int moveUp;
