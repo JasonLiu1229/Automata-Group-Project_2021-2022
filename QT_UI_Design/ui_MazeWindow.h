@@ -27,6 +27,8 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QKeySequenceEdit>
+#include <QColorDialog>
 #include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
@@ -55,6 +57,7 @@ public:
     void showControls();
     void showHelp();
     void loadLevel(string filename);
+    void setShortcuts();
 
 private slots:
 
@@ -77,6 +80,7 @@ private slots:
     void slot_level2() {loadLevel(LEV2JSON);}
     void slot_level3() {loadLevel(LEV3JSON);}
     void slot_level4() {loadLevel(LEV4JSON);}
+    void slot_setShortcuts(){setShortcuts();}
     void update();
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
@@ -105,6 +109,9 @@ private:
     void drawMaze(Maze *&layout);
     void drawTile(int i, int j , tileSettings &tileType);
     void drawPlayer(int x , int y);
+    void drawenemy(int x,int y);
+    void drawkey(int x,int y);
+    void drawescape(int x,int y);
 
     void refreshTile(int i , int j , tileSettings &tileType);
     void refreshPlayer(int x , int y);
@@ -114,6 +121,10 @@ private:
 
     quint32 xFromCol(int c) const { return static_cast<quint32>(c * nTileWidth + 0.5 * nTileWidth); }
     quint32 yFromRow(int r) const { return static_cast<quint32>(r * nTileHeight + 0.5 * nTileHeight); }
+
+    void EnemyMovement();
+    void playergone();
+
 
     // Main Widgets
     QStackedWidget *MenuScreens;
@@ -167,28 +178,28 @@ private:
     QGroupBox *VisualisationOptionsBox;
     QFormLayout *formLayout_3;
     QLabel *wallColorLabel;
-    QLineEdit *wallColorLineEdit;
+    QPushButton *wallColorPicker;
     QLabel *pathColorLabel;
-    QLineEdit *pathColorLineEdit;
+    QPushButton *pathColorPicker;
     QLabel *playerColorLabel;
-    QLineEdit *playerColorLineEdit;
+    QPushButton *playerColorPicker;
     QLabel *enemyColorLabel;
-    QLineEdit *enemyColorLineEdit;
+    QPushButton *enemyColorPicker;
     QLabel *keyColorLabel;
-    QLineEdit *keyColorLineEdit;
+    QPushButton *keyColorPicker;
     QLabel *exitColorLabel;
-    QLineEdit *exitColorLineEdit;
+    QPushButton *exitColorPicker;
 
     QGroupBox *KeybindsBox;
     QFormLayout *formLayout_4;
     QLabel *moveUpLabel;
-    QLineEdit *moveUpLineEdit;
+    QKeySequenceEdit *moveUpKeybind;
     QLabel *moveDownLabel;
-    QLineEdit *moveDownLineEdit;
+    QKeySequenceEdit *moveDownKeybind;
     QLabel *moveLeftLabel;
-    QLineEdit *moveLeftLineEdit;
+    QKeySequenceEdit *moveLeftKeybind;
     QLabel *moveRightLabel;
-    QLineEdit *moveRightLineEdit;
+    QKeySequenceEdit *moveRightKeybind;
     QPushButton *mainMenuButton_optionsScreen;
 
     // Actions
@@ -200,12 +211,26 @@ private:
     QAction *actionGame_Options;
     QAction *mainMenuRet;
 
+    // Shortcuts
+    int moveUp;
+    int moveDown;
+    int moveLeft;
+    int moveRight;
+
     // Visualisation parameters
     QColor wallColor;
     QColor pathColor;
     QColor exitColor;
     QColor playerColor;
     QColor enemyColor;
+    QColor keyColor;
+
+    QString wallColorN;
+    QString pathColorN;
+    QString exitColorN;
+    QString playerColorN;
+    QString enemyColorN;
+    QString keyColorN;
 
     quint32 nTileWidth;
     quint32 nTileHeight;
@@ -220,6 +245,12 @@ private:
     void play();
     bool paused;
     QTimer* inputTime;
+    QTimer* enemyTime;
+    QTimer* playerdead;
+
+    void setColorNames();
+
+    QString getColorName(QColor &color);
 
 protected:
 

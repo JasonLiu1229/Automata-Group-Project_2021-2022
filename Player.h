@@ -17,6 +17,8 @@ class Player {
 
     string name;
 
+    bool dead;
+
     // amount of keys
     int amountKeys = 0;
 public:
@@ -49,6 +51,10 @@ public:
     Path *getCurrentTile() const;
 
     void setCurrentTile(Path *currentTile);
+
+    bool playerdead();
+
+    void playerdied();
 
     virtual ~Player();
 };

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include "Player.h"
+#include "Enemy.h"
 #include "Collectable_DFA.h"
 #include "miniState.h"
 #include "Standard_Values.h"
@@ -43,6 +44,7 @@ class Maze : vector<vector<Path*>> {
 
     //speler
     Player* player;
+    vector<Enemy*> enemies;
 
     // all Paths
     vector<Path*> allPaths;
@@ -75,6 +77,10 @@ public:
 
     void setSavedFile(const string &savedFile);
 
+    Player* getPlayer();
+
+    Collectable_DFA* getDFAkeys();
+
     // user interface
     void playMaze();
 
@@ -92,6 +98,10 @@ public:
 
     // simulate
     void simulateMove(movement m);
+
+    void EnemyMovement();
+
+    bool checkmaze(Path* richting);
 
     //DFA -> Regex
     void toRegex(Path* curr, string even,vector<Path*> gonethere); // DFA to REGEX

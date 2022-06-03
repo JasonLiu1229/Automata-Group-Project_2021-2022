@@ -19,6 +19,7 @@ Maze::Maze(const string &fileName) :levelName(fileName), status(play) , key_coun
     if (!failed){
         cout << "File was corrupted or not found" << endl;
     }
+    /*simulateStart();*/
 }
 
 Maze::Maze(): key_count(0){
@@ -313,6 +314,14 @@ void Maze::loadGame(const string &fileName) {
                 else if(i=='&'){
                     road->setAccepting(true);
                 }
+                else if(i == '~'){
+                    Enemy* enemy = new Enemy();
+                    road->setEnemy(true);
+                    enemy->setCurrentTile(road);
+                    enemy->train(Training2);
+                    enemy->train(Training1);
+                    enemies.push_back(enemy);
+                }
                 else if(i == '^'){
                     road->setKey(true);
                     key_count++;
@@ -415,11 +424,51 @@ void Maze::simulateMove(movement m) {
     }
     if(player->GetCurrentTile()->isKey()){
         collectedKeys->setCurrentState(collectedKeys->getCurrentState()->getNext());
+        collectedKeys->done();
+        player->GetCurrentTile()->setKey(false);
     }
-
 }
 
+Player* Maze::getPlayer() {
+    return player;
+}
+Collectable_DFA* Maze::getDFAkeys() {
+    return collectedKeys;
+}
+
+bool Maze::checkmaze(Path* richting){
+    if(richting->isEnemy()){
+        return true;
+    }
+    return false;
+}
 // algorithms
+
+void Maze::EnemyMovement() {
+    for (auto enemy: enemies) {
+        movement move = enemy->moveSmartV2();
+        if (move == UP and !enemy->GetCurrentTile()->getUp()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getUp());
+            enemy->getCurrentTile()->setEnemy(true);
+        }else if (move == DOWN and !enemy->GetCurrentTile()->getDown()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getDown());
+            enemy->getCurrentTile()->setEnemy(true);
+        } else if (move == RIGHT and !enemy->GetCurrentTile()->getRight()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getRight());
+            enemy->getCurrentTile()->setEnemy(true);
+        } else if (move == LEFT and !enemy->GetCurrentTile()->getLeft()->isEnemy()) {
+            enemy->getCurrentTile()->setEnemy(false);
+            enemy->setCurrentTile(enemy->GetCurrentTile()->getLeft());
+            enemy->getCurrentTile()->setEnemy(true);
+        }
+        if(enemy->getCurrentTile() == player->GetCurrentTile()){
+            player->playerdied();
+        }
+    }
+}
 
 /*TFA minimize*/
 
