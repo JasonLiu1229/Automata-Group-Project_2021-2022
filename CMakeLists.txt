@@ -32,8 +32,7 @@ set(Movement_classes
         )
 
 set(QT_Utils
-        QT_Utils/qtcolorpicker.cpp
-        QT_Utils/qtcolorpicker.h
+
         )
 
 set(QT_UI
