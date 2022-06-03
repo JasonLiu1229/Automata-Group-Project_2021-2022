@@ -100,32 +100,12 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
 }
 
 void Ui_MazeWindow::setColorNames() {
-
-    wallColorN = getColorName(wallColor);
-    if(wallColorN.toStdString() == ""){
-        wallColorN = wallColor.name();
-    }
-    pathColorN = getColorName(pathColor);
-    if(pathColorN.toStdString() == ""){
-        pathColorN = pathColor.name();
-    }
-    playerColorN = getColorName(playerColor);
-    if(playerColorN.toStdString() == ""){
-        playerColorN = playerColor.name();
-    }
-    enemyColorN = getColorName(enemyColor);
-    if(enemyColorN.toStdString() == ""){
-        enemyColorN = enemyColor.name();
-    }
-    keyColorN = getColorName(keyColor);
-    if(keyColorN.toStdString() == ""){
-        keyColorN = keyColor.name();
-    }
-    exitColorN = getColorName(exitColor);
-    if(exitColorN.toStdString() == ""){
-        exitColorN = exitColor.name();
-    }
-
+    wallColorN = wallColor.name();
+    pathColorN = pathColor.name();
+    playerColorN = playerColor.name();
+    enemyColorN = enemyColor.name();
+    keyColorN = keyColor.name();
+    exitColorN = exitColor.name();
 }
 
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
@@ -134,7 +114,7 @@ QString Ui_MazeWindow::getStylesheet(QString &ref) {
     color = "QPushButton {background-color:" ;
     color += ref.toStdString();
     color += ";color:";
-    if (ref.toStdString() != "" && ref.toStdString() != "white") {
+    if (ref.toStdString() != "" && ref.toStdString() != "#ffffff") {
         color += "white";
     }
     else {
