@@ -4,7 +4,9 @@
     <generated>
       <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerVisNew_autogen" />
       <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunner" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerNoColor_autogen" />
       <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunner_autogen" />
+      <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerNoColor" />
       <config projectName="Automata-Group-Project_2021-2022" targetName="MazeRunnerVisNew" />
     </generated>
   </component>
@@ -14,7 +16,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18def5a1-4dcb-4eff-99d0-77d7448db16b" name="Changes" comment="added to ui functionality" />
+    <list default="true" id="18def5a1-4dcb-4eff-99d0-77d7448db16b" name="Changes" comment="raar? verwijder desnoods">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Contract/TA_Tog_project_idea.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Contract/TA_Tog_project_idea.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/QT_UI_Design/ui_MazeWindow.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,9 +33,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="OCResolveContextSettings">
-    <option name="configuration" value="0-Debug-MazeRunnerVisOld" />
   </component>
   <component name="ProjectId" id="29I3g3pgHTdPkiLw0wDHhR9xzTX" />
   <component name="ProjectViewState">
@@ -45,16 +49,27 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Algorithms/Siebe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\siebe\CLionProjects\Automata-Group-Project_2021-2022" />
       <recent name="C:\Users\siebe\CLionProjects\Automata-Group-Project_2021-2022\Algorithms\Siebe" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.MazeRunner">
+  <component name="RunManager" selected="CMake Application.MazeRunnerVisNew">
     <configuration name="MazeRunner" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunner" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Automata-Group-Project_2021-2022" RUN_TARGET_NAME="MazeRunner">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunnerNoColor" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunnerNoColor" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Automata-Group-Project_2021-2022" RUN_TARGET_NAME="MazeRunnerNoColor">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MazeRunnerNoColor_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Automata-Group-Project_2021-2022" TARGET_NAME="MazeRunnerNoColor_autogen" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -74,11 +89,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -87,6 +97,8 @@
     <list>
       <item itemvalue="CMake Application.MazeRunner" />
       <item itemvalue="CMake Application.MazeRunner_autogen" />
+      <item itemvalue="CMake Application.MazeRunnerNoColor" />
+      <item itemvalue="CMake Application.MazeRunnerNoColor_autogen" />
       <item itemvalue="CMake Application.MazeRunnerVisNew" />
       <item itemvalue="CMake Application.MazeRunnerVisNew_autogen" />
     </list>
@@ -115,6 +127,8 @@
       <workItem from="1654178996949" duration="198000" />
       <workItem from="1654277721408" duration="135000" />
       <workItem from="1654278138340" duration="272000" />
+      <workItem from="1654278423111" duration="429000" />
+      <workItem from="1654279015523" duration="1681000" />
     </task>
     <task id="LOCAL-00001" summary="window try">
       <created>1653399756269</created>
@@ -207,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654085357762</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="raar? verwijder desnoods">
+      <created>1654278520386</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1654278520386</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,6 +283,7 @@
     <MESSAGE value="renamed classes" />
     <MESSAGE value="renamed classes (again)" />
     <MESSAGE value="added to ui functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="added to ui functionality" />
+    <MESSAGE value="raar? verwijder desnoods" />
+    <option name="LAST_COMMIT_MESSAGE" value="raar? verwijder desnoods" />
   </component>
 </project>

@@ -75,6 +75,7 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
     loadAct->setText(QApplication::translate("MainWindow", "Load", nullptr));
     saveAct->setText(QApplication::translate("MainWindow", "Save", nullptr));
     exitAct->setText(QApplication::translate("MainWindow", "Exit", nullptr));
+    showScoresAct->setText(QApplication::translate("MainWindow", "Highscores", nullptr));
     actionFullscreen->setText(QApplication::translate("MainWindow", "Fullscreen", nullptr));
     actionFullscreen->setShortcut(QApplication::translate("MainWindow", "Ctrl+F", nullptr));
     actionGame_Options->setText(QApplication::translate("MainWindow", "Game Options", nullptr));
@@ -88,6 +89,7 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
 }
 
 QString Ui_MazeWindow::getColorName(QColor &color) {
+    /*
     QColor cmp;
     for(const auto &i : QColor::colorNames()) {
         cmp.setNamedColor(i);
@@ -95,10 +97,11 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
             return i;
         }
     }
+    */
 }
 
 void Ui_MazeWindow::setColorNames() {
-
+    /*
     wallColorN = getColorName(wallColor);
     if(wallColorN.toStdString() == ""){
         wallColorN = wallColor.name();
@@ -123,7 +126,7 @@ void Ui_MazeWindow::setColorNames() {
     if(exitColorN.toStdString() == ""){
         exitColorN = exitColor.name();
     }
-
+    */
 }
 
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
@@ -159,6 +162,11 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     saveAct->setStatusTip(tr("Save game to disk"));
     connect(saveAct, &QAction::triggered, this, &Ui_MazeWindow::slot_save);
 
+    showScoresAct = new QAction(tr("&Highscores"), this);
+    showScoresAct->setObjectName(QString::fromUtf8("showScoresAct"));
+    showScoresAct->setStatusTip(tr("Show highscores"));
+    connect(showScoresAct , &QAction::triggered , this , &Ui_MazeWindow::slot_scoreBoard);
+
     exitAct = new QAction(tr("&Exit"), this);
     exitAct->setShortcuts(QKeySequence::Quit);
     exitAct->setStatusTip(tr("Abandon game"));
@@ -176,7 +184,6 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     mainMenuRet = new QAction(MainWindow);
     mainMenuRet->setObjectName(QString::fromUtf8("mainMenuRet"));
     connect(mainMenuRet , &QAction::triggered , this , &Ui_MazeWindow::slot_mainMenu);
-
 }
 
 void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
@@ -272,6 +279,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     menubar->addAction(menuOptions->menuAction());
     menuFile->addAction(loadAct);
     menuFile->addAction(saveAct);
+    menuFile->addAction(showScoresAct);
     menuFile->addAction(exitAct);
     menuOptions->addAction(actionFullscreen);
     menuOptions->addAction(actionGame_Options);
@@ -676,6 +684,10 @@ void Ui_MazeWindow::options() {
 
 void Ui_MazeWindow::mainMenuReturn() {
     MenuScreens->setCurrentWidget(MainScreen);
+}
+
+void Ui_MazeWindow::showScoreboard() {
+    MenuScreens->setCurrentWidget(scoreboardScreen);
 }
 
 void Ui_MazeWindow::loadLevel(string filename){
