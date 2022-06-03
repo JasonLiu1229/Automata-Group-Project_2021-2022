@@ -225,6 +225,13 @@ private:
     QColor enemyColor;
     QColor keyColor;
 
+    QString wallColorN;
+    QString pathColorN;
+    QString exitColorN;
+    QString playerColorN;
+    QString enemyColorN;
+    QString keyColorN;
+
     quint32 nTileWidth;
     quint32 nTileHeight;
     quint32 nBorderWidth;
@@ -240,6 +247,10 @@ private:
     QTimer* inputTime;
     QTimer* enemyTime;
     QTimer* playerdead;
+
+    void setColorNames();
+
+    QString getColorName(QColor &color);
 
 protected:
 

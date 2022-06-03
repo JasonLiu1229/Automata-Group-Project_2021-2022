@@ -24,18 +24,32 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     MainWindow->setFocusPolicy(Qt::NoFocus);
     MainWindow->setTabShape(QTabWidget::Rounded);
 
-    // Create actions
-    createActions(MainWindow);
-    // Create menus
-    createMenus(MainWindow);
-    // Retranslate
-    retranslateUi(MainWindow);
     paused = false;
     currentSave = "";
     moveUp = Qt::Key_W;
     moveLeft = Qt::Key_A;
     moveRight = Qt::Key_D;
     moveDown = Qt::Key_S;
+
+    // Set parameters
+    nTileWidth = kWidth;
+    nTileHeight = kWidth;
+    nBorderWidth = 0;
+    nBorderHeight = 0;
+    wallColor = Qt::black;
+    pathColor = Qt::gray;
+    exitColor = QColor(150,75,0);
+    playerColor = Qt::white;
+    enemyColor = QColor(138,3,3);
+    keyColor = QColor(250,250,0);
+
+    // Create actions
+    createActions(MainWindow);
+    // Create menus
+    createMenus(MainWindow);
+    // Retranslate
+    retranslateUi(MainWindow);
+
 //    this->installEventFilter(this);
 }
 
@@ -60,6 +74,45 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
     menuFile->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", nullptr));
 
+}
+
+QString Ui_MazeWindow::getColorName(QColor &color) {
+    QColor cmp;
+    for(const auto &i : QColor::colorNames()) {
+        cmp.setNamedColor(i);
+        if(cmp == color){
+            cout << i.toStdString();
+            return i;
+        }
+    }
+}
+
+void Ui_MazeWindow::setColorNames() {
+
+    wallColorN = getColorName(wallColor);
+    if(wallColorN == ""){
+        wallColorN = wallColor.name();
+    }
+    pathColorN = getColorName(pathColor);
+    if(pathColorN == ""){
+        pathColorN = pathColor.name();
+    }
+    playerColorN = getColorName(playerColor);
+    if(playerColorN == ""){
+        playerColorN = playerColor.name();
+    }
+    enemyColorN = getColorName(enemyColor);
+    if(enemyColorN == ""){
+        enemyColorN = enemyColor.name();
+    }
+    keyColorN = getColorName(keyColor);
+    if(keyColorN == ""){
+        keyColorN = keyColor.name();
+    }
+    exitColorN = getColorName(exitColor);
+    if(exitColorN == ""){
+        exitColorN = exitColor.name();
+    }
 }
 
 void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
@@ -313,8 +366,7 @@ void Ui_MazeWindow::createLevelScreen(QMainWindow *MainWindow){
 
 void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
-    QString currentName;
-
+    setColorNames();
     // Create new widget
     optionsScreen = new QWidget(MainWindow);
     optionsScreen->setObjectName(QString::fromUtf8("OptionsScreen"));
@@ -336,9 +388,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     wallColorPicker = new QPushButton(VisualisationOptionsBox);
     wallColorPicker->setObjectName(QString::fromUtf8("wallColorPicker"));
-    currentName = wallColor.name();
-    wallColorPicker->setText(wallColor.name());
-//    wallColorPicker->setStandardColors();
+    wallColorPicker->setText(wallColorN);
 
     formLayout_3->setWidget(0, QFormLayout::FieldRole, wallColorPicker);
 
@@ -349,7 +399,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     pathColorPicker = new QPushButton(VisualisationOptionsBox);
     pathColorPicker->setObjectName(QString::fromUtf8("pathColorPicker"));
-//    pathColorPicker->setStandardColors();
+    pathColorPicker->setText(pathColorN);
 
     formLayout_3->setWidget(1, QFormLayout::FieldRole, pathColorPicker);
 
@@ -360,8 +410,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     playerColorPicker = new QPushButton(VisualisationOptionsBox);
     playerColorPicker->setObjectName(QString::fromUtf8("playerColorPicker"));
-
-//    playerColorPicker->setStandardColors();
+    playerColorPicker->setText(playerColorN);
 
     formLayout_3->setWidget(2, QFormLayout::FieldRole, playerColorPicker);
 
@@ -372,7 +421,8 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     enemyColorPicker = new QPushButton(VisualisationOptionsBox);
     enemyColorPicker->setObjectName(QString::fromUtf8("enemyColorPicker"));
-//    enemyColorPicker->setStandardColors();
+    enemyColorPicker->setText(enemyColorN);
+
 
     formLayout_3->setWidget(3, QFormLayout::FieldRole, enemyColorPicker);
 
@@ -383,7 +433,8 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     keyColorPicker = new QPushButton(VisualisationOptionsBox);
     keyColorPicker->setObjectName(QString::fromUtf8("keyColorPicker"));
-//    keyColorPicker->setStandardColors();
+    keyColorPicker->setText(keyColorN);
+
 
     formLayout_3->setWidget(4, QFormLayout::FieldRole, keyColorPicker);
 
@@ -394,7 +445,8 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     exitColorPicker = new QPushButton(VisualisationOptionsBox);
     exitColorPicker->setObjectName(QString::fromUtf8("exitColorPicker"));
-//    exitColorPicker->setStandardColors();
+    exitColorPicker->setText(exitColorN);
+
 
     formLayout_3->setWidget(5, QFormLayout::FieldRole, exitColorPicker);
 
@@ -547,19 +599,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
-    // Set parameters
-    nTileWidth = kWidth;
-    nTileHeight = kWidth;
-    nBorderWidth = 0;
-    nBorderHeight = 0;
-    wallColor = Qt::black;
-    pathColor = Qt::gray;
-    exitColor = QColor(150,75,0);
-    playerColor = Qt::white;
-    enemyColor = QColor(138,3,3);
-    keyColor = QColor(250,250,0);
-
-    // Draw the maze(make all the tiles)
+        // Draw the maze(make all the tiles)
     update();
     // Set the scene
     MazeView->setScene(MazeScene);
@@ -755,4 +795,3 @@ void Ui_MazeWindow::setShortcuts() {
 //    moveRightKeybind->clear();
 
 }
-
