@@ -60,8 +60,15 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     // Retranslate
     retranslateUi(MainWindow);
 
-
-
+    inputTime = new QTimer;
+    enemyTime = new QTimer;
+    playerdead = new QTimer;
+    connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
+    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
+    connect(playerdead,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
+    inputTime->stop();
+    enemyTime->stop();
+    playerdead->stop();
 }
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
@@ -690,16 +697,10 @@ void Ui_MazeWindow::loadLevel(string filename){
     MazeView->setScene(MazeScene);
     // Change the window view
     delete parser;
-    inputTime = new QTimer;
-    enemyTime = new QTimer;
-    playerdead = new QTimer;
-    connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
-    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
+
     inputTime->start(25);
     playerdead->start(0);
     enemyTime->start(300);
-
 
     MazeView->setFocus();
     this->grabKeyboard();
@@ -707,7 +708,11 @@ void Ui_MazeWindow::loadLevel(string filename){
 
 void Ui_MazeWindow::pauseGame() {
     cout << "Pause Game option" << endl;
+    inputTime->stop();
+    playerdead->stop();
+    enemyTime->stop();
 }
+
 void Ui_MazeWindow::showControls() {
     cout << "Show Controls option" << endl;
 }
@@ -767,7 +772,9 @@ void Ui_MazeWindow::playergone(){
         gameLayout->getPlayer()->getCurrentTile()->setStarting(false);
         MenuScreens->setCurrentWidget(gameOverScreen);
         gameLayout->getPlayer()->playerRose();
-            inputTime->stop();
+        inputTime->stop();
+        enemyTime->stop();
+        playerdead->stop();
     }
 }
 
@@ -839,7 +846,9 @@ void Ui_MazeWindow::refreshPlayer(int x, int y) {
 }
 
 void Ui_MazeWindow::play() {
-
+    inputTime->start(25);
+    playerdead->start(0);
+    enemyTime->start(300);
 }
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
