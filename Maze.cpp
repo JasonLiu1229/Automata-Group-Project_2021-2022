@@ -347,6 +347,7 @@ void Maze::loadGame(const string &fileName) {
             // Case: there is no tile above
             if(i == 0){
                 currentTile->setUp(nullptr);
+                transitions[currentTile] = {UP, currentTile};
             }
             else{
                 nextTile = this->at(i-1)[j];
@@ -354,11 +355,16 @@ void Maze::loadGame(const string &fileName) {
                     currentTile->setUp(nextTile);
                     currentTile->setpath("w",nextTile);
                     currentTile->setmovement("w");
+                    transitions[currentTile]= {UP, nextTile};
+                }
+                else {
+                    transitions[currentTile]= {UP, currentTile};
                 }
             }
             // Get tile left
             if(j == 0){
                 currentTile->setLeft(nullptr);
+                transitions[currentTile] = {LEFT, currentTile};
             }
             else{
                 nextTile = this->at(i)[j-1];
@@ -366,11 +372,16 @@ void Maze::loadGame(const string &fileName) {
                     currentTile->setLeft(nextTile);
                     currentTile->setpath("a", nextTile);
                     currentTile->setmovement("a");
+                    transitions[currentTile] = {LEFT, nextTile};
+                }
+                else {
+                    transitions[currentTile] = {LEFT, currentTile};
                 }
             }
             // Get tile right
             if(j == width - 1){
                 currentTile->setRight(nullptr);
+                transitions[currentTile] = {RIGHT, currentTile};
             }
             else{
                 nextTile = this->at(i)[j+1];
@@ -378,11 +389,16 @@ void Maze::loadGame(const string &fileName) {
                     currentTile->setRight(nextTile);
                     currentTile->setpath("d", nextTile);
                     currentTile->setmovement("d");
+                    transitions[currentTile] = {RIGHT, nextTile};
+                }
+                else {
+                    transitions[currentTile] = {RIGHT, currentTile};
                 }
             }
             // Get tile under
             if(i == height - 1){
                 currentTile->setDown(nullptr);
+                transitions[currentTile] = {DOWN, currentTile};
             }
             else{
                 nextTile = this->at(i+1)[j];
@@ -390,6 +406,10 @@ void Maze::loadGame(const string &fileName) {
                     currentTile->setDown(nextTile);
                     currentTile->setpath("s", nextTile);
                     currentTile->setmovement("s");
+                    transitions[currentTile] = {DOWN, nextTile};
+                }
+                else {
+                    transitions[currentTile] = {DOWN, currentTile};
                 }
             }
         }
@@ -471,9 +491,28 @@ void Maze::EnemyMovement() {
 }
 
 /*TFA minimize*/
-void Maze::recursionMinimize(Maze *&maze, map<pair<Path*, Path*>, bool> &Table, vector<pair<Path*, Path*>> &markedStates) {
-    for (auto koppel : markedStates){
-
+void Maze::recursionMinimize(Maze *&maze, map<set<Path*>, bool> &Table, vector<set<Path*>> &markedStates) {
+    int amMarked = markedStates.size();
+    for (const auto& koppel : markedStates){
+        vector<Path*> vectorMarked;
+        vectorMarked.reserve(koppel.size());
+        for (auto newKop : koppel){
+            vectorMarked.push_back(newKop);
+        }
+        for (const auto& trans1 : transitions) {
+            for (const auto& trans2 : transitions) {
+                if (trans1 != trans2){
+                    if (trans1.second.first == trans2.second.first and trans1.second.second ==  vectorMarked[0] and trans2.second.second == vectorMarked[1]){
+                        addState({trans1.first, trans2.first}, markedStates);
+                        Table[{trans1.first, trans2.first}] = false;
+                    }
+                }
+            }
+        }
+        int newMarked = markedStates.size();
+        if (amMarked != newMarked){
+            recursionMinimize(maze, Table, markedStates);
+        }
     }
 }
 
@@ -482,20 +521,26 @@ Maze *Maze::minimize() {
     auto* minimizeMaze = new Maze();
 
     // create starting table
-    map<pair<Path*, Path*>, bool> Table;
-    vector<pair<Path*, Path*>> markedStates;
+    map<set<Path*>, bool> Table;
+    vector<set<Path*>> markedStates;
     for (int i = 0; i < allPaths.size() - 1; ++i) {
         pair<Path*, Path*> couple;
+        set<Path*> coupleS;
+        set<Path*> temp;
         couple.first = allPaths[i];
+        coupleS.insert(allPaths[i]);
+        temp = coupleS;
         for (int j = 1; j < allPaths.size(); ++j) {
             couple.second = allPaths[j];
+            coupleS.insert(allPaths[j]);
             if (couple.first->isAccepting() != couple.second->isAccepting()){
-                Table[couple] = false;
+                Table[coupleS] = false;
+                addState(coupleS, markedStates);
             }
             else {
-                Table[couple] = true;
-                markedStates.push_back(couple);
+                Table[coupleS] = true;
             }
+            coupleS = temp;
         }
     }
 
@@ -503,10 +548,42 @@ Maze *Maze::minimize() {
     recursionMinimize(minimizeMaze, Table, markedStates);
 
     // combine equivalent states
-
+    reformat(Table, minimizeMaze);
 
     return minimizeMaze;
 }
+
+void Maze::addState(const set<Path *>& kopppel, vector<set<Path*>>& markedState) {
+    bool init = false;
+    for (const auto &Pairs:markedState) {
+        if (Pairs == kopppel){
+            init = true;
+            break;
+        }
+    }
+    if (!init){
+        markedState.push_back(kopppel);
+    }
+}
+
+void Maze::reformat(map<set<Path *>, bool> &Table, Maze *&maze) {
+    vector<set<Path*>> equivalentSets;
+    for (auto couple : Table){
+        /*for (auto equiSet : equivalentSets) {
+            set<Path*> intersect;
+            set_intersection(equiSet.begin(), equiSet.end(), couple.first.begin(), couple.first.end(), std::inserter(intersect, intersect.begin()));
+            if (!intersect.empty() and couple.second){
+                set<Path*> temp;
+                set_union(equiSet.begin(), equiSet.end(), couple.first.begin(), couple.first.end(), std::inserter(temp, temp.begin()));
+                equivalentSets.push_back(temp);
+            }
+            else if (couple.second){
+                equivalentSets.push_back(couple.first);
+            }
+        }*/
+    }
+}
+
 /*DFA -> regex*/
 bool Maze::yeah(vector<string> alpha, Path* staat){
     bool yeah = true;
@@ -747,7 +824,8 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
             else {
                 shortestRoute.second = false;
             }
-        } else if (current->getUp() != nullptr){
+        }
+        if (current->getUp() != nullptr){
             temp = "w";
             seen.push_back(current);
             if (recursionShortFinder(current->getUp(), DOWN, temp, allmoves, seen).second){
@@ -756,7 +834,8 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
             else {
                 shortestRoute.second = false;
             }
-        } else if (current->getLeft() != nullptr){
+        }
+        if (current->getLeft() != nullptr){
             temp = "a";
             seen.push_back(current);
             if (recursionShortFinder(current->getLeft(), RIGHT, temp, allmoves, seen).second){
@@ -765,7 +844,8 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
             else {
                 shortestRoute.second = false;
             }
-        } else if (current->getRight() != nullptr){
+        }
+        if (current->getRight() != nullptr){
             temp = "d";
             seen.push_back(current);
             if (recursionShortFinder(current->getRight(), LEFT, temp, allmoves,seen).second){
@@ -774,7 +854,8 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
             else {
                 shortestRoute.second = false;
             }
-        } else {
+        }
+        if (current->getRight() == nullptr and current->getUp() == nullptr and current->getLeft() == nullptr and current->getDown() == nullptr){
             cout << "No path for start" << endl;
             shortestRoute.second = false;
         }
@@ -899,10 +980,6 @@ pair<string, bool> Maze::recursionShortFinder(Path *current, movement previousMo
     return shortestRoute;
 }
 
-Maze::~Maze() {
-
-}
-
 const string &Maze::getSavedFile() const {
     return savedFile;
 }
@@ -917,4 +994,8 @@ const string &Maze::getLevelName() const {
 
 void Maze::setLevelName(const string &levelName) {
     Maze::levelName = levelName;
+}
+
+Maze::~Maze() {
+
 }

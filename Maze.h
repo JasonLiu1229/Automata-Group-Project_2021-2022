@@ -53,6 +53,8 @@ class Maze : vector<vector<Path*>> {
 
     string shortestMove;
 
+    map<Path*, pair<movement, Path*>> transitions;
+
 public:
     // constructors
     Maze();
@@ -131,7 +133,11 @@ private:
     void tileConfig(Path* &leftTile, Path* &rightTile, int i, int j);
 
     // TFA
-    void recursionMinimize(Maze* &maze, map<pair<Path*, Path*>, bool> &Table, vector<pair<Path*, Path*>> &markedStates);
+    void recursionMinimize(Maze* &maze, map<set<Path*>, bool> &Table, vector<set<Path*>> &markedStates);
+
+    static void addState(const set<Path*>& koppel, vector<set<Path*>>&markedstates);
+
+    void reformat(map<set<Path*>, bool> &Table, Maze* &maze);
 
     // Dijkstra
     pair<string, bool> recursionShortFinder(Path *current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath);

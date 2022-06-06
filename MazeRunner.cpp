@@ -36,8 +36,9 @@ int main(int argc, char** argv){
         }
     }*/
     auto* maze = new Maze(LEV1JSON);
-    string route = maze->findShortestRoute();
-    cout << route << endl;
+    /*string route = maze->findShortestRoute();
+    cout << route << endl;*/
+    maze->minimize();
 
     cout << "Ha you ran this bullshit" << endl;
 //    return a.exec();
