@@ -60,8 +60,15 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     // Retranslate
     retranslateUi(MainWindow);
 
-
-
+    inputTime = new QTimer;
+    enemyTime = new QTimer;
+    playerdead = new QTimer;
+    connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
+    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
+    connect(playerdead,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
+    inputTime->stop();
+    enemyTime->stop();
+    playerdead->stop();
 }
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
@@ -100,32 +107,12 @@ QString Ui_MazeWindow::getColorName(QColor &color) {
 }
 
 void Ui_MazeWindow::setColorNames() {
-
-    wallColorN = getColorName(wallColor);
-    if(wallColorN.toStdString() == ""){
-        wallColorN = wallColor.name();
-    }
-    pathColorN = getColorName(pathColor);
-    if(pathColorN.toStdString() == ""){
-        pathColorN = pathColor.name();
-    }
-    playerColorN = getColorName(playerColor);
-    if(playerColorN.toStdString() == ""){
-        playerColorN = playerColor.name();
-    }
-    enemyColorN = getColorName(enemyColor);
-    if(enemyColorN.toStdString() == ""){
-        enemyColorN = enemyColor.name();
-    }
-    keyColorN = getColorName(keyColor);
-    if(keyColorN.toStdString() == ""){
-        keyColorN = keyColor.name();
-    }
-    exitColorN = getColorName(exitColor);
-    if(exitColorN.toStdString() == ""){
-        exitColorN = exitColor.name();
-    }
-
+    wallColorN = wallColor.name();
+    pathColorN = pathColor.name();
+    playerColorN = playerColor.name();
+    enemyColorN = enemyColor.name();
+    keyColorN = keyColor.name();
+    exitColorN = exitColor.name();
 }
 
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
@@ -134,7 +121,7 @@ QString Ui_MazeWindow::getStylesheet(QString &ref) {
     color = "QPushButton {background-color:" ;
     color += ref.toStdString();
     color += ";color:";
-    if (ref.toStdString() != "" && ref.toStdString() != "white") {
+    if (ref.toStdString() != "" && ref.toStdString() != "#ffffff") {
         color += "white";
     }
     else {
@@ -710,16 +697,10 @@ void Ui_MazeWindow::loadLevel(string filename){
     MazeView->setScene(MazeScene);
     // Change the window view
     delete parser;
-    inputTime = new QTimer;
-    enemyTime = new QTimer;
-    playerdead = new QTimer;
-    connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
-    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
-    connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
+
     inputTime->start(25);
     playerdead->start(0);
     enemyTime->start(300);
-
 
     MazeView->setFocus();
     this->grabKeyboard();
@@ -727,7 +708,11 @@ void Ui_MazeWindow::loadLevel(string filename){
 
 void Ui_MazeWindow::pauseGame() {
     cout << "Pause Game option" << endl;
+    inputTime->stop();
+    playerdead->stop();
+    enemyTime->stop();
 }
+
 void Ui_MazeWindow::showControls() {
     cout << "Show Controls option" << endl;
 }
@@ -787,7 +772,9 @@ void Ui_MazeWindow::playergone(){
         gameLayout->getPlayer()->getCurrentTile()->setStarting(false);
         MenuScreens->setCurrentWidget(gameOverScreen);
         gameLayout->getPlayer()->playerRose();
-            inputTime->stop();
+        inputTime->stop();
+        enemyTime->stop();
+        playerdead->stop();
     }
 }
 
@@ -859,7 +846,9 @@ void Ui_MazeWindow::refreshPlayer(int x, int y) {
 }
 
 void Ui_MazeWindow::play() {
-
+    inputTime->start(25);
+    playerdead->start(0);
+    enemyTime->start(300);
 }
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
