@@ -140,12 +140,6 @@ private:
     void playergone();
 
 
-
-
-    void EnemyMovement();
-    void playergone();
-
-
     // Main Widgets
     QStackedWidget *MenuScreens;
     QWidget *MainScreen;
