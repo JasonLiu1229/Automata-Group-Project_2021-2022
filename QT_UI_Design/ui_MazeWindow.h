@@ -30,8 +30,6 @@
 #include <QKeySequenceEdit>
 #include <QColorDialog>
 #include <QLCDNumber>
-//#include <QElapsedTimer>
-#include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
 #include "../Maze.h"
@@ -62,6 +60,7 @@ public:
     void showHelp();
     void loadLevel(string filename);
     void setShortcuts();
+    void setColours();
 
 private slots:
 
@@ -87,6 +86,7 @@ private slots:
     void slot_level3() {loadLevel(LEV3JSON);}
     void slot_level4() {loadLevel(LEV4JSON);}
     void slot_setShortcuts(){setShortcuts();}
+    void slot_setColours() {setColours();}
     void update();
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
@@ -204,6 +204,7 @@ private:
     QPushButton *keyColorPicker;
     QLabel *exitColorLabel;
     QPushButton *exitColorPicker;
+    QPushButton *saveColorChoice;
 
     QGroupBox *KeybindsBox;
     QFormLayout *formLayout_4;
@@ -215,6 +216,8 @@ private:
     QKeySequenceEdit *moveLeftKeybind;
     QLabel *moveRightLabel;
     QKeySequenceEdit *moveRightKeybind;
+    QLabel *fogShortcutLabel;
+    QKeySequenceEdit *fogKeybind;
     QPushButton *saveKeybindsButton;
     QPushButton *mainMenuButton_optionsScreen;
 
@@ -231,7 +234,6 @@ private:
     QAction *loadAct;
     QAction *saveAct;
     QAction *exitAct;
-    QAction *optionsAct;
     QAction *actionFullscreen;
     QAction *actionGame_Options;
     QAction *mainMenuRet;
@@ -245,6 +247,7 @@ private:
     int moveRight;
 
     // Visualisation parameters
+    // Colours
     QColor wallColor;
     QColor pathColor;
     QColor exitColor;
@@ -252,6 +255,7 @@ private:
     QColor enemyColor;
     QColor keyColor;
 
+    // Colour names
     QString wallColorN;
     QString pathColorN;
     QString exitColorN;
@@ -259,13 +263,11 @@ private:
     QString enemyColorN;
     QString keyColorN;
 
+    // Tile dimentions
     quint32 nTileWidth;
     quint32 nTileHeight;
-    quint32 nBorderWidth;
-    quint32 nBorderHeight;
 
     const QVariant kTile=555;
-    const QVariant kPiece=777;
     const quint32 kWidth=45;
 
     // Event handling
@@ -283,12 +285,9 @@ private:
 
     QString getStylesheet(QString &ref);
 
-    void changeColor(QColor &ref , QColor &newColor);
-
 protected:
 
     void keyPressEvent(QKeyEvent *k) override;
-
     bool eventFilter( QObject *o, QEvent *e ) override;
 
 };

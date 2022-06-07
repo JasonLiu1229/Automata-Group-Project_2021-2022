@@ -36,8 +36,6 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
 
     nTileWidth = kWidth;
     nTileHeight = kWidth;
-    nBorderWidth = 0;
-    nBorderHeight = 0;
 
     wallColor = Qt::black;
     pathColor = Qt::gray;
@@ -94,6 +92,7 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
     menuFile->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", nullptr));
     fogEnabledAct->setText(QApplication::translate("MainWindow", "Fog of War", nullptr));
+    fogEnabledAct->setShortcut(QApplication::translate("MainWindow", "Alt+F", nullptr));
 }
 
 QString Ui_MazeWindow::getColorName(QColor &color) {
@@ -116,6 +115,37 @@ void Ui_MazeWindow::setColorNames() {
     exitColorN = exitColor.name();
 }
 
+void Ui_MazeWindow::setShortcuts() {
+    if(!moveUpKeybind->keySequence().isEmpty()){
+        moveUp = moveUpKeybind->keySequence()[0];
+    }
+//    moveUpKeybind->clear();
+    if(!moveDownKeybind->keySequence().isEmpty()){
+        moveDown = moveDownKeybind->keySequence()[0];
+    }
+//    moveDownKeybind->clear();
+    if(!moveLeftKeybind->keySequence().isEmpty()){
+        moveLeft = moveLeftKeybind->keySequence()[0];
+    }
+//    moveLeftKeybind->clear();
+    if(!moveRightKeybind->keySequence().isEmpty()){
+        moveRight = moveRightKeybind->keySequence()[0];
+    }
+//    moveRightKeybind->clear();
+    if(!fogKeybind->keySequence().isEmpty()){
+        fogEnabledAct->setShortcut(fogKeybind->keySequence()[0]);
+    }
+}
+
+void Ui_MazeWindow::setColours() {
+    wallColor;
+    pathColor;
+    exitColor;
+    playerColor;
+    enemyColor;
+    keyColor;
+}
+
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
     string color;
     QString newCol;
@@ -131,10 +161,6 @@ QString Ui_MazeWindow::getStylesheet(QString &ref) {
     color += ";}";
     newCol = QString::fromStdString(color);
     return newCol;
-}
-
-void Ui_MazeWindow::changeColor(QColor &ref , QColor &newColor) {
-
 }
 
 void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
@@ -508,9 +534,13 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     exitColorPicker->setStyleSheet(getStylesheet(exitColorN));
     exitColorPicker->setText(exitColorN);
 
-
     formLayout_3->setWidget(5, QFormLayout::FieldRole, exitColorPicker);
 
+    saveColorChoice = new QPushButton(VisualisationOptionsBox);
+    saveColorChoice->setObjectName(QString::fromUtf8("saveColorChoice"));
+    saveColorChoice->setText("Save");
+
+    formLayout_3->setWidget(6 , QFormLayout::FieldRole , saveColorChoice);
 
     gridLayout_2->addWidget(VisualisationOptionsBox, 1, 0, 1, 1);
 
@@ -559,10 +589,20 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_4->setWidget(3, QFormLayout::FieldRole, moveRightKeybind);
 
+    fogShortcutLabel = new QLabel(KeybindsBox);
+    fogShortcutLabel->setObjectName(QString::fromUtf8("fogShortcutLabel"));
+
+    formLayout_4->setWidget(4, QFormLayout::LabelRole, fogShortcutLabel);
+
+    fogKeybind = new QKeySequenceEdit(KeybindsBox);
+    fogKeybind->setObjectName(QString::fromUtf8("fogKeybind"));
+
+    formLayout_4->setWidget(4, QFormLayout::FieldRole, fogKeybind);
+
     saveKeybindsButton = new QPushButton(KeybindsBox);
     saveKeybindsButton->setObjectName(QString::fromUtf8("saveKeybindsButton"));
 
-    formLayout_4->setWidget(4, QFormLayout::LabelRole, saveKeybindsButton);
+    formLayout_4->setWidget(5, QFormLayout::LabelRole, saveKeybindsButton);
 
 
     gridLayout_2->addWidget(KeybindsBox, 1, 1, 1, 1);
@@ -587,12 +627,14 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     moveDownLabel->setText(QApplication::translate("OptionsScreen", "Move down", nullptr));
     moveLeftLabel->setText(QApplication::translate("OptionsScreen", "Move left", nullptr));
     moveRightLabel->setText(QApplication::translate("OptionsScreen", "Move right", nullptr));
+    fogShortcutLabel->setText(QApplication::translate("OptionsScreen", "Fog of War", nullptr));
     saveKeybindsButton->setText(QApplication::translate("OptionsScreen" , "Save" , nullptr));
     mainMenuButton_optionsScreen->setText(QApplication::translate("OptionsScreen", "Main Menu", nullptr));
 
     // Connect buttons to slots
-    connect(mainMenuButton_optionsScreen , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()) );
-    connect(saveKeybindsButton , SIGNAL(clicked()) , this , SLOT(slot_setShortcuts()));
+    connect( mainMenuButton_optionsScreen , SIGNAL(clicked()) , this , SLOT( slot_mainMenu() ) );
+    connect( saveKeybindsButton , SIGNAL(clicked()) , this , SLOT( slot_setShortcuts() ) );
+    connect( saveColorChoice , SIGNAL(clicked()) , this , SLOT( slot_setColours() ) );
 
 }
 
@@ -1005,17 +1047,6 @@ bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
         // standard event processing
         return false;
     }
-}
-
-void Ui_MazeWindow::setShortcuts() {
-    moveUp = moveUpKeybind->keySequence()[0];
-//    moveUpKeybind->clear();
-    moveDown = moveDownKeybind->keySequence()[0];
-//    moveDownKeybind->clear();
-    moveLeft = moveLeftKeybind->keySequence()[0];
-//    moveLeftKeybind->clear();
-    moveRight = moveRightKeybind->keySequence()[0];
-//    moveRightKeybind->clear();
 }
 
 void Ui_MazeWindow::fogEnabled(bool status) {
