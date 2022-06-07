@@ -567,21 +567,69 @@ void Maze::addState(const set<Path *>& kopppel, vector<set<Path*>>& markedState)
     }
 }
 
+bool Maze::inItV2(const vector<set<Path*>>& sets, set<Path*> setPath){
+    for (const auto& couple : sets){
+        set<Path*> intersection;
+        set_intersection(couple.begin(), couple.end(), setPath.begin(), setPath.begin(), inserter(intersection, intersection.begin()));
+        if (!intersection.empty()){
+            return true;
+        }
+    }
+    return false;
+}
+
 void Maze::reformat(map<set<Path *>, bool> &Table, Maze *&maze) {
     vector<set<Path*>> equivalentSets;
-    for (auto couple : Table){
-        /*for (auto equiSet : equivalentSets) {
-            set<Path*> intersect;
-            set_intersection(equiSet.begin(), equiSet.end(), couple.first.begin(), couple.first.end(), std::inserter(intersect, intersect.begin()));
-            if (!intersect.empty() and couple.second){
-                set<Path*> temp;
-                set_union(equiSet.begin(), equiSet.end(), couple.first.begin(), couple.first.end(), std::inserter(temp, temp.begin()));
-                equivalentSets.push_back(temp);
+    // all equivalent states
+    for (const auto& couple : Table){
+        if (couple.second){
+            equivalentSets.push_back(couple.first);
+        }
+    }
+    /*// all non equivalent states
+    for (auto state : allPaths){
+        if (!inItV2(equivalentSets, state)){
+            set<Path*> path;
+            path.insert(state);
+            equivalentSets.push_back(path);
+        }
+    }*/
+    // combine equivalent states to one set of states
+    vector<set<Path*>> newEquiPaths;
+    for (const auto& setState1 : equivalentSets){
+        for (const auto& setState2 : equivalentSets){
+            set<Path*> intersection;
+            set_intersection(setState1.begin(), setState1.end(), setState2.begin(), setState2.end(), inserter(intersection, intersection.begin()));
+            if (!intersection.empty()){
+                set<Path*> Union;
+                set_union(setState1.begin(), setState1.end(), setState2.begin(), setState2.end(), inserter(Union, Union.begin()));
+                newEquiPaths.push_back(Union);
             }
-            else if (couple.second){
-                equivalentSets.push_back(couple.first);
-            }
-        }*/
+        }
+    }
+    for (const auto& setPath : equivalentSets){
+        if (!inItV2(newEquiPaths, setPath)){
+            newEquiPaths.push_back(setPath);
+        }
+    }
+
+    for (auto state : allPaths){
+        set<Path*> setState = {state};
+        if (!inItV2(newEquiPaths, setState)){
+            set<Path*> path;
+            path.insert(state);
+            equivalentSets.push_back(path);
+        }
+    }
+
+    // combine all equivalent sets to one state
+    for (const auto& setState : newEquiPaths){
+        if (setState.size() > 1){
+
+        }
+        else {
+
+        }
     }
 }
 

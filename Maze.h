@@ -143,6 +143,8 @@ private:
 
     void reformat(map<set<Path*>, bool> &Table, Maze* &maze);
 
+    bool inItV2(const vector<set<Path*>>& sets, set<Path*> setPath);
+
     // Dijkstra
     pair<string, bool> recursionShortFinder(Path *current, movement previousMove, const string& finalString, vector<string> &allmoves, vector<Path*> seenPath);
 };
