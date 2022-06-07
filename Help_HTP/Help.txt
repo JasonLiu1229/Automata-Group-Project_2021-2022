@@ -1,0 +1,3 @@
+Press help: to get the path to the next objective.
+
+Coming soon

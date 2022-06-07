@@ -1,0 +1,18 @@
+Instructions on how to play the game.
+
+The objective of the game, is to collect all of the keys whithout getting caught by the minotaures. 
+
+If keybinds are set to default:
+	W = move up
+	A = move left
+	S = move down
+	D = move left
+
+	ALT + F = fog of war toggle
+	CTRL + S = save
+	CTRL + O = load
+	CTRL + Q = exit
+
+Another fun objective is, trying to clear the level in the least amount of time and least amount of steps.
+
+Your score will be recorded in the highscores.
