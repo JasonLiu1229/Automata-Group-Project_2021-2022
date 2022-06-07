@@ -213,6 +213,7 @@ private:
     QKeySequenceEdit *moveLeftKeybind;
     QLabel *moveRightLabel;
     QKeySequenceEdit *moveRightKeybind;
+    QPushButton *saveKeybindsButton;
     QPushButton *mainMenuButton_optionsScreen;
 
     // Game Over screen

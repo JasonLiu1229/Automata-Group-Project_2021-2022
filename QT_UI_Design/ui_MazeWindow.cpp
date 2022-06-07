@@ -552,6 +552,11 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_4->setWidget(3, QFormLayout::FieldRole, moveRightKeybind);
 
+    saveKeybindsButton = new QPushButton(KeybindsBox);
+    saveKeybindsButton->setObjectName(QString::fromUtf8("saveKeybindsButton"));
+
+    formLayout_4->setWidget(4, QFormLayout::LabelRole, saveKeybindsButton);
+
 
     gridLayout_2->addWidget(KeybindsBox, 1, 1, 1, 1);
 
@@ -575,15 +580,12 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     moveDownLabel->setText(QApplication::translate("OptionsScreen", "Move down", nullptr));
     moveLeftLabel->setText(QApplication::translate("OptionsScreen", "Move left", nullptr));
     moveRightLabel->setText(QApplication::translate("OptionsScreen", "Move right", nullptr));
-
+    saveKeybindsButton->setText(QApplication::translate("OptionsScreen" , "Save" , nullptr));
     mainMenuButton_optionsScreen->setText(QApplication::translate("OptionsScreen", "Main Menu", nullptr));
 
     // Connect buttons to slots
     connect(mainMenuButton_optionsScreen , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()) );
-    connect(moveUpKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
-    connect(moveDownKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
-    connect(moveLeftKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
-    connect(moveRightKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
+    connect(saveKeybindsButton , SIGNAL(clicked()) , this , SLOT(slot_setShortcuts()));
 
 }
 
@@ -690,6 +692,7 @@ void Ui_MazeWindow::options() {
 void Ui_MazeWindow::mainMenuReturn() {
     statusbar->hide();
     MenuScreens->setCurrentWidget(MainScreen);
+    this->releaseKeyboard();
 }
 
 void Ui_MazeWindow::showScoreboard() {
@@ -883,6 +886,7 @@ void Ui_MazeWindow::play() {
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
 
+
     if(k->key() == moveUp){
         gameLayout->simulateMove(UP);
     }
@@ -912,13 +916,12 @@ bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
 }
 
 void Ui_MazeWindow::setShortcuts() {
-//    moveUp = moveUpKeybind->keySequence()[0];
+    moveUp = moveUpKeybind->keySequence()[0];
 //    moveUpKeybind->clear();
-//    moveDown = moveDownKeybind->keySequence()[0];
+    moveDown = moveDownKeybind->keySequence()[0];
 //    moveDownKeybind->clear();
-//    moveLeft = moveLeftKeybind->keySequence()[0];
+    moveLeft = moveLeftKeybind->keySequence()[0];
 //    moveLeftKeybind->clear();
-//    moveRight = moveRightKeybind->keySequence()[0];
+    moveRight = moveRightKeybind->keySequence()[0];
 //    moveRightKeybind->clear();
-
 }
