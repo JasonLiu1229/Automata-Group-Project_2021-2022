@@ -741,140 +741,45 @@ bool Maze::back(Path* end,string alpha,Path* vorige){
 }
 
 void Maze::toRegex(Path* curr, string even,vector<Path*> gonethere){
-    string zichzelf = "(";
-    if(done(curr)){
-        vector<string> alpha;
-        int size = (int) even.size();
-        int check = 0;
-        if(yeah(curr->getalphabet(),curr)){
-            even += "(";
-            for(auto i:curr->getalphabet()){
-                even+= i + "+";
-            }
-            even.pop_back();
-            even +=")*";
+    string go = findShortestRoute();
+    for(int m=0;m<go.size();m++){
+        for(int l=0;l<m;l++){
+            regex+= go[l];
         }
-        else{
-            int indexenalpha = 0;
-            for(auto i:curr->getalphabet()){
-                if(curr->getmap()[curr][i] == curr && check ==0){
-                    even += "(" + i;
-                    indexenalpha++;
-                    check++;
-                }
-                else if(indexenalpha == curr->getalphabet().size()-1 && curr->getmap()[curr][i] == curr){
-                    even += i + ")*";
-                    indexenalpha++;
-                }
-                else if(indexenalpha == curr->getalphabet().size()-1 && curr->getmap()[curr][i] != curr && even.size() !=size){
-                    even += ")*";
-                }
-                else if(check ==1 && curr->getmap()[curr][i] == curr){
-                    even += i;
-                    indexenalpha++;
-                }
-                else{
-                    alpha.push_back(i);
+        if(m != go.size()-1){
+            regex += "(";
+        }
+        for(int i= m;i<go.size();i++){
+            string tempo = "";
+            regex += "(";
+            for(int j=0;j<=i;j++){
+                regex +=go[j];
+                tempo += go[j];
+            }
+            for(auto k:tempo){
+                if (k == 's') {
+                    regex += "w";
+                } else if (k == 'w') {
+                    regex += "s";
+                } else if (k == 'a') {
+                    regex += "d";
+                } else if (k == 'd') {
+                    regex += "a";
                 }
             }
+            regex += ")*+";
         }
-        regex += even + "+";
-        if(!alpha.empty()){
-            for(auto i:alpha){
-                if(doublecheck(gonethere,curr)){
-                    string tempo;
-                    for(int k =0; k<even.size();k++){
-                        if(k == indexpositie[{curr,i}]){
-                            tempo += "(";
-                            tempo+= even[k];
-                        }
-                        else{
-                            tempo+= even[k];
-                        }
-                    }
-                    tempo += ")*";
-                    even = tempo;
-                    zijner = true;
-                    even2 = even;
-                    break;
-                }
-                if(!yeah(curr->getalphabet(),curr->getmap()[curr][i])){
-                    even += i;
-                }
-                indexpositie[{curr,i}] = indexen;
-                indexen++;
-                toRegex(curr->getmap()[curr][i],even,gonethere);
-                if(zijner  && curren != curr){
-                    return;
-                }
-                if(zijner  && curren == curr){
-                    even = even2;
-                    zijner = false;
-                    continue;
-                }
-                gonethere.pop_back();
-                even.pop_back();
-            }
+        regex.pop_back();
+        regex.pop_back();
+        if(m != go.size()-1){
+            regex += ")*";
         }
+        for(int l=m;l<go.size();l++){
+            regex+= go[l];
+        }
+        regex += "+";
     }
-    else{
-        vector<string> over;
-        for(auto i:curr->getalphabet()){
-            if(curr->getmap()[curr][i] == curr){
-                zichzelf+=i + "+";
-            }
-            else{
-                over.push_back(i);
-            }
-        }
-        if(zichzelf.size() !=1){
-            zichzelf.pop_back();
-            zichzelf +=")*";
-            even += zichzelf;
-        }
-        for(const auto& i:over){
-            if(back(curr->getmap()[curr][i],i,curr)){
-                even += "(" + i + i + ")*";
-            }
-            if(doublecheck(gonethere,curr)){
-                string tempo;
-                for(int k =0; k<even.size();k++){
-                    if(k == indexpositie[{curr,i}]){
-                        tempo += "(";
-                        tempo+= even[k];
-                    }
-                    else{
-                        tempo+= even[k];
-                    }
-                }
-                tempo += ")*";
-                even = tempo;
-                zijner = true;
-                even2 = even;
-                curren = curr;
-                break;
-            }
-            else{
-                if(!yeah(curr->getalphabet(),curr->getmap()[curr][i]) || done(curr->getmap()[curr][i])){
-                    even += i;
-                }
-                gonethere.push_back(curr);
-                indexpositie[{curr,i}] = indexen;
-                indexen++;
-                toRegex(curr->getmap()[curr][i],even,gonethere);
-                if(zijner  && curren != curr && i == *over.end()){
-                    return;
-                }
-                if(zijner  && curren == curr){
-                    even = even2;
-                    zijner = false;
-                    continue;
-                }
-                gonethere.pop_back();
-                even.pop_back();
-            }
-        }
-    }
+    regex.pop_back();
 }
 
 string Maze::toRgex() {
@@ -891,6 +796,8 @@ void Maze::toDFA() {
 string Maze::findShortestRoute() {
     vector<string> allmoves;
     string finalString;
+    Path* even = start;
+    start = player->GetCurrentTile();
     recursionShortFinder(start, IDLE, finalString, allmoves,{});
     finalString = allmoves[0];
     for (const auto& move : allmoves){
@@ -898,7 +805,43 @@ string Maze::findShortestRoute() {
             finalString = move;
         }
     }
+    start = even;
     return finalString;
+}
+
+vector<string> Maze::findShortestcoinroute(){
+    Path *eind;
+    Path* even = new Path;
+    *even = *start;
+    vector<Path*> keys;
+    for(auto i:allPaths){
+        if(i->isAccepting()){
+            eind = i;
+        }
+        if(i->isKey()){
+            keys.push_back(i);
+        }
+    }
+    eind->setAccepting(false);
+    vector<string> strings;
+    start = player->getCurrentTile();
+    for(auto i:keys){
+        vector<string> allmoves;
+        string finalString;
+        i->setAccepting(true);
+        recursionShortFinder(start, IDLE, finalString, allmoves,{});
+        finalString = allmoves[0];
+        for (const auto& move : allmoves){
+            if (finalString.size() > move.size()){
+                finalString = move;
+            }
+        }
+        strings.push_back(finalString);
+        i->setAccepting(false);
+    }
+    eind->setAccepting(true);
+    start = even;
+    return strings;
 }
 
 int amountOfPmoves(Path* current){

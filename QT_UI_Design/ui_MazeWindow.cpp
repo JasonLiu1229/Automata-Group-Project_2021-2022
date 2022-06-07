@@ -72,6 +72,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
     connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
     connect(playerdead,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
+    connect(playerdead,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::Victory));
     inputTime->stop();
     enemyTime->stop();
     playerdead->stop();
@@ -281,11 +282,14 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     createOptionsScreen(MainWindow);
     createGameOverScreen(MainWindow);
     createScoreboardScreen(MainWindow);
+    createvictoryScreen(MainWindow);
 
     MenuScreens->addWidget(LevelSelectionScreen);
     MenuScreens->addWidget(levelScreen);
     MenuScreens->addWidget(optionsScreen);
     MenuScreens->addWidget(gameOverScreen);
+    MenuScreens->addWidget(victoryscreen);
+
 
     MainWindow->setCentralWidget(MenuScreens);
 
@@ -665,6 +669,7 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
 void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
     // Create new widget
+
     gameOverScreen = new QWidget(MainWindow);
     gameOverScreen->setObjectName(QString::fromUtf8("gameOverScreen"));
     verticalLayout_3 = new QVBoxLayout(gameOverScreen);
@@ -684,6 +689,8 @@ void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
 
     verticalLayout_3->addLayout(horizontalLayout_4);
 
+
+
     gameOverlabel = new QLabel(gameOverScreen);
     gameOverlabel->setObjectName(QString::fromUtf8("gameOverlabel"));
     QFont font;
@@ -701,6 +708,8 @@ void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
     gameOverphoto->setPixmap(QPixmap(QString::fromUtf8("../../Photos/GameOver.png")));
     gameOverphoto->setScaledContents(true);
 
+
+
     verticalLayout_3->addWidget(gameOverphoto);
 
     MenuScreens->addWidget(gameOverScreen);
@@ -713,6 +722,60 @@ void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
     connect(mainMenuButton_3 , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()));
     connect(newGameButton_2 , SIGNAL(clicked()) , this , SLOT(slot_new()));
 
+}
+
+void Ui_MazeWindow::createvictoryScreen(QMainWindow *MainWindow){
+    // Create new widget
+    victoryscreen = new QWidget(MainWindow);
+    victoryscreen->setObjectName(QString::fromUtf8("victoryScreen"));
+
+    verticalLayout_3 = new QVBoxLayout(victoryscreen);
+    verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+    horizontalLayout_4 = new QHBoxLayout();
+    horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+    mainMenuButton_3 = new QPushButton(victoryscreen);
+    mainMenuButton_3->setObjectName(QString::fromUtf8("mainMenuButton_3"));
+
+    horizontalLayout_4->addWidget(mainMenuButton_3);
+
+    newGameButton_2 = new QPushButton(gameOverScreen);
+    newGameButton_2->setObjectName(QString::fromUtf8("newGameButton"));
+
+    horizontalLayout_4->addWidget(newGameButton_2);
+
+
+    verticalLayout_3->addLayout(horizontalLayout_4);
+
+    victoryLabel = new QLabel(victoryscreen);
+    victoryLabel->setObjectName(QString::fromUtf8("victorylabel"));
+    QFont font2;
+    font2.setBold(true);
+    font2.setItalic(true);
+    font2.setUnderline(false);
+    font2.setWeight(75);
+    victoryLabel->setFont(font2);
+    victoryLabel->setAlignment(Qt::AlignCenter);
+
+
+    verticalLayout_3->addWidget(victoryLabel);
+
+    victoryPhoto = new QLabel(victoryscreen);
+    victoryPhoto ->setObjectName(QString::fromUtf8("gameOverphoto"));
+    victoryPhoto->setPixmap(QPixmap(QString::fromUtf8("../../Photos/Picture1.png")));
+    victoryPhoto->setScaledContents(true);
+
+
+    verticalLayout_3->addWidget(victoryPhoto);
+
+    MenuScreens->addWidget(victoryscreen);
+
+    victoryLabel->setText(QApplication::translate("MainWindow", "Next level", nullptr));
+    mainMenuButton_3->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
+    newGameButton_2->setText(QApplication::translate("MainWindow", "New Game", nullptr));
+    victoryPhoto->setText(QString());
+
+    connect(mainMenuButton_3 , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()));
+    connect(newGameButton_2 , SIGNAL(clicked()) , this , SLOT(slot_new()));
 }
 
 void Ui_MazeWindow::createScoreboardScreen(QMainWindow *MainWindow) {
@@ -1011,6 +1074,15 @@ void Ui_MazeWindow::EnemyMovement(){
     }
 }
 
+void Ui_MazeWindow::Victory(){
+    if(gameLayout->getDFAkeys()->getCurrentState()->getkeystate() and gameLayout->getPlayer()->getCurrentTile()->isAccepting()){
+        MenuScreens->setCurrentWidget(victoryscreen);
+        gameLayout->getPlayer()->playerRose();
+        inputTime->stop();
+        enemyTime->stop();
+        playerdead->stop();
+    }
+}
 
 void Ui_MazeWindow::playergone(){
     if(gameLayout->getPlayer()->playerdead()){

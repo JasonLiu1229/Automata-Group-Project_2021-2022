@@ -115,6 +115,8 @@ private:
     void createOptionsScreen(QMainWindow *MainWindow);
     void createGameOverScreen(QMainWindow *MainWindow);
     void createScoreboardScreen(QMainWindow *MainWindow);
+    void createvictoryScreen(QMainWindow *MainWindow);
+    void Victory();
 
     // Maze visualisation
 
@@ -148,6 +150,7 @@ private:
     QWidget *levelScreen;
     QWidget *optionsScreen;
     QWidget *gameOverScreen;
+    QWidget *victoryscreen;
     QWidget *scoreboardScreen;
     
     // Menu bar
@@ -237,6 +240,8 @@ private:
     QPushButton *newGameButton_2;
     QLabel *gameOverlabel;
     QLabel *gameOverphoto;
+    QLabel *victoryLabel;
+    QLabel *victoryPhoto;
 
     // Scoreboard screen
     QTableView *scoreBoard;

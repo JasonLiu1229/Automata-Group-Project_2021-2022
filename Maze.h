@@ -136,6 +136,8 @@ public:
 
     string findShortestRoute(); // Dijkstra's algorithm
 
+    vector<string> findShortestcoinroute();
+
     // destructor
     virtual ~Maze();
 
