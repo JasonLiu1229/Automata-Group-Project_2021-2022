@@ -100,3 +100,11 @@ bool Path::isEnemy(){
 void Path::setEnemy(bool enem) {
     enemy = enem;
 }
+
+bool Path::isEnemy(){
+    return enemy;
+}
+
+void Path::setEnemy(bool enem) {
+    enemy = enem;
+}
