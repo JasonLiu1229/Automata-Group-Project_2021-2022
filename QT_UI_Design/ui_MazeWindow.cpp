@@ -335,7 +335,6 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     menuFile->addAction(saveAct);
     menuFile->addAction(showScoresAct);
     menuFile->addAction(exitAct);
-    menuOptions->addAction(actionFullscreen);
     menuOptions->addAction(fogEnabledAct);
     menuOptions->addAction(actionGame_Options);
 
@@ -779,7 +778,7 @@ void Ui_MazeWindow::createvictoryScreen(QMainWindow *MainWindow){
 
 
 
-    victoryLabel->setText(QApplication::translate("MainWindow", "Next level", nullptr));
+    victoryLabel->setText(QApplication::translate("MainWindow", "Victory!", nullptr));
     mainMenuButton_3->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
     newGameButton_2->setText(QApplication::translate("MainWindow", "New Game", nullptr));
     victoryPhoto->setText(QString());

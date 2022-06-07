@@ -1,6 +1,7 @@
 {
   "Level": {
     "fileName": "../TXT-Files/Level2.txt",
-    "regex": ""
+    "regex": "",
+    "shortestRoute" : "ssddddddssddssssaassssddssssssssaaaassssddssssssssddssddddddssssddssddwwddddddddwwddssssddwwwwddddssddssdds"
   }
 }
