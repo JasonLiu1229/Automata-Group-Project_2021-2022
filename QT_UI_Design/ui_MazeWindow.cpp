@@ -153,6 +153,7 @@ void Ui_MazeWindow::setColours() {
     enemyColor = newEnemyColor;
     keyColor = newKeyColor;
     updateColourLabels();
+    resetCol = false;
 }
 
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
@@ -783,7 +784,10 @@ void Ui_MazeWindow::options() {
     statusbar->hide();
     pauseButton->setText("Pause");
     paused = false;
-    updateColourLabels();
+    if(resetCol){
+        resetColours();
+    }
+    resetCol = true;
     MenuScreens->setCurrentWidget(optionsScreen);
 }
 
@@ -792,6 +796,7 @@ void Ui_MazeWindow::mainMenuReturn() {
     this->releaseKeyboard();
     pauseButton->setText("Pause");
     paused = false;
+    resetColours();
     MenuScreens->setCurrentWidget(MainScreen);
 }
 
@@ -1133,7 +1138,6 @@ void Ui_MazeWindow::fogEnabled(bool status) {
 
 void Ui_MazeWindow::updateColourLabels() {
 
-//    setColorNames();
     QString newWallN = getColorName(newWallColor);
     QString newPlayerN = getColorName(newPlayerColor);
     QString newPathN = getColorName(newPathColor);
@@ -1167,4 +1171,14 @@ void Ui_MazeWindow::getColour(QColor &colour) {
         colour = newColor;
         updateColourLabels();
     }
+}
+
+void Ui_MazeWindow::resetColours() {
+    newWallColor = wallColor;
+    newPlayerColor = playerColor;
+    newPathColor = pathColor;
+    newEnemyColor = enemyColor;
+    newKeyColor = keyColor;
+    newExitColor = exitColor;
+    updateColourLabels();
 }
