@@ -295,6 +295,7 @@ private:
     bool paused;
     bool lost;
     bool fog;
+    double elapsedTime;
     QTimer* inputTime;
     QTimer* enemyTime;
     QTimer* playerdead;

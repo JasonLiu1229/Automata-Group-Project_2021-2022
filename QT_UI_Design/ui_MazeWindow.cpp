@@ -68,6 +68,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     inputTime = new QTimer;
     enemyTime = new QTimer;
     playerdead = new QTimer;
+    time = new QTime;
     connect(inputTime, &QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::update));
     connect(enemyTime,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::EnemyMovement));
     connect(playerdead,&QTimer::timeout, this, QOverload<>::of(&Ui_MazeWindow::playergone));
@@ -826,6 +827,7 @@ void Ui_MazeWindow::loadLevel(string filename){
     this->grabKeyboard();
     statusbar->show();
     paused = false;
+    time->start();
 }
 
 void Ui_MazeWindow::pauseGame() {
@@ -846,7 +848,6 @@ void Ui_MazeWindow::pauseGame() {
 void Ui_MazeWindow::showControls() {
 
     pauseGame();
-    string helpText;
     QMessageBox::information(this, tr("How to play"),
             tr("Instructions on how to play the game.\n"
                "\n"
@@ -868,7 +869,14 @@ void Ui_MazeWindow::showControls() {
 }
 
 void Ui_MazeWindow::showHelp() {
-    cout << "Show Help option" << endl;
+    pauseGame();
+    QMessageBox::information(this, tr("How to play"),
+                             tr("Press help: to get the path to the next objective.\n"
+                                "\n"
+                                "Coming soon"
+                             ),
+                             QMessageBox::Ok);
+    pauseGame();
 }
 
 void Ui_MazeWindow::update() {
@@ -881,6 +889,9 @@ void Ui_MazeWindow::update() {
     }
     int key_count = gameLayout->getKey_count();
     keyNumber->display(key_count);
+    elapsedTime = (double)time->elapsed() / 1000;
+    levelTime->display(elapsedTime);
+    levelTime->setSegmentStyle(QLCDNumber::Outline);
     if(gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
         doorStatusLabel->setText("Door Unlocked");
     }
@@ -1077,6 +1088,7 @@ void Ui_MazeWindow::play() {
     inputTime->start(25);
     playerdead->start(0);
     enemyTime->start(300);
+    time->start();
 }
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
