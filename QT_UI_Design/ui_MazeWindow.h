@@ -79,13 +79,13 @@ private slots:
     void slot_pauseGame() {pauseGame();}
     void slot_showControls() {showControls();}
     void slot_showHelp() {showHelp();}
-    void slot_fullScreen() {
+//    void slot_fullScreen() {
 //        if (isMaximized()) {
 //            showNormal();
 //        } else {
 //            showMaximized();
 //        }
-    };
+//    };
     void slot_level1() {loadLevel(LEV1JSON);}
     void slot_level2() {loadLevel(LEV2JSON);}
     void slot_level3() {loadLevel(LEV3JSON);}
@@ -250,7 +250,7 @@ private:
     QAction *loadAct;
     QAction *saveAct;
     QAction *exitAct;
-    QAction *actionFullscreen;
+    //QAction *actionFullscreen;
     QAction *actionGame_Options;
     QAction *mainMenuRet;
     QAction *showScoresAct;

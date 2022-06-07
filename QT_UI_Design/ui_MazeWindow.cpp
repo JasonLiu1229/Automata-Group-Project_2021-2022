@@ -91,8 +91,8 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
     saveAct->setText(QApplication::translate("MainWindow", "Save", nullptr));
     exitAct->setText(QApplication::translate("MainWindow", "Exit", nullptr));
     showScoresAct->setText(QApplication::translate("MainWindow", "Highscores", nullptr));
-    actionFullscreen->setText(QApplication::translate("MainWindow", "Fullscreen", nullptr));
-    actionFullscreen->setShortcut(QApplication::translate("MainWindow", "Ctrl+F", nullptr));
+    //actionFullscreen->setText(QApplication::translate("MainWindow", "Fullscreen", nullptr));
+    //actionFullscreen->setShortcut(QApplication::translate("MainWindow", "Ctrl+F", nullptr));
     actionGame_Options->setText(QApplication::translate("MainWindow", "Game Options", nullptr));
     newGameButton->setText(QApplication::translate("MainWindow", "New Game", nullptr));
     LoadGameButton->setText(QApplication::translate("MainWindow", "Load Game", nullptr));
@@ -196,10 +196,12 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     exitAct->setStatusTip(tr("Abandon game"));
     connect(exitAct, &QAction::triggered, this, &Ui_MazeWindow::on_actionExit_triggered);
 
+    /*
     actionFullscreen = new QAction(MainWindow);
     actionFullscreen->setObjectName(QString::fromUtf8("actionFullscreen"));
     actionFullscreen->setCheckable(true);
     connect(actionFullscreen , &QAction::triggered , this, &Ui_MazeWindow::slot_fullScreen);
+    */
 
     actionGame_Options = new QAction(MainWindow);
     actionGame_Options->setObjectName(QString::fromUtf8("actionGame_Options"));
