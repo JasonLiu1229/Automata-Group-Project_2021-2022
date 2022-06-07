@@ -31,6 +31,7 @@
 #include <QColorDialog>
 #include <QLCDNumber>
 #include <QTableView>
+#include <QMessageBox>
 
 // Custom sources
 #include "../Maze.h"

@@ -844,7 +844,27 @@ void Ui_MazeWindow::pauseGame() {
 }
 
 void Ui_MazeWindow::showControls() {
-    cout << "Show Controls option" << endl;
+
+    pauseGame();
+    string helpText;
+    QMessageBox::information(this, tr("How to play"),
+            tr("Instructions on how to play the game.\n"
+               "\n"
+               "The objective of the game, is to collect all of the keys without getting caught by the minotaurs. \n"
+               "\n"
+               "If the keybinds are set to default:\n"
+               "\tW = move up\n"
+               "\tA = move left\n"
+               "\tS = move down\n"
+               "\tD = move right\n"
+               "\n"
+               "\tALT + F = fog of war toggle\n"
+               "\n"
+               "Another fun objective is, trying to clear the level in the least amount of time and least amount of steps.\n"
+               "\n"
+               ),
+               QMessageBox::Ok);
+    pauseGame();
 }
 
 void Ui_MazeWindow::showHelp() {
