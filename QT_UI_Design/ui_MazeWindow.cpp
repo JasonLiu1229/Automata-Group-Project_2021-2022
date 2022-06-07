@@ -69,6 +69,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     inputTime->stop();
     enemyTime->stop();
     playerdead->stop();
+    fog = false;
 }
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
@@ -92,7 +93,7 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
     ExitButton->setText(QApplication::translate("MainWindow", "Exit", nullptr));
     menuFile->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", nullptr));
-
+    fogEnabledAct->setText(QApplication::translate("MainWindow", "Fog of War", nullptr));
 }
 
 QString Ui_MazeWindow::getColorName(QColor &color) {
@@ -170,6 +171,11 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     mainMenuRet = new QAction(MainWindow);
     mainMenuRet->setObjectName(QString::fromUtf8("mainMenuRet"));
     connect(mainMenuRet , &QAction::triggered , this , &Ui_MazeWindow::slot_mainMenu);
+
+    fogEnabledAct = new QAction(MainWindow);
+    fogEnabledAct->setObjectName(QString::fromUtf8("fogEnabled"));
+    fogEnabledAct->setCheckable(true);
+    connect(fogEnabledAct , &QAction::triggered , this , &Ui_MazeWindow::slot_fogEnabled);
 }
 
 void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
@@ -259,6 +265,24 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusBar"));
+    keyStatusLabel = new QLabel(this);
+    keyStatusLabel->setText("Remaining keys: ");
+    keyNumber = new QLCDNumber(this);
+    keyNumber->setMode(QLCDNumber::Dec);
+//    keyNumber->setSegmentStyle(QLCDNumber::Flat);
+    keyNumber->display(0);
+    doorStatusLabel = new QLabel(this);
+    doorStatusLabel->setText("Door Locked");
+    timeLabel = new QLabel(this);
+    timeLabel->setText("Time: ");
+    levelTime = new QLCDNumber(this);
+    levelTime->setSegmentStyle(QLCDNumber::Flat);
+    statusbar->addPermanentWidget(keyStatusLabel);
+    statusbar->addPermanentWidget(keyNumber);
+    statusbar->addPermanentWidget(timeLabel);
+    statusbar->addPermanentWidget(levelTime);
+    statusbar->addPermanentWidget(doorStatusLabel);
+    statusbar->hide();
     MainWindow->setStatusBar(statusbar);
 
     menubar->addAction(menuFile->menuAction());
@@ -268,6 +292,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     menuFile->addAction(showScoresAct);
     menuFile->addAction(exitAct);
     menuOptions->addAction(actionFullscreen);
+    menuOptions->addAction(fogEnabledAct);
     menuOptions->addAction(actionGame_Options);
 
 }
@@ -534,6 +559,11 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     formLayout_4->setWidget(3, QFormLayout::FieldRole, moveRightKeybind);
 
+    saveKeybindsButton = new QPushButton(KeybindsBox);
+    saveKeybindsButton->setObjectName(QString::fromUtf8("saveKeybindsButton"));
+
+    formLayout_4->setWidget(4, QFormLayout::LabelRole, saveKeybindsButton);
+
 
     gridLayout_2->addWidget(KeybindsBox, 1, 1, 1, 1);
 
@@ -557,15 +587,12 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     moveDownLabel->setText(QApplication::translate("OptionsScreen", "Move down", nullptr));
     moveLeftLabel->setText(QApplication::translate("OptionsScreen", "Move left", nullptr));
     moveRightLabel->setText(QApplication::translate("OptionsScreen", "Move right", nullptr));
-
+    saveKeybindsButton->setText(QApplication::translate("OptionsScreen" , "Save" , nullptr));
     mainMenuButton_optionsScreen->setText(QApplication::translate("OptionsScreen", "Main Menu", nullptr));
 
     // Connect buttons to slots
     connect(mainMenuButton_optionsScreen , SIGNAL(clicked()) , this , SLOT(slot_mainMenu()) );
-    connect(moveUpKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
-    connect(moveDownKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
-    connect(moveLeftKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
-    connect(moveRightKeybind , SIGNAL(editingFinished()) , this , SLOT(slot_setShortcuts()));
+    connect(saveKeybindsButton , SIGNAL(clicked()) , this , SLOT(slot_setShortcuts()));
 
 }
 
@@ -665,14 +692,24 @@ void Ui_MazeWindow::load() {
 }
 
 void Ui_MazeWindow::options() {
+    statusbar->hide();
+    pauseButton->setText("Pause");
+    paused = false;
     MenuScreens->setCurrentWidget(optionsScreen);
 }
 
 void Ui_MazeWindow::mainMenuReturn() {
+    statusbar->hide();
+    this->releaseKeyboard();
+    pauseButton->setText("Pause");
+    paused = false;
     MenuScreens->setCurrentWidget(MainScreen);
 }
 
 void Ui_MazeWindow::showScoreboard() {
+    statusbar->hide();
+    pauseButton->setText("Pause");
+    paused = false;
     MenuScreens->setCurrentWidget(scoreboardScreen);
 }
 
@@ -704,13 +741,23 @@ void Ui_MazeWindow::loadLevel(string filename){
 
     MazeView->setFocus();
     this->grabKeyboard();
+    statusbar->show();
+    paused = false;
 }
 
 void Ui_MazeWindow::pauseGame() {
-    cout << "Pause Game option" << endl;
-    inputTime->stop();
-    playerdead->stop();
-    enemyTime->stop();
+
+    paused = !paused;
+    if(paused){
+        inputTime->stop();
+        playerdead->stop();
+        enemyTime->stop();
+        pauseButton->setText("Resume");
+    }
+    else{
+        play();
+        pauseButton->setText("Pause");
+    }
 }
 
 void Ui_MazeWindow::showControls() {
@@ -726,7 +773,17 @@ void Ui_MazeWindow::update() {
     auto height = MazeView->height() / gameLayout->getHeight();
     nTileWidth = static_cast<quint32>(width);
     nTileHeight = static_cast<quint32>(height);
-    refreshMaze(gameLayout);
+    if(!paused){
+        refreshMaze(gameLayout);
+    }
+    int key_count = gameLayout->getKey_count();
+    keyNumber->display(key_count);
+    if(gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+        doorStatusLabel->setText("Door Unlocked");
+    }
+    else{
+        doorStatusLabel->setText("Door Locked");
+    }
 }
 
 void Ui_MazeWindow::refreshMaze(Maze *&layout) {
@@ -737,34 +794,102 @@ void Ui_MazeWindow::refreshMaze(Maze *&layout) {
 void Ui_MazeWindow::drawMaze(Maze *&layout) {
     Path* currentTile;
     tileSettings setting;
-
     for(int i=0; i<layout->getWidth(); i++)
     {
         for(int j=0; j<layout->getHeight(); j++)
         {
             currentTile = layout->getPath(i,j);
             setting = currentTile->getSettings();
-            if(currentTile->isStarting()) {
-                drawPlayer(i , j);
+            if(!fog){
+                if(currentTile->isStarting()) {
+                    drawPlayer(i , j);
+                }
+                else if(currentTile->isEnemy()){
+                    drawenemy(i,j);
+                }
+                else if(currentTile->isKey()){
+                    drawkey(i,j);
+                }
+                else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                    drawescape(i,j);
+                }
+                else {
+                    drawTile(i,j,setting);
+                }
             }
-            else if(currentTile->isEnemy()){
-                drawenemy(i,j);
-            }
-            else if(currentTile->isKey()){
-                drawkey(i,j);
-            }
-            else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
-                drawescape(i,j);
-            }
-            else {
-                drawTile(i,j,setting);
+            else{
+                if(currentTile->isStarting()) {
+                    drawPlayer(i , j);
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getUp()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getLeft()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getDown()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getRight()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else{
+                    setting = wall;
+                    drawTile(i , j , setting);
+                }
             }
         }
     }
 }
 
 void Ui_MazeWindow::EnemyMovement(){
-    gameLayout->EnemyMovement();
+    if(!paused){
+        gameLayout->EnemyMovement();
+    }
 }
 
 void Ui_MazeWindow::playergone(){
@@ -853,16 +978,17 @@ void Ui_MazeWindow::play() {
 
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
 
-    if(k->key() == moveUp){
+
+    if(k->key() == moveUp && !paused){
         gameLayout->simulateMove(UP);
     }
-    else if(k->key() == moveLeft){
+    else if(k->key() == moveLeft && !paused){
         gameLayout->simulateMove(LEFT);
     }
-    else if(k->key() == moveDown){
+    else if(k->key() == moveDown && !paused){
         gameLayout->simulateMove(DOWN);
     }
-    else if(k->key() == moveRight){
+    else if(k->key() == moveRight && !paused){
         gameLayout->simulateMove(RIGHT);
     }
     else{
@@ -882,13 +1008,16 @@ bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
 }
 
 void Ui_MazeWindow::setShortcuts() {
-//    moveUp = moveUpKeybind->keySequence()[0];
+    moveUp = moveUpKeybind->keySequence()[0];
 //    moveUpKeybind->clear();
-//    moveDown = moveDownKeybind->keySequence()[0];
+    moveDown = moveDownKeybind->keySequence()[0];
 //    moveDownKeybind->clear();
-//    moveLeft = moveLeftKeybind->keySequence()[0];
+    moveLeft = moveLeftKeybind->keySequence()[0];
 //    moveLeftKeybind->clear();
-//    moveRight = moveRightKeybind->keySequence()[0];
+    moveRight = moveRightKeybind->keySequence()[0];
 //    moveRightKeybind->clear();
+}
 
+void Ui_MazeWindow::fogEnabled(bool status) {
+    fog = status;
 }

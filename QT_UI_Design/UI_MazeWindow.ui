@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1178</width>
+    <width>1094</width>
     <height>714</height>
    </rect>
   </property>
@@ -54,7 +54,7 @@
     <item>
      <widget class="QStackedWidget" name="MenuScreens">
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="MainMenu">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -416,6 +416,13 @@
            <item row="3" column="1">
             <widget class="QLineEdit" name="moveRightLineEdit_2"/>
            </item>
+           <item row="4" column="0">
+            <widget class="QPushButton" name="saveKeybindsButton">
+             <property name="text">
+              <string>Save</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -490,7 +497,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1178</width>
+     <width>1094</width>
      <height>24</height>
     </rect>
    </property>
@@ -513,7 +520,11 @@
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+  </widget>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>

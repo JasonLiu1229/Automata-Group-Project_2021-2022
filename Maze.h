@@ -79,6 +79,10 @@ public:
 
     void setSavedFile(const string &savedFile);
 
+    int getKey_count() const;
+
+    void setKey_count(int key_count);
+
     Player* getPlayer();
 
     Collectable_DFA* getDFAkeys();

@@ -445,6 +445,7 @@ void Maze::simulateMove(movement m) {
         collectedKeys->setCurrentState(collectedKeys->getCurrentState()->getNext());
         collectedKeys->done();
         player->GetCurrentTile()->setKey(false);
+        key_count--;
     }
 }
 
@@ -996,6 +997,16 @@ void Maze::setLevelName(const string &levelName) {
     Maze::levelName = levelName;
 }
 
+int Maze::getKey_count() const {
+    return key_count;
+}
+
+void Maze::setKey_count(int key_count) {
+    Maze::key_count = key_count;
+}
+
 Maze::~Maze() {
 
 }
+
+
