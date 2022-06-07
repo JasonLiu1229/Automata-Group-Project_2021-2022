@@ -518,40 +518,109 @@ void Maze::recursionMinimize(Maze *&maze, map<set<Path*>, bool> &Table, vector<s
 }
 
 
-Maze *Maze::minimize() {
-    auto* minimizeMaze = new Maze();
-
-    // create starting table
-    map<set<Path*>, bool> Table;
-    vector<set<Path*>> markedStates;
-    for (int i = 0; i < allPaths.size() - 1; ++i) {
-        pair<Path*, Path*> couple;
-        set<Path*> coupleS;
-        set<Path*> temp;
-        couple.first = allPaths[i];
-        coupleS.insert(allPaths[i]);
-        temp = coupleS;
-        for (int j = 1; j < allPaths.size(); ++j) {
-            couple.second = allPaths[j];
-            coupleS.insert(allPaths[j]);
-            if (couple.first->isAccepting() != couple.second->isAccepting()){
-                Table[coupleS] = false;
-                addState(coupleS, markedStates);
+void Maze::minimize() {
+    // Create empty DFA
+    DFA* newDFA = new DFA();
+    // Create containers
+    vector<vector<Node*>> newStates;
+    vector<Node*> temp;
+    set<Node*> finalV;
+    set<Node*> beginV;
+    set<transition*> newTransitions;
+    newDFA->setAlphabet( { 'w' , 'a' , 's' , 'd' } );
+    int count = 0;
+    // Convert each tile to a state
+    Path *currentPath;
+    Path *adjacentTile;
+    Node *currentNode;
+    transition *newTransition;
+    Node *begin;
+    Node *end;
+    Node *newNode;
+    for(int i = 0; i< width; i++){
+        for(int j = 0; j< height; j++){
+            currentPath = this->at(i).at(j);
+            newNode = new Node(to_string(count) , currentPath->isStarting() , currentPath->isAccepting());
+            if(newNode->isAccepting()){
+                finalV.insert(newNode);
             }
-            else {
-                Table[coupleS] = true;
+            if(newNode->isStarting()){
+                beginV.insert(newNode);
             }
-            coupleS = temp;
+            count++;
+            temp.push_back(newNode);
+        }
+        newStates.push_back(temp);
+        temp = {};
+    }
+    for(int i = 0; i < width; i++){
+        for(int j = 0; j < height; j++){
+            currentPath = this->at(i).at(j);
+            currentNode = newStates.at(i).at(j);
+            // Make transition with tile above
+            adjacentTile = currentPath->getUp();
+            if(adjacentTile != nullptr && adjacentTile->getSettings() == wall){
+                begin = currentNode;
+                end = newStates[i-1][j];
+                newTransition = new transition(begin , end , 'w');
+                newTransitions.insert(newTransition);
+            }
+            else{
+                newTransition = new transition(currentNode , currentNode , 'w');
+                newTransitions.insert(newTransition);
+            }
+            // Make transition with tile below
+            adjacentTile = currentPath->getDown();
+            if(adjacentTile != nullptr && adjacentTile->getSettings() == wall){
+                begin = currentNode;
+                end = newStates[i+1][j];
+                newTransition = new transition(begin , end , 'w');
+                newTransitions.insert(newTransition);
+            }
+            else{
+                newTransition = new transition(currentNode , currentNode , 'w');
+                newTransitions.insert(newTransition);
+            }
+            // Make transition with tile left
+            adjacentTile = currentPath->getLeft();
+            if(adjacentTile != nullptr && adjacentTile->getSettings() == wall){
+                begin = currentNode;
+                end = newStates[i][j-1];
+                newTransition = new transition(begin , end , 'w');
+                newTransitions.insert(newTransition);
+            }
+            else{
+                newTransition = new transition(currentNode , currentNode , 'w');
+                newTransitions.insert(newTransition);
+            }
+            // Make transition with tile right
+            adjacentTile = currentPath->getRight();
+            if(adjacentTile != nullptr && adjacentTile->getSettings() == wall){
+                begin = currentNode;
+                end = newStates[i][j+1];
+                newTransition = new transition(begin , end , 'w');
+                newTransitions.insert(newTransition);
+            }
+            else{
+                newTransition = new transition(currentNode , currentNode , 'w');
+                newTransitions.insert(newTransition);
+            }
         }
     }
-
-    // minimize
-    recursionMinimize(minimizeMaze, Table, markedStates);
-
-    // combine equivalent states
-    reformat(Table, minimizeMaze);
-
-    return minimizeMaze;
+    set<Node*> newV;
+    for(auto v : newStates){
+        for(auto n : v){
+            newV.insert(n);
+        }
+    }
+    // Set all the dfa elements
+    newDFA->setNodes(newV);
+    newDFA->setTransitions(newTransitions);
+    newDFA->setBegin(beginV);
+    newDFA->setFinal(finalV);
+    newDFA->minimize();
+    // Save the dfa
+    mazeDFA = newDFA;
 }
 
 void Maze::addState(const set<Path *>& kopppel, vector<set<Path*>>& markedState) {

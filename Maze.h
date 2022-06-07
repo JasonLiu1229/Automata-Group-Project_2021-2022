@@ -11,6 +11,11 @@
 #include "Collectable_DFA.h"
 #include "miniState.h"
 #include "Standard_Values.h"
+#include "Algorithms/Orfeo/DFA.h"
+#include "Algorithms/Orfeo/Node.h"
+#include "Algorithms/Orfeo/transition.h"
+#include "Algorithms/Orfeo/transitionNFA.h"
+
 
 using namespace std;
 
@@ -54,6 +59,8 @@ class Maze : vector<vector<Path*>> {
     string shortestMove;
 
     map<Path*, pair<movement, Path*>> transitions;
+
+    DFA* mazeDFA;
 
 public:
     // constructors
@@ -121,7 +128,7 @@ public:
     bool back(Path* end,string alpha,Path* vorige); //if it loops on itself
 
     // algorithms
-    Maze* minimize();   // TFA
+   void minimize();   // TFA
 
     string toRgex();    // DFA -> regex
 

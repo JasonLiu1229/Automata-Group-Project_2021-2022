@@ -56,9 +56,9 @@ set(Qt5_DIR "C:/Qt/5.15.2/mingw81_64/lib/cmake/Qt5")
 # Tell cmake to find the modules Qt5Core and Qt5widgets
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
-add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes})
-add_executable(MazeRunnerNoColor MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI})
-add_executable(MazeRunnerVisNew MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI})
+add_executable(MazeRunner MazeRunner.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${DFA_sources})
+add_executable(MazeRunnerNoColor MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI} ${DFA_sources})
+add_executable(MazeRunnerVisNew MazeRunnerVisNew.cpp ${Parser} ${Maze} ${Player} ${Path} ${Additional_Sources} ${Movement_classes} ${QT_UI} ${DFA_sources})
 
 set_target_properties("MazeRunner" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
 set_target_properties("MazeRunnerNoColor" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Levels/JSON-Files")
