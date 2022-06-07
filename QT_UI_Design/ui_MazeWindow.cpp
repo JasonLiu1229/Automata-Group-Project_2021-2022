@@ -692,6 +692,12 @@ void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
 
 
 
+
+
+
+
+
+
     gameOverlabel = new QLabel(gameOverScreen);
     gameOverlabel->setObjectName(QString::fromUtf8("gameOverlabel"));
     QFont font;
