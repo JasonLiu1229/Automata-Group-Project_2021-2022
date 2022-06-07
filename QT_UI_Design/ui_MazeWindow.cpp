@@ -770,6 +770,9 @@ void Ui_MazeWindow::createvictoryScreen(QMainWindow *MainWindow){
 
     MenuScreens->addWidget(victoryscreen);
 
+
+
+
     victoryLabel->setText(QApplication::translate("MainWindow", "Next level", nullptr));
     mainMenuButton_3->setText(QApplication::translate("MainWindow", "Main menu", nullptr));
     newGameButton_2->setText(QApplication::translate("MainWindow", "New Game", nullptr));
