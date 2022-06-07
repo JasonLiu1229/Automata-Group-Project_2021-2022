@@ -693,17 +693,23 @@ void Ui_MazeWindow::load() {
 
 void Ui_MazeWindow::options() {
     statusbar->hide();
+    pauseButton->setText("Pause");
+    paused = false;
     MenuScreens->setCurrentWidget(optionsScreen);
 }
 
 void Ui_MazeWindow::mainMenuReturn() {
     statusbar->hide();
-    MenuScreens->setCurrentWidget(MainScreen);
     this->releaseKeyboard();
+    pauseButton->setText("Pause");
+    paused = false;
+    MenuScreens->setCurrentWidget(MainScreen);
 }
 
 void Ui_MazeWindow::showScoreboard() {
     statusbar->hide();
+    pauseButton->setText("Pause");
+    paused = false;
     MenuScreens->setCurrentWidget(scoreboardScreen);
 }
 
@@ -736,13 +742,22 @@ void Ui_MazeWindow::loadLevel(string filename){
     MazeView->setFocus();
     this->grabKeyboard();
     statusbar->show();
+    paused = false;
 }
 
 void Ui_MazeWindow::pauseGame() {
-    cout << "Pause Game option" << endl;
-    inputTime->stop();
-    playerdead->stop();
-    enemyTime->stop();
+
+    paused = !paused;
+    if(paused){
+        inputTime->stop();
+        playerdead->stop();
+        enemyTime->stop();
+        pauseButton->setText("Resume");
+    }
+    else{
+        play();
+        pauseButton->setText("Pause");
+    }
 }
 
 void Ui_MazeWindow::showControls() {
@@ -758,7 +773,9 @@ void Ui_MazeWindow::update() {
     auto height = MazeView->height() / gameLayout->getHeight();
     nTileWidth = static_cast<quint32>(width);
     nTileHeight = static_cast<quint32>(height);
-    refreshMaze(gameLayout);
+    if(!paused){
+        refreshMaze(gameLayout);
+    }
     int key_count = gameLayout->getKey_count();
     keyNumber->display(key_count);
     if(gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
@@ -870,7 +887,9 @@ void Ui_MazeWindow::drawMaze(Maze *&layout) {
 }
 
 void Ui_MazeWindow::EnemyMovement(){
-    gameLayout->EnemyMovement();
+    if(!paused){
+        gameLayout->EnemyMovement();
+    }
 }
 
 void Ui_MazeWindow::playergone(){
@@ -960,16 +979,16 @@ void Ui_MazeWindow::play() {
 void Ui_MazeWindow::keyPressEvent(QKeyEvent *k) {
 
 
-    if(k->key() == moveUp){
+    if(k->key() == moveUp && !paused){
         gameLayout->simulateMove(UP);
     }
-    else if(k->key() == moveLeft){
+    else if(k->key() == moveLeft && !paused){
         gameLayout->simulateMove(LEFT);
     }
-    else if(k->key() == moveDown){
+    else if(k->key() == moveDown && !paused){
         gameLayout->simulateMove(DOWN);
     }
-    else if(k->key() == moveRight){
+    else if(k->key() == moveRight && !paused){
         gameLayout->simulateMove(RIGHT);
     }
     else{
