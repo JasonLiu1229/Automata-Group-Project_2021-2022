@@ -69,6 +69,7 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     inputTime->stop();
     enemyTime->stop();
     playerdead->stop();
+    fog = false;
 }
 
 void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
@@ -92,7 +93,7 @@ void Ui_MazeWindow::retranslateUi(QMainWindow *MainWindow)
     ExitButton->setText(QApplication::translate("MainWindow", "Exit", nullptr));
     menuFile->setTitle(QApplication::translate("MainWindow", "File", nullptr));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", nullptr));
-
+    fogEnabledAct->setText(QApplication::translate("MainWindow", "Fog of War", nullptr));
 }
 
 QString Ui_MazeWindow::getColorName(QColor &color) {
@@ -170,6 +171,11 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     mainMenuRet = new QAction(MainWindow);
     mainMenuRet->setObjectName(QString::fromUtf8("mainMenuRet"));
     connect(mainMenuRet , &QAction::triggered , this , &Ui_MazeWindow::slot_mainMenu);
+
+    fogEnabledAct = new QAction(MainWindow);
+    fogEnabledAct->setObjectName(QString::fromUtf8("fogEnabled"));
+    fogEnabledAct->setCheckable(true);
+    connect(fogEnabledAct , &QAction::triggered , this , &Ui_MazeWindow::slot_fogEnabled);
 }
 
 void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
@@ -286,6 +292,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     menuFile->addAction(showScoresAct);
     menuFile->addAction(exitAct);
     menuOptions->addAction(actionFullscreen);
+    menuOptions->addAction(fogEnabledAct);
     menuOptions->addAction(actionGame_Options);
 
 }
@@ -770,27 +777,93 @@ void Ui_MazeWindow::refreshMaze(Maze *&layout) {
 void Ui_MazeWindow::drawMaze(Maze *&layout) {
     Path* currentTile;
     tileSettings setting;
-
     for(int i=0; i<layout->getWidth(); i++)
     {
         for(int j=0; j<layout->getHeight(); j++)
         {
             currentTile = layout->getPath(i,j);
             setting = currentTile->getSettings();
-            if(currentTile->isStarting()) {
-                drawPlayer(i , j);
+            if(!fog){
+                if(currentTile->isStarting()) {
+                    drawPlayer(i , j);
+                }
+                else if(currentTile->isEnemy()){
+                    drawenemy(i,j);
+                }
+                else if(currentTile->isKey()){
+                    drawkey(i,j);
+                }
+                else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                    drawescape(i,j);
+                }
+                else {
+                    drawTile(i,j,setting);
+                }
             }
-            else if(currentTile->isEnemy()){
-                drawenemy(i,j);
-            }
-            else if(currentTile->isKey()){
-                drawkey(i,j);
-            }
-            else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
-                drawescape(i,j);
-            }
-            else {
-                drawTile(i,j,setting);
+            else{
+                if(currentTile->isStarting()) {
+                    drawPlayer(i , j);
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getUp()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getLeft()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getDown()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else if(currentTile == gameLayout->getPlayer()->getCurrentTile()->getRight()){
+                    if(currentTile->isEnemy()){
+                        drawenemy(i,j);
+                    }
+                    else if(currentTile->isKey()){
+                        drawkey(i,j);
+                    }
+                    else if(currentTile->isAccepting() and gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+                        drawescape(i,j);
+                    }
+                    else {
+                        drawTile(i,j,setting);
+                    }
+                }
+                else{
+                    setting = wall;
+                    drawTile(i , j , setting);
+                }
             }
         }
     }
@@ -924,4 +997,8 @@ void Ui_MazeWindow::setShortcuts() {
 //    moveLeftKeybind->clear();
     moveRight = moveRightKeybind->keySequence()[0];
 //    moveRightKeybind->clear();
+}
+
+void Ui_MazeWindow::fogEnabled(bool status) {
+    fog = status;
 }

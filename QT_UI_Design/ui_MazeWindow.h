@@ -55,6 +55,7 @@ public:
     void save();
     void options();
     void mainMenuReturn();
+    void fogEnabled(bool status);
     void showScoreboard();
     void pauseGame();
     void showControls();
@@ -70,6 +71,7 @@ private slots:
     void slot_options() {options();}
     void slot_mainMenu() {mainMenuReturn();}
     void slot_scoreBoard() {showScoreboard();}
+    void slot_fogEnabled() {fogEnabled(fogEnabledAct->isChecked());}
     void slot_pauseGame() {pauseGame();}
     void slot_showControls() {showControls();}
     void slot_showHelp() {showHelp();}
@@ -233,7 +235,8 @@ private:
     QAction *actionFullscreen;
     QAction *actionGame_Options;
     QAction *mainMenuRet;
-    QAction* showScoresAct;
+    QAction *showScoresAct;
+    QAction *fogEnabledAct;
 
     // Shortcuts
     int moveUp;
@@ -269,6 +272,7 @@ private:
     void play();
     bool paused;
     bool lost;
+    bool fog;
     QTimer* inputTime;
     QTimer* enemyTime;
     QTimer* playerdead;
