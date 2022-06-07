@@ -151,6 +151,7 @@ void Ui_MazeWindow::setColours() {
     playerColor = newPlayerColor;
     enemyColor = newEnemyColor;
     keyColor = newKeyColor;
+    updateColourLabels();
 }
 
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
@@ -278,6 +279,7 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     createLevelScreen(MainWindow);
     createOptionsScreen(MainWindow);
     createGameOverScreen(MainWindow);
+    createScoreboardScreen(MainWindow);
 
     MenuScreens->addWidget(LevelSelectionScreen);
     MenuScreens->addWidget(levelScreen);
@@ -652,11 +654,11 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     connect( saveKeybindsButton , SIGNAL(clicked()) , this , SLOT( slot_setShortcuts() ) );
     connect( saveColorChoice , SIGNAL(clicked()) , this , SLOT( slot_setColours() ) );
 
-    connect(wallColorPicker, &QPushButton::clicked, [=]() { getColour(newWallColor); });
-    connect(pathColorPicker, &QPushButton::clicked, [=]() { getColour(newPathColor); });
+    connect(wallColorPicker, &QPushButton::clicked, [=]() { getColour(newWallColor);});
+    connect(pathColorPicker, &QPushButton::clicked, [=]() { getColour(newPathColor);});
     connect(playerColorPicker, &QPushButton::clicked, [=]() { getColour(newPlayerColor); });
     connect(exitColorPicker, &QPushButton::clicked, [=]() { getColour(newExitColor); });
-    connect(enemyColorPicker, &QPushButton::clicked, [=]() { getColour(newEnemyColor); });
+    connect(enemyColorPicker, &QPushButton::clicked, [=]() { getColour(newEnemyColor);; });
     connect(keyColorPicker, &QPushButton::clicked, [=]() { getColour(newKeyColor); });
 }
 
@@ -712,6 +714,20 @@ void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
 
 }
 
+void Ui_MazeWindow::createScoreboardScreen(QMainWindow *MainWindow) {
+
+    scoreboardScreen = new QWidget(MainWindow);
+    scoreboardScreen->setObjectName(QString::fromUtf8("scoreboardScreen"));
+    horizontalLayout_5 = new QHBoxLayout(scoreboardScreen);
+    horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+    scoreBoard = new QTableView(scoreboardScreen);
+    scoreBoard->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+
+    horizontalLayout_5->addWidget(scoreBoard);
+    MenuScreens->addWidget(scoreboardScreen);
+
+}
+
 void Ui_MazeWindow::on_actionOptions_triggered() {
 
 }
@@ -761,6 +777,7 @@ void Ui_MazeWindow::options() {
     statusbar->hide();
     pauseButton->setText("Pause");
     paused = false;
+    updateColourLabels();
     MenuScreens->setCurrentWidget(optionsScreen);
 }
 
@@ -958,6 +975,7 @@ void Ui_MazeWindow::EnemyMovement(){
     }
 }
 
+
 void Ui_MazeWindow::playergone(){
     if(gameLayout->getPlayer()->playerdead()){
         gameLayout->getPlayer()->getCurrentTile()->setStarting(false);
@@ -968,8 +986,6 @@ void Ui_MazeWindow::playergone(){
         playerdead->stop();
     }
 }
-
-
 void Ui_MazeWindow::drawTile(int i, int j, tileSettings &tileType) {
     QGraphicsRectItem *tile = new QGraphicsRectItem( j * nTileWidth , i * nTileHeight , nTileWidth , nTileHeight );
 
@@ -985,6 +1001,7 @@ void Ui_MazeWindow::drawTile(int i, int j, tileSettings &tileType) {
     tile->setData(0, kTile );
     MazeScene->addItem(tile);
 }
+
 void Ui_MazeWindow::drawescape(int x,int y){
     QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
     tile->setBrush(QBrush( exitColor, Qt::SolidPattern));
@@ -1000,7 +1017,6 @@ void Ui_MazeWindow::drawkey(int x,int y){
     tile->setData(0, kTile );
     MazeScene->addItem(tile);
 }
-
 void Ui_MazeWindow::drawenemy(int x,int y){
     QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
     tile->setBrush(QBrush(enemyColor , Qt::SolidPattern));
@@ -1008,6 +1024,7 @@ void Ui_MazeWindow::drawenemy(int x,int y){
     tile->setData(0, kTile );
     MazeScene->addItem(tile);
 }
+
 void Ui_MazeWindow::drawPlayer(int x, int y){
     QGraphicsRectItem *tile = new QGraphicsRectItem( y * nTileWidth , x * nTileHeight , nTileWidth , nTileHeight );
     tile->setBrush(QBrush(playerColor , Qt::SolidPattern));
@@ -1077,9 +1094,40 @@ void Ui_MazeWindow::fogEnabled(bool status) {
     fog = status;
 }
 
+void Ui_MazeWindow::updateColourLabels() {
+
+//    setColorNames();
+    QString newWallN = getColorName(newWallColor);
+    QString newPlayerN = getColorName(newPlayerColor);
+    QString newPathN = getColorName(newPathColor);
+    QString newEnemyN = getColorName(newEnemyColor);
+    QString newExitN = getColorName(newExitColor);
+    QString newKeyN = getColorName(newKeyColor);
+
+    wallColorPicker->setStyleSheet(getStylesheet(newWallN));
+    wallColorPicker->setText(newWallColor.name());
+
+    pathColorPicker->setStyleSheet(getStylesheet(newPathN));
+    pathColorPicker->setText(newPathColor.name());
+
+    enemyColorPicker->setStyleSheet(getStylesheet(newEnemyN));
+    enemyColorPicker->setText(newEnemyColor.name());
+
+    playerColorPicker->setStyleSheet(getStylesheet(newPlayerN));
+    playerColorPicker->setText(newPlayerColor.name());
+
+    keyColorPicker->setStyleSheet(getStylesheet(newKeyN));
+    keyColorPicker->setText(newKeyColor.name());
+
+    exitColorPicker->setStyleSheet(getStylesheet(newExitN));
+    exitColorPicker->setText(newExitColor.name());
+
+}
+
 void Ui_MazeWindow::getColour(QColor &colour) {
     QColor newColor = QColorDialog::getColor(colour , this , "Choose color");
     if(newColor.isValid()){
         colour = newColor;
+        updateColourLabels();
     }
 }

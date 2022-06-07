@@ -30,6 +30,7 @@
 #include <QKeySequenceEdit>
 #include <QColorDialog>
 #include <QLCDNumber>
+#include <QTableView>
 
 // Custom sources
 #include "../Maze.h"
@@ -62,6 +63,7 @@ public:
     void setShortcuts();
     void setColours();
     void getColour(QColor &colour);
+    void updateColourLabels();
 
 private slots:
 
@@ -111,6 +113,7 @@ private:
     void createLevelScreen(QMainWindow *MainWindow);
     void createOptionsScreen(QMainWindow *MainWindow);
     void createGameOverScreen(QMainWindow *MainWindow);
+    void createScoreboardScreen(QMainWindow *MainWindow);
 
     // Maze visualisation
 
@@ -133,6 +136,8 @@ private:
 
     void EnemyMovement();
     void playergone();
+
+
 
 
     // Main Widgets
@@ -231,6 +236,10 @@ private:
     QPushButton *newGameButton_2;
     QLabel *gameOverlabel;
     QLabel *gameOverphoto;
+
+    // Scoreboard screen
+    QTableView *scoreBoard;
+    QHBoxLayout *horizontalLayout_5;
 
     // Actions
     QAction *loadAct;

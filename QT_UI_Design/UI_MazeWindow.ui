@@ -54,7 +54,7 @@
     <item>
      <widget class="QStackedWidget" name="MenuScreens">
       <property name="currentIndex">
-       <number>3</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="MainMenu">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -485,6 +485,13 @@
            <bool>true</bool>
           </property>
          </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QTableView" name="scoreBoard"/>
         </item>
        </layout>
       </widget>
