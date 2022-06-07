@@ -61,6 +61,7 @@ public:
     void loadLevel(string filename);
     void setShortcuts();
     void setColours();
+    void getColour(QColor &colour);
 
 private slots:
 
@@ -87,6 +88,7 @@ private slots:
     void slot_level4() {loadLevel(LEV4JSON);}
     void slot_setShortcuts(){setShortcuts();}
     void slot_setColours() {setColours();}
+
     void update();
     void on_actionOptions_triggered();
     void on_actionExit_triggered();
@@ -239,6 +241,7 @@ private:
     QAction *mainMenuRet;
     QAction *showScoresAct;
     QAction *fogEnabledAct;
+    QAction *getColAct;
 
     // Shortcuts
     int moveUp;
@@ -254,6 +257,13 @@ private:
     QColor playerColor;
     QColor enemyColor;
     QColor keyColor;
+
+    QColor newWallColor;
+    QColor newPathColor;
+    QColor newExitColor;
+    QColor newPlayerColor;
+    QColor newEnemyColor;
+    QColor newKeyColor;
 
     // Colour names
     QString wallColorN;

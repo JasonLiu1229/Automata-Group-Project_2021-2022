@@ -44,6 +44,13 @@ void Ui_MazeWindow::setupUi(QMainWindow *MainWindow)
     enemyColor = QColor(138,3,3);
     keyColor = QColor(250,250,0);
 
+    newWallColor = wallColor;
+    newPathColor = pathColor;
+    newExitColor = exitColor;
+    newPlayerColor = playerColor;
+    newEnemyColor = enemyColor;
+    newKeyColor = keyColor;
+
 //    wallColorN = wallColor.name();
 //    pathColorN = pathColor.name();
 //    playerColorN = playerColor.name();
@@ -138,12 +145,12 @@ void Ui_MazeWindow::setShortcuts() {
 }
 
 void Ui_MazeWindow::setColours() {
-    wallColor;
-    pathColor;
-    exitColor;
-    playerColor;
-    enemyColor;
-    keyColor;
+    wallColor = newWallColor;
+    pathColor = newPathColor;
+    exitColor = newExitColor;
+    playerColor = newPlayerColor;
+    enemyColor = newEnemyColor;
+    keyColor = newKeyColor;
 }
 
 QString Ui_MazeWindow::getStylesheet(QString &ref) {
@@ -202,6 +209,9 @@ void Ui_MazeWindow::createActions(QMainWindow *MainWindow) {
     fogEnabledAct->setObjectName(QString::fromUtf8("fogEnabled"));
     fogEnabledAct->setCheckable(true);
     connect(fogEnabledAct , &QAction::triggered , this , &Ui_MazeWindow::slot_fogEnabled);
+
+    getColAct = new QAction(MainWindow);
+    getColAct->setObjectName(QString::fromUtf8("getColAct"));
 }
 
 void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
@@ -454,6 +464,9 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
 
     gridLayout_2 = new QGridLayout(optionsScreen);
     gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+
+    // Colours grid
+
     VisualisationOptionsBox = new QGroupBox(optionsScreen);
     VisualisationOptionsBox->setObjectName(QString::fromUtf8("VisualisationOptionsBox"));
     VisualisationOptionsBox->setFlat(false);
@@ -521,7 +534,6 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     keyColorPicker->setStyleSheet(getStylesheet(keyColorN));
     keyColorPicker->setText(keyColorN);
 
-
     formLayout_3->setWidget(4, QFormLayout::FieldRole, keyColorPicker);
 
     exitColorLabel = new QLabel(VisualisationOptionsBox);
@@ -543,6 +555,10 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     formLayout_3->setWidget(6 , QFormLayout::FieldRole , saveColorChoice);
 
     gridLayout_2->addWidget(VisualisationOptionsBox, 1, 0, 1, 1);
+
+
+
+    // Keybinds grid
 
     KeybindsBox = new QGroupBox(optionsScreen);
     KeybindsBox->setObjectName(QString::fromUtf8("KeybindsBox"));
@@ -636,6 +652,12 @@ void Ui_MazeWindow::createOptionsScreen(QMainWindow *MainWindow) {
     connect( saveKeybindsButton , SIGNAL(clicked()) , this , SLOT( slot_setShortcuts() ) );
     connect( saveColorChoice , SIGNAL(clicked()) , this , SLOT( slot_setColours() ) );
 
+    connect(wallColorPicker, &QPushButton::clicked, [=]() { getColour(newWallColor); });
+    connect(pathColorPicker, &QPushButton::clicked, [=]() { getColour(newPathColor); });
+    connect(playerColorPicker, &QPushButton::clicked, [=]() { getColour(newPlayerColor); });
+    connect(exitColorPicker, &QPushButton::clicked, [=]() { getColour(newExitColor); });
+    connect(enemyColorPicker, &QPushButton::clicked, [=]() { getColour(newEnemyColor); });
+    connect(keyColorPicker, &QPushButton::clicked, [=]() { getColour(newKeyColor); });
 }
 
 void Ui_MazeWindow::createGameOverScreen(QMainWindow *MainWindow) {
@@ -712,10 +734,12 @@ void Ui_MazeWindow::save() {
         if(currentSave == ""){
             // From official QT doc https://doc.qt.io/qt-5/qfiledialog.html#fileMode-prop
             currentSave = QFileDialog::getSaveFileName(this , "Save game" , SVG1 , "MazeSave (*.txt)");
-            gameLayout->setSavedFile("");
-            gameLayout->Save(currentSave.toStdString());
-            // Update save file
-            currentSave = QString::fromStdString(gameLayout->getSavedFile());
+            if(!currentSave.isEmpty()){
+                gameLayout->setSavedFile("");
+                gameLayout->Save(currentSave.toStdString());
+                // Update save file
+                currentSave = QString::fromStdString(gameLayout->getSavedFile());
+            }
         }
         else{
             gameLayout->Save();
@@ -1051,4 +1075,11 @@ bool Ui_MazeWindow::eventFilter(QObject *o, QEvent *e) {
 
 void Ui_MazeWindow::fogEnabled(bool status) {
     fog = status;
+}
+
+void Ui_MazeWindow::getColour(QColor &colour) {
+    QColor newColor = QColorDialog::getColor(colour , this , "Choose color");
+    if(newColor.isValid()){
+        colour = newColor;
+    }
 }
