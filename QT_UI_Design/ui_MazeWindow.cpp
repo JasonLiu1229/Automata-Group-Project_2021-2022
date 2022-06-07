@@ -259,6 +259,24 @@ void Ui_MazeWindow::createMenus(QMainWindow *MainWindow) {
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusBar"));
+    keyStatusLabel = new QLabel(this);
+    keyStatusLabel->setText("Remaining keys: ");
+    keyNumber = new QLCDNumber(this);
+    keyNumber->setMode(QLCDNumber::Dec);
+//    keyNumber->setSegmentStyle(QLCDNumber::Flat);
+    keyNumber->display(0);
+    doorStatusLabel = new QLabel(this);
+    doorStatusLabel->setText("Door Locked");
+    timeLabel = new QLabel(this);
+    timeLabel->setText("Time: ");
+    levelTime = new QLCDNumber(this);
+    levelTime->setSegmentStyle(QLCDNumber::Flat);
+    statusbar->addPermanentWidget(keyStatusLabel);
+    statusbar->addPermanentWidget(keyNumber);
+    statusbar->addPermanentWidget(timeLabel);
+    statusbar->addPermanentWidget(levelTime);
+    statusbar->addPermanentWidget(doorStatusLabel);
+    statusbar->hide();
     MainWindow->setStatusBar(statusbar);
 
     menubar->addAction(menuFile->menuAction());
@@ -665,14 +683,17 @@ void Ui_MazeWindow::load() {
 }
 
 void Ui_MazeWindow::options() {
+    statusbar->hide();
     MenuScreens->setCurrentWidget(optionsScreen);
 }
 
 void Ui_MazeWindow::mainMenuReturn() {
+    statusbar->hide();
     MenuScreens->setCurrentWidget(MainScreen);
 }
 
 void Ui_MazeWindow::showScoreboard() {
+    statusbar->hide();
     MenuScreens->setCurrentWidget(scoreboardScreen);
 }
 
@@ -704,6 +725,7 @@ void Ui_MazeWindow::loadLevel(string filename){
 
     MazeView->setFocus();
     this->grabKeyboard();
+    statusbar->show();
 }
 
 void Ui_MazeWindow::pauseGame() {
@@ -727,6 +749,14 @@ void Ui_MazeWindow::update() {
     nTileWidth = static_cast<quint32>(width);
     nTileHeight = static_cast<quint32>(height);
     refreshMaze(gameLayout);
+    int key_count = gameLayout->getKey_count();
+    keyNumber->display(key_count);
+    if(gameLayout->getDFAkeys()->getCurrentState()->getkeystate()){
+        doorStatusLabel->setText("Door Unlocked");
+    }
+    else{
+        doorStatusLabel->setText("Door Locked");
+    }
 }
 
 void Ui_MazeWindow::refreshMaze(Maze *&layout) {

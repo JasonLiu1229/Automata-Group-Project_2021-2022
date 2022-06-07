@@ -29,6 +29,8 @@
 #include <QLineEdit>
 #include <QKeySequenceEdit>
 #include <QColorDialog>
+#include <QLCDNumber>
+//#include <QElapsedTimer>
 #include "../QT_Utils/qtcolorpicker.h"
 
 // Custom sources
@@ -175,6 +177,12 @@ private:
     QPushButton *helpButton;
     QGraphicsView *MazeView;
     QGraphicsScene *MazeScene;
+    QLabel *keyStatusLabel;
+    QLCDNumber *keyNumber;
+    QLabel *doorStatusLabel;
+    QLabel *timeLabel;
+    QLCDNumber *levelTime;
+    QTime *time;
 
     // Options screen
 
