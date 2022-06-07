@@ -58,6 +58,10 @@ public:
 
     void playerdied();
 
+    bool playerdead();
+
+    void playerdied();
+
     virtual ~Player();
 };
 

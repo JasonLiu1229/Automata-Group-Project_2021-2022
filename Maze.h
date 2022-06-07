@@ -94,6 +94,10 @@ public:
 
     Collectable_DFA* getDFAkeys();
 
+    Player* getPlayer();
+
+    Collectable_DFA* getDFAkeys();
+
     // user interface
     void playMaze();
 
