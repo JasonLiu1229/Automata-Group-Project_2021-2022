@@ -63,6 +63,7 @@ public:
     void loadLevel(string filename);
     void setShortcuts();
     void setColours();
+    void resetColours();
     void getColour(QColor &colour);
     void updateColourLabels();
 
@@ -139,8 +140,6 @@ private:
 
     void EnemyMovement();
     void playergone();
-
-
 
 
     // Main Widgets
@@ -300,6 +299,7 @@ private:
     bool paused;
     bool lost;
     bool fog;
+    bool resetCol;
     double elapsedTime;
     QTimer* inputTime;
     QTimer* enemyTime;
