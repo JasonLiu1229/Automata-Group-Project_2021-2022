@@ -724,6 +724,11 @@ void Ui_MazeWindow::createScoreboardScreen(QMainWindow *MainWindow) {
     scoreBoard = new QTableView(scoreboardScreen);
     scoreBoard->setObjectName(QString::fromUtf8("horizontalLayout_5"));
 
+    QLabel *label = new QLabel(scoreBoard);
+    label->setFrameStyle(QFrame::Panel);
+    label->setText("SCORE");
+    label->setAlignment(Qt::AlignBottom);
+
     horizontalLayout_5->addWidget(scoreBoard);
     MenuScreens->addWidget(scoreboardScreen);
 
